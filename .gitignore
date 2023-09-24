@@ -4,3 +4,10 @@ node_modules
 /build
 /public/build
 .env
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
+
+.vscode/
