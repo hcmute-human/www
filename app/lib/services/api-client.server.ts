@@ -1,3 +1,5 @@
+import { FormData, request } from 'undici';
+
 interface ApiClientOptions {
 	baseUrl: string;
 	version: string;
@@ -12,8 +14,9 @@ function trim(input: string, char: string) {
 	return input.substring(start, end + 1);
 }
 
-export interface RequestOptions extends Omit<RequestInit, 'body'> {
-	body?: Record<number | string, unknown> | unknown[];
+type OptionsParameter = Exclude<Parameters<typeof request>[1], undefined>;
+export interface RequestOptions extends Omit<OptionsParameter, 'body'> {
+	body?: Record<number | string, unknown> | unknown[] | FormData | Buffer;
 }
 
 export class ApiClient {
@@ -39,32 +42,34 @@ export class ApiClient {
 		ApiClient._options = options;
 	}
 
-	public fetch(input: string | URL, init?: RequestInit) {
+	protected request(input: string | URL, options?: RequestOptions) {
 		const url = typeof input === 'string' ? input : input.pathname;
-		return fetch(
+		return request(
 			this.options.baseUrl +
 				'/' +
 				trim(url, '/').split('/').join('/') +
 				'/' +
 				this.options.version,
-			init
+			options
+				? {
+						...options,
+						body:
+							options?.body instanceof FormData ||
+							options?.body instanceof Buffer
+								? options.body
+								: JSON.stringify(options?.body),
+				  }
+				: undefined
 		);
 	}
 
-	public post(input: string | URL, init?: RequestOptions) {
-		const requestInit = {
-			...init,
-			method: 'post',
-			body:
-				init?.body instanceof FormData
-					? (init.body as FormData)
-					: JSON.stringify(init?.body),
+	public post(input: string | URL, options?: RequestOptions) {
+		return this.request(input, {
+			...options,
+			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
-				...init?.headers,
+				...options?.headers,
 			},
-		};
-
-		return this.fetch(input, requestInit);
+		});
 	}
 }
