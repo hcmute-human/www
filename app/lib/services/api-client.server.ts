@@ -57,7 +57,7 @@ export class ApiClient {
 			method: 'post',
 			body:
 				init?.body instanceof FormData
-					? (init?.body as FormData)
+					? (init.body as FormData)
 					: JSON.stringify(init?.body),
 			headers: {
 				'Content-Type': 'application/json',
