@@ -1,7 +1,11 @@
 import type { Config } from 'tailwindcss';
 import tailwindCssAnimate from 'tailwindcss-animate';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import tailwindCssReactAriaComponents from 'tailwindcss-react-aria-components';
+
+const fontFamilyBase =
+	"system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif";
 
 const config: Config = {
 	content: ['./app/**/*.{ts,tsx}'],
@@ -69,11 +73,20 @@ const config: Config = {
 				'8xl': '3.247rem',
 				'9xl': '3.653rem',
 			},
+			fontFamily: {
+				display: ["'Source Sans 3'", fontFamilyBase],
+				'sans-serif': ["'Source Sans 3'", fontFamilyBase],
+			},
+			lineHeight: {
+				body: '1.75',
+				heading: '1.3',
+			},
 		},
 	},
 	darkMode: ['class'],
 	plugins: [
 		tailwindCssAnimate,
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 		tailwindCssReactAriaComponents({ prefix: 'rac' }),
 	],
 };
