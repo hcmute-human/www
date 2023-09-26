@@ -1,5 +1,4 @@
 import Button from '@components/Button';
-import ControlledTextField from '@components/ControlledTextField';
 import Form from '@components/Form';
 import MeshGradient from '@components/MeshGradient';
 import ProgressCircle from '@components/ProgressCircle';
@@ -10,16 +9,21 @@ import { toActionErrorsAsync } from '@lib/utils.server';
 import { ActionFunctionArgs, redirect } from '@remix-run/node';
 import { useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
+import Checkbox from '@components/Checkbox';
 import { z } from 'zod';
+import { Link } from 'react-aria-components';
+import TextField from '@components/TextField';
 
 interface FieldValues {
   email: string;
   password: string;
+  rememberMe?: 'true';
 }
 
 const schema = z.object({
   email: z.string().email(),
   password: z.string().nonempty(),
+  rememberMe: z.string().optional(),
 });
 
 export default function Route() {
@@ -46,26 +50,47 @@ export default function Route() {
               defaultValues: {
                 email: '',
                 password: '',
+                rememberMe: 'true',
               },
               progressive: true,
               criteriaMode: 'all',
             }}
+            onSubmit={(e) => {
+              console.log(
+                Object.fromEntries(
+                  new FormData(e.currentTarget as HTMLFormElement).entries()
+                )
+              );
+            }}
             className="grid gap-6 mt-8"
           >
-            <ControlledTextField
+            <TextField
               isRequired
               name="email"
               type="email"
               label="Email address"
               className="grid"
             />
-            <ControlledTextField
+            <TextField
               isRequired
               name="password"
               type="password"
               label="Password"
               className="grid"
             />
+            <div className="flex justify-between">
+              <Checkbox
+                isRequired
+                name="rememberMe"
+                id="rememberMe"
+                className="flex gap-x-2 items-center w-fit"
+              >
+                Remember me
+              </Checkbox>
+              <Link className="text-tertiary-500 underline underline-offset-2 text-sm">
+                <a href="/reset-password">Forgot password?</a>
+              </Link>
+            </div>
             <Button
               type="submit"
               className="relative w-fit bg-primary-500"
@@ -121,6 +146,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const parse = await schema.safeParseAsync({
     email: formData.get('email'),
     password: formData.get('password'),
+    rememberMe: formData.get('rememberMe'),
   });
 
   if (!parse.success) {
@@ -139,7 +165,7 @@ export async function action({ request }: ActionFunctionArgs) {
   try {
     [statusCode, body] = await ApiClient.instance
       .post('auth/login', {
-        body: parse.data,
+        body: { ...parse.data, rememberMe: !!parse.data.rememberMe },
         headers: {
           'Content-Type': 'application/json',
         },
