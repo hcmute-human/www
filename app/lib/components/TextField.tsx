@@ -40,10 +40,11 @@ const InternalTextField = forwardRef<HTMLInputElement, InternalProps>(
   ) {
     const invalid = errorMessage != null;
     return (
-      <AriaTextField ref={ref} {...props} isInvalid={invalid}>
+      <AriaTextField {...props} isInvalid={!!props.isInvalid || invalid}>
         <Label className={cn('mb-0.5', labelClassName)}>{label}</Label>
         <Input
           ref={ref}
+          required={!!props.isRequired}
           name={props.name}
           className={cn(inputClassName, {
             'peer border-negative-500': invalid,
@@ -58,8 +59,8 @@ const InternalTextField = forwardRef<HTMLInputElement, InternalProps>(
           <Text
             slot="errorMessage"
             className="text-sm text-negative-500 mt-0.5
-					peer-rac-invalid:transition peer-rac-invalid:ease-in-out peer-rac-invalid:duration-300
-					peer-rac-invalid:animate-in peer-rac-invalid:fade-in peer-rac-invalid:slide-in-from-top-4"
+              peer-rac-invalid:transition peer-rac-invalid:ease-in-out peer-rac-invalid:duration-300
+              peer-rac-invalid:animate-in peer-rac-invalid:fade-in peer-rac-invalid:slide-in-from-top-4"
           >
             {errorMessage}
           </Text>
