@@ -20,12 +20,12 @@ export default function MeshGradient({
 				6,
 				rgbToHex(
 					window
-						.getComputedStyle(ref.current!, null)
+						.getComputedStyle(ref.current!)
 						.getPropertyValue('background-color')
 				)
 			)
 		);
 	}, []);
 
-	return <div ref={ref} style={{ ...gradientStyle, ...style }} {...props} />;
+	return <div ref={ref} {...props} style={{ ...gradientStyle, ...style }} />;
 }
