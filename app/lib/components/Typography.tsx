@@ -1,11 +1,11 @@
 export default function Typography({
-	className,
-	...props
+  className,
+  ...props
 }: React.DetailedHTMLProps<
-	React.HTMLAttributes<HTMLDivElement>,
-	HTMLDivElement
+  React.HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
 >) {
-	return (
-		<div {...props} className={className ? 'typo ' + className : className} />
-	);
+  return (
+    <div {...props} className={className ? 'typo ' + className : className} />
+  );
 }

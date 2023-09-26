@@ -2,42 +2,42 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProps, Form as RemixForm, useActionData } from '@remix-run/react';
 import { useEffect } from 'react';
 import {
-	FieldValues,
-	FormProvider,
-	Path,
-	UseFormProps,
-	useForm,
+  FieldValues,
+  FormProvider,
+  Path,
+  UseFormProps,
+  useForm,
 } from 'react-hook-form';
 
 type Props<T extends FieldValues> = FormProps & {
-	options?: Omit<UseFormProps<T>, 'resolver'> &
-		Partial<{ schema: Zod.ZodType }>;
+  options?: Omit<UseFormProps<T>, 'resolver'> &
+    Partial<{ schema: Zod.ZodType }>;
 };
 
 export default function Form<T extends FieldValues>({
-	options,
-	...props
+  options,
+  ...props
 }: Props<T>) {
-	const methods = useForm<T>({
-		...options,
-		resolver: options?.schema ? zodResolver(options.schema) : undefined,
-	});
+  const methods = useForm<T>({
+    ...options,
+    resolver: options?.schema ? zodResolver(options.schema) : undefined,
+  });
 
-	const data = useActionData<{ errors?: Record<string, string> }>();
-	const errors = data?.errors as Record<string, string> | undefined;
+  const data = useActionData<{ errors?: Record<string, string> }>();
+  const errors = data?.errors as Record<string, string> | undefined;
 
-	useEffect(() => {
-		if (!errors) {
-			return;
-		}
+  useEffect(() => {
+    if (!errors) {
+      return;
+    }
 
-		for (const [k, v] of Object.entries(errors)) {
-			methods.setError(k as Path<T>, { message: v });
-		}
-	}, [errors, methods]);
-	return (
-		<FormProvider {...methods}>
-			<RemixForm {...props} />
-		</FormProvider>
-	);
+    for (const [k, v] of Object.entries(errors)) {
+      methods.setError(k as Path<T>, { message: v });
+    }
+  }, [errors, methods]);
+  return (
+    <FormProvider {...methods}>
+      <RemixForm {...props} />
+    </FormProvider>
+  );
 }
