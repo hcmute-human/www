@@ -1,4 +1,4 @@
-import { AriaProgressBarProps, useProgressBar } from 'react-aria';
+import { type AriaProgressBarProps, useProgressBar } from 'react-aria';
 
 const center = 16;
 const strokeWidth = 4;

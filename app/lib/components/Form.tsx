@@ -1,11 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormProps, Form as RemixForm, useActionData } from '@remix-run/react';
+import {
+  Form as RemixForm,
+  useActionData,
+  type FormProps,
+} from '@remix-run/react';
 import { useEffect } from 'react';
 import {
-  FieldValues,
+  type FieldValues,
   FormProvider,
-  Path,
-  UseFormProps,
+  type Path,
+  type UseFormProps,
   useForm,
 } from 'react-hook-form';
 

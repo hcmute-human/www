@@ -9,7 +9,7 @@ import {
 } from 'react-aria-components';
 import {
   Controller,
-  UseControllerProps,
+  type UseControllerProps,
   useFormContext,
 } from 'react-hook-form';
 

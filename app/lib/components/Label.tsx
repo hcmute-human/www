@@ -1,5 +1,5 @@
 import { cn } from '@lib/utils';
-import { type LabelProps, Label as AriaLabel } from 'react-aria-components';
+import { Label as AriaLabel, type LabelProps } from 'react-aria-components';
 
 const baseClass = 'text-sm text-neutral-700';
 

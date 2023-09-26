@@ -5,10 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 export default function MeshGradient({
   style,
   ...props
-}: React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->) {
+}: React.HTMLAttributes<HTMLDivElement>) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [gradientStyle, setGradientStyle] = useState<
     ReturnType<typeof generateJSXMeshGradient> | undefined

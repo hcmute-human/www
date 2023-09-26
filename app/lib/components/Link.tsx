@@ -1,14 +1,31 @@
 import { cn } from '@lib/utils';
-import { forwardRef } from 'react';
-import { Link as AriaLink, type LinkProps } from 'react-aria-components';
+import type { HTMLAttributes, ReactNode } from 'react';
+import { Link as AriaLink } from 'react-aria-components';
+import { Link as RemixLink, type LinkProps } from '@remix-run/react';
+
+type Props =
+  | ({ as?: 'link' } & LinkProps)
+  | ({ as: 'a' } & HTMLAttributes<HTMLAnchorElement>);
 
 const baseClass = 'text-tertiary-500 underline underline-offset-2 text-sm';
 
-const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
-  { className, ...props }: LinkProps,
-  ref
-) {
-  return <AriaLink {...props} ref={ref} className={cn(baseClass, className)} />;
-});
+export default function Link({
+  className,
+  as = 'link',
+  children,
+  ...props
+}: Props) {
+  let node: ReactNode | null = null;
+  switch (as) {
+    case 'link': {
+      node = <RemixLink {...(props as LinkProps)}>{children}</RemixLink>;
+      break;
+    }
+    case 'a': {
+      node = <a {...props}>{children}</a>;
+      break;
+    }
+  }
 
-export default Link;
+  return <AriaLink className={cn(baseClass, className)}>{node}</AriaLink>;
+}
