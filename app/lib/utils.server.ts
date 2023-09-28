@@ -1,6 +1,16 @@
+import { ZodError } from 'zod';
 import { problemDetailsSchema } from './schemas/problem-details.server';
 
+export async function toActionErrorsAsync<T>(
+  body: ZodError<T>
+): Promise<ActionError>;
+export async function toActionErrorsAsync(body: Error): Promise<ActionError>;
+export async function toActionErrorsAsync(body: unknown): Promise<ActionError>;
 export async function toActionErrorsAsync(body: unknown): Promise<ActionError> {
+  if (body instanceof ZodError) {
+    return Object.fromEntries(body.issues.map((x) => [x.path[0], x.code]));
+  }
+
   if (body instanceof Error) {
     return { root: `${body.name}: ${body.message}` };
   }
