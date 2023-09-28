@@ -76,7 +76,9 @@ export default function Route() {
           >
             Remember me
           </Checkbox>
-          <Link to="/reset-password">Forgot password?</Link>
+          <Link to="/reset-password" className="text-sm">
+            Forgot password?
+          </Link>
         </div>
         <ControlledButton
           type="submit"
@@ -127,7 +129,6 @@ export default function Route() {
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  console.log(Object.fromEntries(formData.entries()));
   const parse = await schema.safeParseAsync({
     email: formData.get('email'),
     password: formData.get('password'),
