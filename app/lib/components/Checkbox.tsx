@@ -4,7 +4,7 @@ import {
   Checkbox as AriaCheckbox,
   type CheckboxProps,
 } from 'react-aria-components';
-import { Controller, useFormContext, useFormState } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
 interface Props extends Omit<CheckboxProps, 'chilren'> {
   children?: ReactNode;
@@ -58,7 +58,7 @@ export default function Checkbox({ name, ...props }: Props) {
           {...props}
           defaultSelected={!!defaultValues?.[name!]}
           onChange={(selected) => {
-            onChange(selected + '');
+            onChange(selected ? 'true' : undefined);
           }}
         />
       )}

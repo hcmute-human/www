@@ -1,5 +1,5 @@
-import Button from '@components/Button';
 import Checkbox from '@components/Checkbox';
+import ControlledButton from '@components/ControlledButton';
 import Form from '@components/Form';
 import Link from '@components/Link';
 import ProgressCircle from '@components/ProgressCircle';
@@ -22,7 +22,7 @@ interface FieldValues {
 const schema = z.object({
   email: z.string().email(),
   password: z.string().nonempty(),
-  rememberMe: z.literal('true').nullable(),
+  rememberMe: z.literal('true').nullable().optional(),
 });
 
 export default function Route() {
@@ -78,7 +78,7 @@ export default function Route() {
           </Checkbox>
           <Link to="/reset-password">Forgot password?</Link>
         </div>
-        <Button
+        <ControlledButton
           type="submit"
           className="relative w-fit bg-primary-500"
           isDisabled={state === 'submitting'}
@@ -105,7 +105,7 @@ export default function Route() {
               aria-label="signing in"
             />
           </Transition>
-        </Button>
+        </ControlledButton>
         <Transition
           show={state !== 'submitting' && !!error}
           enter="transition ease-in-out"
