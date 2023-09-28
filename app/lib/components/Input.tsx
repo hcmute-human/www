@@ -10,11 +10,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   ref
 ) {
   return (
-    <AriaInput
-      ref={ref}
-      {...props}
-      className={cn(baseClass, className)}
-    ></AriaInput>
+    <AriaInput ref={ref} {...props} className={cn(baseClass, className)} />
   );
 });
 

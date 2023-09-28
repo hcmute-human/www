@@ -1,6 +1,9 @@
 import { cn } from '@lib/utils';
-import { ReactNode, forwardRef } from 'react';
-import { Checkbox as AriaCheckbox, CheckboxProps } from 'react-aria-components';
+import { type ReactNode, forwardRef } from 'react';
+import {
+  Checkbox as AriaCheckbox,
+  type CheckboxProps,
+} from 'react-aria-components';
 import { Controller, useFormContext } from 'react-hook-form';
 
 interface Props extends Omit<CheckboxProps, 'chilren'> {

@@ -1,17 +1,17 @@
 import { cn } from '@lib/utils';
 import { forwardRef } from 'react';
-import Input from './Input';
-import Label from './Label';
 import {
-  type TextFieldProps,
-  Text,
   TextField as AriaTextField,
+  Text,
+  type TextFieldProps,
 } from 'react-aria-components';
 import {
   Controller,
+  useFormState,
   type UseControllerProps,
-  useFormContext,
 } from 'react-hook-form';
+import Input from './Input';
+import Label from './Label';
 
 interface InternalProps extends TextFieldProps {
   name: string;
@@ -71,23 +71,15 @@ const InternalTextField = forwardRef<HTMLInputElement, InternalProps>(
 );
 
 export default function TextField({ errorMessage, rules, ...props }: Props) {
-  const methods = useFormContext();
-  if (methods) {
-    errorMessage ??= methods.formState.errors[props.name]?.message?.toString();
-    return (
-      <Controller
-        rules={rules}
-        name={props.name}
-        control={methods.control}
-        render={({ field }) => (
-          <InternalTextField
-            {...props}
-            {...field}
-            errorMessage={errorMessage}
-          />
-        )}
-      />
-    );
-  }
-  return <InternalTextField {...props} />;
+  const { errors } = useFormState();
+  errorMessage ??= errors[props.name]?.message?.toString();
+  return (
+    <Controller
+      rules={rules}
+      name={props.name}
+      render={({ field }) => (
+        <InternalTextField {...props} {...field} errorMessage={errorMessage} />
+      )}
+    />
+  );
 }
