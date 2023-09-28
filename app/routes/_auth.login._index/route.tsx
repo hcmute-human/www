@@ -22,7 +22,7 @@ interface FieldValues {
 const schema = z.object({
   email: z.string().email(),
   password: z.string().nonempty(),
-  rememberMe: z.string().optional(),
+  rememberMe: z.literal('true').nullable(),
 });
 
 export default function Route() {
@@ -50,13 +50,6 @@ export default function Route() {
           },
           progressive: true,
           criteriaMode: 'all',
-        }}
-        onSubmit={(e) => {
-          console.log(
-            Object.fromEntries(
-              new FormData(e.currentTarget as HTMLFormElement).entries()
-            )
-          );
         }}
         className="grid gap-6 mt-8"
       >
@@ -133,8 +126,8 @@ export default function Route() {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
   const formData = await request.formData();
+  console.log(Object.fromEntries(formData.entries()));
   const parse = await schema.safeParseAsync({
     email: formData.get('email'),
     password: formData.get('password'),
@@ -152,33 +145,30 @@ export async function action({ request }: ActionFunctionArgs) {
     refreshToken: string;
   }
 
-  let statusCode: number;
-  let body: LoginResponse;
   try {
-    [statusCode, body] = await ApiClient.instance
+    const [ok, body] = await ApiClient.instance
       .post('auth/login', {
         body: { ...parse.data, rememberMe: !!parse.data.rememberMe },
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      .then(async (v) => [
-        v.statusCode,
-        (await v.body.json()) as LoginResponse,
-      ]);
-    if (statusCode !== 200) {
+      .then(
+        async (v) => [v.ok, (await v.body.json()) as LoginResponse] as const
+      );
+    if (!ok) {
       return { errors: await toActionErrorsAsync(body) };
     }
+
+    const session = await getSession(request);
+    session.set('accessToken', body.accessToken);
+    session.set('refreshToken', body.refreshToken);
+    return redirect('/', {
+      headers: {
+        'Set-Cookie': await commitSession(session),
+      },
+    });
   } catch (e) {
     return { errors: await toActionErrorsAsync(e) };
   }
-
-  const session = await getSession(request);
-  session.set('accessToken', body.accessToken);
-  session.set('refreshToken', body.refreshToken);
-  return redirect('/', {
-    headers: {
-      'Set-Cookie': await commitSession(session),
-    },
-  });
 }

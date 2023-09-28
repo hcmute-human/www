@@ -1,4 +1,4 @@
-import { FormData, request } from 'undici';
+import { Dispatcher, FormData, request } from 'undici';
 
 interface ApiClientOptions {
   baseUrl: string;
@@ -17,6 +17,11 @@ function trim(input: string, char: string) {
 type OptionsParameter = Exclude<Parameters<typeof request>[1], undefined>;
 export interface RequestOptions extends Omit<OptionsParameter, 'body'> {
   body?: Record<number | string, unknown> | unknown[] | FormData | Buffer;
+}
+
+export interface ApiResponse {
+  ok: boolean;
+  body: Dispatcher.ResponseData['body'];
 }
 
 export class ApiClient {
@@ -42,9 +47,12 @@ export class ApiClient {
     ApiClient._options = options;
   }
 
-  protected request(input: string | URL, options?: RequestOptions) {
+  protected async request(
+    input: string | URL,
+    options?: RequestOptions
+  ): Promise<ApiResponse> {
     const url = typeof input === 'string' ? input : input.pathname;
-    return request(
+    const response = await request(
       this.options.baseUrl +
         '/' +
         trim(url, '/').split('/').join('/') +
@@ -61,6 +69,10 @@ export class ApiClient {
           }
         : undefined
     );
+    return {
+      ok: response.statusCode >= 200 && response.statusCode <= 299,
+      body: response.body,
+    };
   }
 
   public post(input: string | URL, options?: RequestOptions) {
