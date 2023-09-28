@@ -7,7 +7,7 @@ type Props =
   | ({ as?: 'link' } & LinkProps)
   | ({ as: 'a' } & HTMLAttributes<HTMLAnchorElement>);
 
-const baseClass = 'text-tertiary-500 underline underline-offset-2 text-sm';
+const baseClass = 'text-tertiary-500 underline underline-offset-2';
 
 export default function Link({
   className,
