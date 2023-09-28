@@ -1,10 +1,10 @@
 import { cn } from '@lib/utils';
-import { type ReactNode, forwardRef } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 import {
   Checkbox as AriaCheckbox,
   type CheckboxProps,
 } from 'react-aria-components';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext, useFormState } from 'react-hook-form';
 
 interface Props extends Omit<CheckboxProps, 'chilren'> {
   children?: ReactNode;
@@ -45,22 +45,23 @@ const InternalCheckbox = forwardRef<HTMLInputElement, Props>(
   }
 );
 
-export default function Checkbox(props: Props) {
-  const methods = useFormContext();
-  if (methods) {
-    return (
-      <Controller
-        name={props.name!}
-        control={methods.control}
-        render={({ field }) => (
-          <InternalCheckbox
-            {...field}
-            {...props}
-            defaultSelected={!!methods.formState.defaultValues?.[props.name!]}
-          />
-        )}
-      />
-    );
-  }
-  return <InternalCheckbox {...props} />;
+export default function Checkbox({ name, ...props }: Props) {
+  return (
+    <Controller
+      name={name!}
+      render={({
+        field: { onChange, ...field },
+        formState: { defaultValues },
+      }) => (
+        <InternalCheckbox
+          {...field}
+          {...props}
+          defaultSelected={!!defaultValues?.[name!]}
+          onChange={(selected) => {
+            onChange(selected + '');
+          }}
+        />
+      )}
+    />
+  );
 }

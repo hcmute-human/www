@@ -17,7 +17,7 @@ export default function Button({
       className={cn(baseClass, className)}
       isDisabled={
         !!isDisabled ||
-        Object.keys(errors).filter((v) => v !== 'root').length > 0
+        Object.keys(errors).filter((v) => !v.startsWith('root')).length > 0
       }
     />
   );

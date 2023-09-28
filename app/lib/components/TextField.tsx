@@ -5,11 +5,7 @@ import {
   Text,
   type TextFieldProps,
 } from 'react-aria-components';
-import {
-  Controller,
-  useFormState,
-  type UseControllerProps,
-} from 'react-hook-form';
+import { Controller, type UseControllerProps } from 'react-hook-form';
 import Input from './Input';
 import Label from './Label';
 
@@ -70,15 +66,22 @@ const InternalTextField = forwardRef<HTMLInputElement, InternalProps>(
   }
 );
 
-export default function TextField({ errorMessage, rules, ...props }: Props) {
-  const { errors } = useFormState();
-  errorMessage ??= errors[props.name]?.message?.toString();
+export default function TextField({
+  name,
+  errorMessage,
+  rules,
+  ...props
+}: Props) {
   return (
     <Controller
       rules={rules}
-      name={props.name}
-      render={({ field }) => (
-        <InternalTextField {...props} {...field} errorMessage={errorMessage} />
+      name={name}
+      render={({ field, formState: { errors } }) => (
+        <InternalTextField
+          {...props}
+          {...field}
+          errorMessage={errorMessage ?? errors[name]?.message?.toString()}
+        />
       )}
     />
   );
