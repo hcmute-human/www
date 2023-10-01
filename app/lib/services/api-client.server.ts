@@ -1,3 +1,5 @@
+import { problemDetailsSchema } from '@lib/schemas/problem-details.server';
+import { ResultAsync, err, errAsync, fromPromise, ok } from 'neverthrow';
 import { Dispatcher, FormData, request } from 'undici';
 
 interface ApiClientOptions {
@@ -24,6 +26,23 @@ export interface ApiResponse {
   body: Dispatcher.ResponseData['body'];
 }
 
+export class ApiError extends Error {
+  private constructor(
+    private readonly details_: Zod.infer<typeof problemDetailsSchema>
+  ) {
+    super();
+  }
+
+  public get details() {
+    return this.details_;
+  }
+
+  public static async from(details: unknown) {
+    const data = await problemDetailsSchema.parseAsync(details);
+    return new ApiError(data);
+  }
+}
+
 export class ApiClient {
   private static _instance: ApiClient | undefined = undefined;
   private static _options: ApiClientOptions | undefined = undefined;
@@ -47,32 +66,36 @@ export class ApiClient {
     ApiClient._options = options;
   }
 
-  protected async request(
+  protected request(
     input: string | URL,
     options?: RequestOptions
-  ): Promise<ApiResponse> {
+  ): ResultAsync<ApiResponse, Error> {
     const url = typeof input === 'string' ? input : input.pathname;
-    const response = await request(
-      this.options.baseUrl +
-        '/' +
-        trim(url, '/').split('/').join('/') +
-        '/' +
-        this.options.version,
-      options
-        ? {
-            ...options,
-            body:
-              options?.body instanceof FormData ||
-              options?.body instanceof Buffer
-                ? options.body
-                : JSON.stringify(options?.body),
-          }
-        : undefined
+    return fromPromise(
+      request(
+        this.options.baseUrl +
+          '/' +
+          trim(url, '/').split('/').join('/') +
+          '/' +
+          this.options.version,
+        options
+          ? {
+              ...options,
+              body:
+                options?.body instanceof FormData ||
+                options?.body instanceof Buffer
+                  ? options.body
+                  : JSON.stringify(options?.body),
+            }
+          : undefined
+      ),
+      (e) =>
+        e instanceof Error ? e : new Error('Unexpected error', { cause: e })
+    ).andThen((x) =>
+      x.statusCode >= 200 && x.statusCode <= 299
+        ? ok({ ok: true, body: x.body })
+        : errAsync(x.body.json()).mapErr(async (x) => ApiError.from(await x))
     );
-    return {
-      ok: response.statusCode >= 200 && response.statusCode <= 299,
-      body: response.body,
-    };
   }
 
   public post(input: string | URL, options?: RequestOptions) {

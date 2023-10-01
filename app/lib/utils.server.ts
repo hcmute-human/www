@@ -1,27 +1,47 @@
 import { ZodError } from 'zod';
 import { problemDetailsSchema } from './schemas/problem-details.server';
+import { ApiError } from './services/api-client.server';
 
 export async function toActionErrorsAsync<T>(
   body: ZodError<T>
 ): Promise<ActionError>;
+export async function toActionErrorsAsync(body: ApiError): Promise<ActionError>;
 export async function toActionErrorsAsync(body: Error): Promise<ActionError>;
 export async function toActionErrorsAsync(body: unknown): Promise<ActionError>;
 export async function toActionErrorsAsync(body: unknown): Promise<ActionError> {
+  if (body instanceof ApiError) {
+    return body.details.errors
+      ? body.details.errors.reduce((acc, cur) => {
+          if (Array.isArray(acc[cur.name])) {
+            acc[cur.name].push(cur.code ?? cur.reason);
+          } else {
+            acc[cur.name] = [cur.code ?? cur.reason];
+          }
+          return acc;
+        }, {} as ActionError)
+      : {};
+  }
+
   if (body instanceof ZodError) {
-    return Object.fromEntries(body.issues.map((x) => [x.path[0], x.code]));
+    return body.flatten().fieldErrors as ActionError;
   }
 
   if (body instanceof Error) {
-    return { root: `${body.name}: ${body.message}` };
+    return { form: [`${body.name}: ${body.message}`] };
   }
 
   const parse = await problemDetailsSchema.safeParseAsync(body);
   if (parse.success) {
     return parse.data.errors == null
-      ? { root: parse.data.detail ?? parse.data.title }
-      : Object.fromEntries(
-          parse.data.errors.map((x) => [x.name, x.code ?? x.reason])
-        );
+      ? { form: [parse.data.detail ?? parse.data.title] }
+      : parse.data.errors.reduce((acc, cur) => {
+          if (Array.isArray(acc[cur.name])) {
+            acc[cur.name].push(cur.code ?? cur.reason);
+          } else {
+            acc[cur.name] = [cur.code ?? cur.reason];
+          }
+          return acc;
+        }, {} as ActionError);
   }
-  return { root: 'Unable to process request' };
+  return { form: ['Unable to process request'] };
 }

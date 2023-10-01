@@ -1,6 +1,4 @@
 import Checkbox from '@components/Checkbox';
-import ControlledButton from '@components/ControlledButton';
-import Form from '@components/Form';
 import Link from '@components/Link';
 import ProgressCircle from '@components/ProgressCircle';
 import TextField from '@components/TextField';
@@ -8,27 +6,40 @@ import { Transition } from '@headlessui/react';
 import { ApiClient } from '@lib/services/api-client.server';
 import { commitSession, getSession } from '@lib/services/session.server';
 import { toActionErrorsAsync } from '@lib/utils.server';
-import { redirect, type ActionFunctionArgs } from '@remix-run/node';
-import { useActionData, useNavigation } from '@remix-run/react';
+import { redirect, type ActionFunctionArgs, json } from '@remix-run/node';
+import { Form, useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
 import { z } from 'zod';
+import { useForm } from '@conform-to/react';
+import { parse } from '@conform-to/zod';
+import Button from '@components/Button';
+import { useEffect } from 'react';
 
 interface FieldValues {
   email: string;
   password: string;
-  rememberMe?: 'true';
+  rememberMe?: true;
 }
 
 const schema = z.object({
   email: z.string().email(),
   password: z.string().nonempty(),
-  rememberMe: z.literal('true').nullable().optional(),
+  rememberMe: z.boolean().optional(),
 });
 
 export default function Route() {
-  const data = useActionData<{ errors: ActionError }>();
-  const error = data?.errors?.root;
+  const lastSubmission = useActionData<typeof action>();
+  const error = lastSubmission?.error?.form;
   const { state } = useNavigation();
+  const [form, { email, password, rememberMe }] = useForm<FieldValues>({
+    lastSubmission,
+    shouldValidate: 'onBlur',
+    defaultValue: {
+      email: '',
+      password: '',
+      rememberMe: 'true',
+    },
+  });
 
   return (
     <div className="w-[20rem]">
@@ -36,22 +47,11 @@ export default function Route() {
         Welcome back,
       </p>
       <h1 className="m-0 font-bold text-center">Sign in to Human.</h1>
-      <Form<FieldValues>
+      <Form
         action="?"
         method="post"
-        options={{
-          schema: schema,
-          mode: 'onChange',
-          delayError: 200,
-          defaultValues: {
-            email: '',
-            password: '',
-            rememberMe: 'true',
-          },
-          progressive: true,
-          criteriaMode: 'all',
-        }}
         className="grid gap-6 mt-8"
+        {...form.props}
       >
         <TextField
           isRequired
@@ -59,6 +59,8 @@ export default function Route() {
           type="email"
           label="Email address"
           className="grid"
+          defaultValue={email.defaultValue}
+          errorMessage={email.error}
         />
         <TextField
           isRequired
@@ -66,13 +68,16 @@ export default function Route() {
           type="password"
           label="Password"
           className="grid"
+          defaultValue={password.defaultValue}
+          errorMessage={password.error}
         />
         <div className="flex justify-between">
           <Checkbox
             isRequired
-            name="rememberMe"
             id="rememberMe"
+            name="rememberMe"
             className="flex gap-x-2 items-center w-fit"
+            defaultSelected={!!rememberMe.defaultValue}
           >
             Remember me
           </Checkbox>
@@ -80,9 +85,9 @@ export default function Route() {
             Forgot password?
           </Link>
         </div>
-        <ControlledButton
+        <Button
           type="submit"
-          className="relative w-fit bg-primary-500"
+          className="relative w-fit bg-accent-500"
           isDisabled={state === 'submitting'}
         >
           <span
@@ -107,7 +112,7 @@ export default function Route() {
               aria-label="signing in"
             />
           </Transition>
-        </ControlledButton>
+        </Button>
         <Transition
           show={state !== 'submitting' && !!error}
           enter="transition ease-in-out"
@@ -129,16 +134,10 @@ export default function Route() {
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const parse = await schema.safeParseAsync({
-    email: formData.get('email'),
-    password: formData.get('password'),
-    rememberMe: formData.get('rememberMe'),
-  });
+  const submission = await parse(formData, { schema, async: true });
 
-  if (!parse.success) {
-    return Object.fromEntries(
-      parse.error.issues.map((x) => [x.path[0], x.code])
-    );
+  if (submission.intent !== 'submit' || !submission.value) {
+    return json(submission);
   }
 
   interface LoginResponse {
@@ -146,30 +145,27 @@ export async function action({ request }: ActionFunctionArgs) {
     refreshToken: string;
   }
 
-  try {
-    const [ok, body] = await ApiClient.instance
-      .post('auth/login', {
-        body: { ...parse.data, rememberMe: !!parse.data.rememberMe },
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(
-        async (v) => [v.ok, (await v.body.json()) as LoginResponse] as const
-      );
-    if (!ok) {
-      return { errors: await toActionErrorsAsync(body) };
-    }
+  const result = await ApiClient.instance.post('auth/login', {
+    body: { ...submission.value, rememberMe: !!submission.value.rememberMe },
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
-    const session = await getSession(request);
-    session.set('accessToken', body.accessToken);
-    session.set('refreshToken', body.refreshToken);
-    return redirect('/', {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
+  if (result.isErr()) {
+    return json({
+      ...submission,
+      error: await toActionErrorsAsync(result.error),
     });
-  } catch (e) {
-    return { errors: await toActionErrorsAsync(e) };
   }
+
+  const body = (await result.value.body.json()) as LoginResponse;
+  const session = await getSession(request);
+  session.set('accessToken', body.accessToken);
+  session.set('refreshToken', body.refreshToken);
+  return redirect('/', {
+    headers: {
+      'Set-Cookie': await commitSession(session),
+    },
+  });
 }
