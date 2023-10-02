@@ -1,13 +1,5 @@
 import { problemDetailsSchema } from '@lib/schemas/problem-details.server';
-import {
-  ResultAsync,
-  err,
-  errAsync,
-  fromPromise,
-  fromSafePromise,
-  ok,
-} from 'neverthrow';
-import { Dispatcher, request } from 'undici';
+import { ResultAsync, errAsync, fromPromise, ok } from 'neverthrow';
 
 interface ApiClientOptions {
   baseUrl: string;
@@ -23,7 +15,6 @@ function trim(input: string, char: string) {
   return input.substring(start, end + 1);
 }
 
-type OptionsParameter = Exclude<Parameters<typeof request>[1], undefined>;
 export interface RequestOptions extends Omit<RequestInit, 'body'> {
   body?: Record<number | string, unknown> | unknown[] | FormData | Buffer;
 }

@@ -4,7 +4,11 @@ import TextField from '@components/TextField';
 import { useForm } from '@conform-to/react';
 import { Transition } from '@headlessui/react';
 import { ApiClient } from '@lib/services/api-client.server';
-import { parseSubmission, parseSubmissionAsync, toActionErrorsAsync } from '@lib/utils.server';
+import {
+  parseSubmission,
+  parseSubmissionAsync,
+  toActionErrorsAsync,
+} from '@lib/utils.server';
 import {
   json,
   redirect,
@@ -43,7 +47,9 @@ function SuccessAlert() {
         </p>
       </div>
       <div className="mt-4">
-        <Button as="link" to="/login">Go to login</Button>
+        <Button as="link" to="/login">
+          Go to login
+        </Button>
       </div>
     </>
   );
@@ -66,7 +72,7 @@ export default function Route() {
       password: '',
       confirmPassword: '',
     },
-    onValidate: ({ formData }) => parseSubmission(formData, { schema })
+    onValidate: ({ formData }) => parseSubmission(formData, { schema }),
   });
   const { state } = useNavigation();
   const ok = !!lastSubmission?.ok;
