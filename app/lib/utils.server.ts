@@ -1,6 +1,8 @@
 import { ZodError } from 'zod';
 import { problemDetailsSchema } from './schemas/problem-details.server';
 import { ApiError } from './services/api-client.server';
+import { parse } from '@conform-to/zod';
+import type { Submission } from '@conform-to/react';
 
 export async function toActionErrorsAsync<T>(
   body: ZodError<T>
@@ -44,4 +46,16 @@ export async function toActionErrorsAsync(body: unknown): Promise<ActionError> {
         }, {} as ActionError);
   }
   return { form: ['Unable to process request'] };
+}
+
+interface SubmissionWithOk extends Submission {
+  ok: boolean;
+}
+
+export async function parseSubmissionAsync(formData: FormData, config: Omit<Parameters<typeof parse>[1], 'async'>): Promise<SubmissionWithOk> {
+  const submission = await parse(formData, { ...config, async: true });
+  return {
+    ...submission,
+    ok: submission.intent === 'submit' && submission.value
+  };
 }

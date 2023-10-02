@@ -3,16 +3,14 @@ import Link from '@components/Link';
 import ProgressCircle from '@components/ProgressCircle';
 import TextField from '@components/TextField';
 import { useForm } from '@conform-to/react';
-import { parse } from '@conform-to/zod';
 import { Transition } from '@headlessui/react';
 import { ApiClient } from '@lib/services/api-client.server';
-import { toActionErrorsAsync } from '@lib/utils.server';
+import { parseSubmissionAsync, toActionErrorsAsync } from '@lib/utils.server';
 import { json, type ActionFunctionArgs } from '@remix-run/node';
 import {
-  useActionData,
-  useNavigation,
-  type Navigation,
   Form,
+  useActionData,
+  useNavigation
 } from '@remix-run/react';
 import clsx from 'clsx';
 import { useRef } from 'react';
@@ -59,15 +57,14 @@ export default function Route() {
   });
   const error = lastSubmission?.error?.form;
   const { state } = useNavigation();
-  const success =
-    lastSubmission?.intent === 'submit' && !!lastSubmission?.value;
+  const ok = lastSubmission?.ok;
   const ref = useRef<HTMLDivElement>(null);
   return (
     <div className="w-[20rem]">
       <h1 className="font-bold mb-8">Forgot password?</h1>
       <SwitchTransition>
         <CSSTransition
-          key={success + ''}
+          key={ok + ''}
           nodeRef={ref}
           classNames={{
             enter: 'opacity-0',
@@ -84,7 +81,7 @@ export default function Route() {
           mountOnEnter
         >
           <div ref={ref}>
-            {success ? (
+            {ok ? (
               <SuccessAlert />
             ) : (
               <Form
@@ -167,9 +164,9 @@ export default function Route() {
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const submission = await parse(formData, { schema, async: true });
+  const submission = await parseSubmissionAsync(formData, { schema });
 
-  if (submission.intent !== 'submit' || !submission.value) {
+  if (!submission.ok) {
     return json(submission);
   }
 
@@ -209,6 +206,7 @@ export async function action({ request }: ActionFunctionArgs) {
   if (sendResult.isErr()) {
     return json({
       ...submission,
+      ok: false,
       error: await toActionErrorsAsync(sendResult.error),
     });
   }

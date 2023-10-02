@@ -1,19 +1,17 @@
+import Button from '@components/Button';
 import Checkbox from '@components/Checkbox';
 import Link from '@components/Link';
 import ProgressCircle from '@components/ProgressCircle';
 import TextField from '@components/TextField';
+import { useForm } from '@conform-to/react';
 import { Transition } from '@headlessui/react';
 import { ApiClient } from '@lib/services/api-client.server';
 import { commitSession, getSession } from '@lib/services/session.server';
-import { toActionErrorsAsync } from '@lib/utils.server';
-import { redirect, type ActionFunctionArgs, json } from '@remix-run/node';
+import { parseSubmissionAsync, toActionErrorsAsync } from '@lib/utils.server';
+import { json, redirect, type ActionFunctionArgs } from '@remix-run/node';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
 import { z } from 'zod';
-import { useForm } from '@conform-to/react';
-import { parse } from '@conform-to/zod';
-import Button from '@components/Button';
-import { useEffect } from 'react';
 
 interface FieldValues {
   email: string;
@@ -134,9 +132,9 @@ export default function Route() {
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const submission = await parse(formData, { schema, async: true });
+  const submission = await parseSubmissionAsync(formData, { schema });
 
-  if (submission.intent !== 'submit' || !submission.value) {
+  if (!submission.ok) {
     return json(submission);
   }
 
@@ -155,6 +153,7 @@ export async function action({ request }: ActionFunctionArgs) {
   if (result.isErr()) {
     return json({
       ...submission,
+      ok: false,
       error: await toActionErrorsAsync(result.error),
     });
   }
