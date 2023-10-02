@@ -12,14 +12,10 @@ import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
 } from '@remix-run/node';
-import {
-  Form,
-  useActionData,
-  useNavigation
-} from '@remix-run/react';
+import { Form, useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
-import { useRef } from 'react';
-import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import { useRef, useState } from 'react';
+import { SwitchTransition } from 'transition-hook';
 import { z } from 'zod';
 
 interface FieldValues {
@@ -66,7 +62,7 @@ export function loader({ params }: LoaderFunctionArgs) {
 
 export default function Route() {
   const lastSubmission = useActionData<typeof action>();
-  const error = lastSubmission?.error.form;
+  const error = lastSubmission?.error.form ?? lastSubmission?.error.token;
   const [form, { password, confirmPassword }] = useForm<FieldValues>({
     lastSubmission,
     shouldValidate: 'onBlur',
@@ -76,30 +72,23 @@ export default function Route() {
     },
   });
   const { state } = useNavigation();
-  const ok = lastSubmission?.ok;
-  const ref = useRef<HTMLDivElement>(null);
+  const ok = !!lastSubmission?.ok;
+
   return (
     <div className="w-[20rem]">
       <h1 className="font-bold mb-8">Reset password.</h1>
-      <SwitchTransition>
-        <CSSTransition
-          key={ok + ''}
-          nodeRef={ref}
-          classNames={{
-            enter: 'opacity-0',
-            enterActive:
-              'transition-opacity duration-1000 ease-in-out opacity-100',
-            exit: 'opacity-100',
-            exitActive:
-              'transition-opacity duration-1000 ease-in-out opacity-0',
-          }}
-          addEndListener={(done) =>
-            ref.current!.addEventListener('transitionend', done, false)
-          }
-          unmountOnExit
-          mountOnEnter
-        >
-          <div ref={ref}>
+      <SwitchTransition state={ok} timeout={500} mode="out-in">
+        {(ok, stage) => (
+          <div
+            className={clsx(
+              'transition-[opacity_transform] duration-500 ease-in-out',
+              {
+                from: 'opacity-0 scale-105',
+                enter: '',
+                leave: 'opacity-0 scale-95',
+              }[stage]
+            )}
+          >
             {ok ? (
               <SuccessAlert />
             ) : (
@@ -172,7 +161,7 @@ export default function Route() {
               </Form>
             )}
           </div>
-        </CSSTransition>
+        )}
       </SwitchTransition>
     </div>
   );

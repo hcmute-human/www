@@ -21,7 +21,7 @@ export async function toActionErrorsAsync(body: unknown): Promise<ActionError> {
           }
           return acc;
         }, {} as ActionError)
-      : {};
+      : { form: [body.details.detail ?? body.details.title] };
   }
 
   if (body instanceof ZodError) {
@@ -52,10 +52,13 @@ interface SubmissionWithOk extends Submission {
   ok: boolean;
 }
 
-export async function parseSubmissionAsync(formData: FormData, config: Omit<Parameters<typeof parse>[1], 'async'>): Promise<SubmissionWithOk> {
+export async function parseSubmissionAsync(
+  formData: FormData,
+  config: Omit<Parameters<typeof parse>[1], 'async'>
+): Promise<SubmissionWithOk> {
   const submission = await parse(formData, { ...config, async: true });
   return {
     ...submission,
-    ok: submission.intent === 'submit' && submission.value
+    ok: submission.intent === 'submit' && !!submission.value,
   };
 }

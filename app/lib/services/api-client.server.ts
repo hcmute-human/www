@@ -1,6 +1,13 @@
 import { problemDetailsSchema } from '@lib/schemas/problem-details.server';
-import { ResultAsync, err, errAsync, fromPromise, ok } from 'neverthrow';
-import { Dispatcher, FormData, request } from 'undici';
+import {
+  ResultAsync,
+  err,
+  errAsync,
+  fromPromise,
+  fromSafePromise,
+  ok,
+} from 'neverthrow';
+import { Dispatcher, request } from 'undici';
 
 interface ApiClientOptions {
   baseUrl: string;
@@ -17,13 +24,13 @@ function trim(input: string, char: string) {
 }
 
 type OptionsParameter = Exclude<Parameters<typeof request>[1], undefined>;
-export interface RequestOptions extends Omit<OptionsParameter, 'body'> {
+export interface RequestOptions extends Omit<RequestInit, 'body'> {
   body?: Record<number | string, unknown> | unknown[] | FormData | Buffer;
 }
 
 export interface ApiResponse {
   ok: boolean;
-  body: Dispatcher.ResponseData['body'];
+  body: Response;
 }
 
 export class ApiError extends Error {
@@ -72,7 +79,7 @@ export class ApiClient {
   ): ResultAsync<ApiResponse, Error> {
     const url = typeof input === 'string' ? input : input.pathname;
     return fromPromise(
-      request(
+      fetch(
         this.options.baseUrl +
           '/' +
           trim(url, '/').split('/').join('/') +
@@ -91,11 +98,11 @@ export class ApiClient {
       ),
       (e) =>
         e instanceof Error ? e : new Error('Unexpected error', { cause: e })
-    ).andThen((x) =>
-      x.statusCode >= 200 && x.statusCode <= 299
-        ? ok({ ok: true, body: x.body })
-        : errAsync(x.body.json()).mapErr(async (x) => ApiError.from(await x))
-    );
+    ).andThen((x) => {
+      return x.ok
+        ? ok({ ok: true, body: x })
+        : errAsync(x.json()).mapErr(async (x) => ApiError.from(await x));
+    });
   }
 
   public post(input: string | URL, options?: RequestOptions) {

@@ -3,18 +3,15 @@ import Link from '@components/Link';
 import ProgressCircle from '@components/ProgressCircle';
 import TextField from '@components/TextField';
 import { useForm } from '@conform-to/react';
+import { parse } from '@conform-to/zod';
 import { Transition } from '@headlessui/react';
 import { ApiClient } from '@lib/services/api-client.server';
 import { parseSubmissionAsync, toActionErrorsAsync } from '@lib/utils.server';
 import { json, type ActionFunctionArgs } from '@remix-run/node';
-import {
-  Form,
-  useActionData,
-  useNavigation
-} from '@remix-run/react';
+import { Form, useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
 import { useRef } from 'react';
-import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import { SwitchTransition } from 'transition-hook';
 import { z } from 'zod';
 
 interface FieldValues {
@@ -55,32 +52,25 @@ export default function Route() {
       email: '',
     },
   });
-  const error = lastSubmission?.error?.form;
+  const error = lastSubmission?.error.form ?? lastSubmission?.error.token;
   const { state } = useNavigation();
-  const ok = lastSubmission?.ok;
-  const ref = useRef<HTMLDivElement>(null);
+  const ok = !!lastSubmission?.ok;
+
   return (
     <div className="w-[20rem]">
       <h1 className="font-bold mb-8">Forgot password?</h1>
-      <SwitchTransition>
-        <CSSTransition
-          key={ok + ''}
-          nodeRef={ref}
-          classNames={{
-            enter: 'opacity-0',
-            enterActive:
-              'transition-opacity duration-1000 ease-in-out opacity-100',
-            exit: 'opacity-100',
-            exitActive:
-              'transition-opacity duration-1000 ease-in-out opacity-0',
-          }}
-          addEndListener={(done) =>
-            ref.current!.addEventListener('transitionend', done, false)
-          }
-          unmountOnExit
-          mountOnEnter
-        >
-          <div ref={ref}>
+      <SwitchTransition state={ok} timeout={500} mode="out-in">
+        {(ok, stage) => (
+          <div
+            className={clsx(
+              'transition-[opacity_transform] duration-500 ease-in-out',
+              {
+                from: 'opacity-0 scale-105',
+                enter: '',
+                leave: 'opacity-0 scale-95',
+              }[stage]
+            )}
+          >
             {ok ? (
               <SuccessAlert />
             ) : (
@@ -156,7 +146,7 @@ export default function Route() {
               </Form>
             )}
           </div>
-        </CSSTransition>
+        )}
       </SwitchTransition>
     </div>
   );
@@ -184,6 +174,7 @@ export async function action({ request }: ActionFunctionArgs) {
   if (result.isErr()) {
     return json({
       ...submission,
+      ok: false,
       error: await toActionErrorsAsync(result.error),
     });
   }
@@ -196,10 +187,13 @@ export async function action({ request }: ActionFunctionArgs) {
       templateModel: {
         ReturnUrl: `http://localhost:3000/reset-password/${body.token}`,
       },
-      recipients: [{ email: submission.value.email, name: '' }],
+      recipients: [
+        { email: submission.value.email, name: 'duydang2412@gmail.com' },
+      ],
     },
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.API_ACCESS_TOKEN}`,
     },
   });
 

@@ -6,6 +6,7 @@ declare type Either<T1, T2> =
 declare namespace NodeJS {
   interface ProcessEnv {
     API_BASE_URL?: string;
+    API_ACCESS_TOKEN?: string;
     COOKIE_SECRET?: string;
   }
 }
