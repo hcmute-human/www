@@ -1,11 +1,10 @@
 import Button from '@components/Button';
-import Link from '@components/Link';
 import ProgressCircle from '@components/ProgressCircle';
 import TextField from '@components/TextField';
 import { useForm } from '@conform-to/react';
 import { Transition } from '@headlessui/react';
 import { ApiClient } from '@lib/services/api-client.server';
-import { parseSubmissionAsync, toActionErrorsAsync } from '@lib/utils.server';
+import { parseSubmission, parseSubmissionAsync, toActionErrorsAsync } from '@lib/utils.server';
 import {
   json,
   redirect,
@@ -14,7 +13,6 @@ import {
 } from '@remix-run/node';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
-import { useRef, useState } from 'react';
 import { SwitchTransition } from 'transition-hook';
 import { z } from 'zod';
 
@@ -45,9 +43,7 @@ function SuccessAlert() {
         </p>
       </div>
       <div className="mt-4">
-        <Link to="/login">
-          <Button type="button">Go to login</Button>
-        </Link>
+        <Button as="link" to="/login">Go to login</Button>
       </div>
     </>
   );
@@ -70,6 +66,7 @@ export default function Route() {
       password: '',
       confirmPassword: '',
     },
+    onValidate: ({ formData }) => parseSubmission(formData, { schema })
   });
   const { state } = useNavigation();
   const ok = !!lastSubmission?.ok;

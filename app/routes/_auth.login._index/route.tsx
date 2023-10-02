@@ -7,7 +7,11 @@ import { useForm } from '@conform-to/react';
 import { Transition } from '@headlessui/react';
 import { ApiClient } from '@lib/services/api-client.server';
 import { commitSession, getSession } from '@lib/services/session.server';
-import { parseSubmissionAsync, toActionErrorsAsync } from '@lib/utils.server';
+import {
+  parseSubmission,
+  parseSubmissionAsync,
+  toActionErrorsAsync,
+} from '@lib/utils.server';
 import { json, redirect, type ActionFunctionArgs } from '@remix-run/node';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
@@ -31,12 +35,12 @@ export default function Route() {
   const { state } = useNavigation();
   const [form, { email, password, rememberMe }] = useForm<FieldValues>({
     lastSubmission,
-    shouldValidate: 'onBlur',
     defaultValue: {
       email: '',
       password: '',
       rememberMe: 'true',
     },
+    onValidate: ({ formData }) => parseSubmission(formData, { schema }),
   });
 
   return (

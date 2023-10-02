@@ -1,16 +1,13 @@
 import Button from '@components/Button';
-import Link from '@components/Link';
 import ProgressCircle from '@components/ProgressCircle';
 import TextField from '@components/TextField';
 import { useForm } from '@conform-to/react';
-import { parse } from '@conform-to/zod';
 import { Transition } from '@headlessui/react';
 import { ApiClient } from '@lib/services/api-client.server';
-import { parseSubmissionAsync, toActionErrorsAsync } from '@lib/utils.server';
+import { parseSubmission, parseSubmissionAsync, toActionErrorsAsync } from '@lib/utils.server';
 import { json, type ActionFunctionArgs } from '@remix-run/node';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
-import { useRef } from 'react';
 import { SwitchTransition } from 'transition-hook';
 import { z } from 'zod';
 
@@ -35,9 +32,7 @@ function SuccessAlert() {
         </p>
       </div>
       <div className="mt-4">
-        <Link to="/login">
-          <Button type="button">Back to login</Button>
-        </Link>
+        <Button as="link" to="/login">Back to login</Button>
       </div>
     </>
   );
@@ -51,6 +46,7 @@ export default function Route() {
     defaultValue: {
       email: '',
     },
+    onValidate: ({ formData }) => parseSubmission(formData, { schema })
   });
   const error = lastSubmission?.error.form ?? lastSubmission?.error.token;
   const { state } = useNavigation();
@@ -118,16 +114,15 @@ export default function Route() {
                       />
                     </Transition>
                   </Button>
-                  <Link to="/login">
-                    <Button
-                      type="button"
-                      variant="primary"
-                      className="w-fit"
-                      isDisabled={state === 'submitting'}
-                    >
-                      Back
-                    </Button>
-                  </Link>
+                  <Button
+                    as="link"
+                    type="button"
+                    variant="primary"
+                    className="w-fit"
+                    to="/login"
+                  >
+                    Back
+                  </Button>
                 </div>
                 <Transition
                   show={state !== 'submitting' && !!error}

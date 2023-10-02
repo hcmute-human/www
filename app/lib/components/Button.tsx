@@ -1,9 +1,17 @@
 import { cn } from '@lib/utils';
+import type { ReactNode } from 'react';
 import { Button as AriaButton, type ButtonProps } from 'react-aria-components';
+import Link from './Link';
 
-interface Props extends ButtonProps {
+interface DefaultProps extends ButtonProps {
   variant?: 'accent' | 'primary';
 }
+
+type Props =
+  | ({ as?: never } & DefaultProps)
+  | ({ as: 'link' | 'a'; variant?: 'accent' | 'primary' } & Parameters<
+      typeof Link
+    >[0]);
 
 const baseClass =
   'px-4 py-0.5 rounded-lg transition-[background-color_outline] ease-in-out';
@@ -16,17 +24,47 @@ const variantClass: Record<NonNullable<Props['variant']>, string> = {
 const disabledClass =
   'rac-disabled:bg-neutral-300 rac-disabled:text-neutral-500';
 
+export function buildVariantClass(variant: NonNullable<Props['variant']>) {
+  return cn(baseClass, variantClass[variant]);
+}
+
 export default function Button({
   className,
-  isDisabled,
   variant = 'accent',
   ...props
 }: Props) {
-  return (
-    <AriaButton
-      {...props}
-      className={cn(baseClass, variantClass[variant], disabledClass, className)}
-      isDisabled={isDisabled}
-    />
-  );
+  let node: ReactNode;
+  switch (props.as) {
+    case 'link':
+    case 'a': {
+      node = (
+        <Link
+          {...props}
+          className={cn(
+            baseClass,
+            variantClass[variant],
+            'no-underline',
+            className
+          )}
+        />
+      );
+      break;
+    }
+    default: {
+      node = (
+        <AriaButton
+          {...props}
+          className={cn(
+            baseClass,
+            variantClass[variant],
+            disabledClass,
+            className
+          )}
+        />
+      );
+      break;
+    }
+  }
+
+  return node;
 }
