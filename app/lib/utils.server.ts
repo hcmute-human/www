@@ -1,4 +1,4 @@
-import { ZodError } from 'zod';
+import { ZodError, type ZodTypeAny, type output } from 'zod';
 import { problemDetailsSchema } from './schemas/problem-details.server';
 import { ApiError } from './services/api-client.server';
 import { parse } from '@conform-to/zod';
@@ -48,17 +48,14 @@ export async function toActionErrorsAsync(body: unknown): Promise<ActionError> {
   return { form: ['Unable to process request'] };
 }
 
-interface SubmissionWithOk extends Submission {
-  ok: boolean;
-}
+type SubmissionWithOk<Schema extends ZodTypeAny> = 
+  | ({ ok: true, value: Schema } & Omit<Submission<Schema>, 'value'>)
+  | ({ ok: false } & Omit<Submission<Schema>, 'value'>);
 
-export async function parseSubmissionAsync(
+export async function parseSubmissionAsync<Schema extends ZodTypeAny>(
   formData: FormData,
-  config: Omit<Parameters<typeof parse>[1], 'async'>
-): Promise<SubmissionWithOk> {
-  const submission = await parse(formData, { ...config, async: true });
-  return {
-    ...submission,
-    ok: submission.intent === 'submit' && !!submission.value,
-  };
+  config: Omit<Parameters<typeof parse<Schema>>[1], 'async'>
+): Promise<SubmissionWithOk<output<Schema>>> {
+  const submission = await parse<Schema>(formData, { ...config, async: true });
+  return { ...submission, ok: submission.intent === 'submit' && !!submission.value } as SubmissionWithOk<output<Schema>>;
 }
