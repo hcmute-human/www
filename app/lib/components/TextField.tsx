@@ -1,12 +1,12 @@
-import { cn } from "@lib/utils";
-import { forwardRef } from "react";
-import Input from "./Input";
-import Label from "./Label";
+import { cn } from '@lib/utils';
+import { forwardRef } from 'react';
 import {
-  type TextFieldProps,
-  Text,
   TextField as AriaTextField,
-} from "react-aria-components";
+  Text,
+  type TextFieldProps,
+} from 'react-aria-components';
+import Input from './Input';
+import Label from './Label';
 
 interface Props extends TextFieldProps {
   name: string;
@@ -30,24 +30,27 @@ const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
 ) {
   const invalid = errorMessage != null;
   return (
-    <AriaTextField ref={ref} {...props} isInvalid={invalid}>
-      <Label className={cn("mb-0.5", labelClassName)}>{label}</Label>
+    <AriaTextField {...props} isInvalid={!!props.isInvalid || invalid}>
+      <Label className={cn('mb-0.5', labelClassName)}>{label}</Label>
       <Input
         ref={ref}
+        required={!!props.isRequired}
         name={props.name}
-        className={cn(inputClassName, { "peer border-negative-500": invalid })}
+        className={cn(inputClassName, {
+          'peer border-negative-500': invalid,
+        })}
       />
       {description ? (
-        <Text slot="description" className="text-neutral-700 text-xs mt-0.5">
+        <Text slot="description" className="text-sm text-neutral-700 mt-0.5">
           {description}
         </Text>
       ) : null}
       {invalid ? (
         <Text
           slot="errorMessage"
-          className="text-negative-500 text-xs mt-0.5
-					peer-rac-invalid:transition peer-rac-invalid:ease-in-out peer-rac-invalid:duration-300
-					peer-rac-invalid:animate-in peer-rac-invalid:fade-in peer-rac-invalid:slide-in-from-top-4"
+          className="text-sm text-negative-500 mt-0.5
+              peer-rac-invalid:transition peer-rac-invalid:ease-in-out peer-rac-invalid:duration-300
+              peer-rac-invalid:animate-in peer-rac-invalid:fade-in peer-rac-invalid:slide-in-from-top-4"
         >
           {errorMessage}
         </Text>

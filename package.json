@@ -10,7 +10,9 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.3.1",
+    "@conform-to/react": "^0.9.0",
+    "@conform-to/zod": "^0.9.0",
+    "@headlessui/react": "^1.7.17",
     "@remix-run/css-bundle": "^2.0.1",
     "@remix-run/node": "^2.0.1",
     "@remix-run/react": "^2.0.1",
@@ -18,29 +20,33 @@
     "clsx": "^2.0.0",
     "isbot": "^3.6.8",
     "meshgrad": "^0.0.15",
+    "neverthrow": "^6.0.0",
     "react": "^18.2.0",
     "react-aria": "^3.28.0",
     "react-aria-components": "^1.0.0-beta.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.46.2",
     "tailwind-merge": "^1.14.0",
-    "undici": "^5.25.2",
+    "transition-hook": "^1.5.2",
     "zod": "^3.22.2"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.0.1",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
-    "@typescript-eslint/eslint-plugin": "^6.7.2",
-    "@typescript-eslint/parser": "^6.7.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.50.0",
     "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "postcss": "^8.4.30",
+    "tailwindcss": "^3.3.3",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-react-aria-components": "^1.0.0-beta.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
   },
   "engines": {
     "node": ">=18.0.0"
