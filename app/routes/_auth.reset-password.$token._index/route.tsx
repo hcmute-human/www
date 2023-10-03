@@ -4,11 +4,8 @@ import TextField from '@components/TextField';
 import { useForm } from '@conform-to/react';
 import { Transition } from '@headlessui/react';
 import { ApiClient } from '@lib/services/api-client.server';
-import {
-  parseSubmission,
-  parseSubmissionAsync,
-  toActionErrorsAsync,
-} from '@lib/utils.server';
+import { toActionErrorsAsync } from '@lib/utils.server';
+import { parseSubmission, parseSubmissionAsync } from '@lib/utils';
 import {
   json,
   redirect,
@@ -19,40 +16,30 @@ import { Form, useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
 import { SwitchTransition } from 'transition-hook';
 import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
+import InlineAlert from '@components/InlineAlert';
+import type { TFunction } from 'i18next';
+import i18next from '@lib/i18n/index.server';
 
 interface FieldValues {
   password: string;
   confirmPassword: string;
 }
 
-const schema = z
-  .object({
-    password: z.string().min(7),
-    confirmPassword: z.string(),
-  })
-  .refine((x) => x.password === x.confirmPassword, {
-    message: 'Confirm password does not match',
-    path: ['confirmPassword'],
-  });
-
-function SuccessAlert() {
-  return (
-    <>
-      <div className="px-4 py-2 border border-positive-500 bg-neutral-50 rounded">
-        <h2 className="text-base font-bold leading-body mb-2">
-          Password updated
-        </h2>
-        <p className="text-neutral-700">
-          You can now log in to your account with the new password.
-        </p>
-      </div>
-      <div className="mt-4">
-        <Button as="link" to="/login">
-          Go to login
-        </Button>
-      </div>
-    </>
-  );
+function schema(t: TFunction) {
+  return z
+    .object({
+      password: z
+        .string({ required_error: t('password.required') })
+        .min(7, t('password.min', { length: 7 })),
+      confirmPassword: z.string({
+        required_error: t('confirmPassword.required'),
+      }),
+    })
+    .refine((x) => x.password === x.confirmPassword, {
+      message: t('confirmPassword.incorrect'),
+      path: ['confirmPassword'],
+    });
 }
 
 export function loader({ params }: LoaderFunctionArgs) {
@@ -63,6 +50,7 @@ export function loader({ params }: LoaderFunctionArgs) {
 }
 
 export default function Route() {
+  const { t } = useTranslation('reset-password-$token');
   const lastSubmission = useActionData<typeof action>();
   const error = lastSubmission?.error.form ?? lastSubmission?.error.token;
   const [form, { password, confirmPassword }] = useForm<FieldValues>({
@@ -72,14 +60,15 @@ export default function Route() {
       password: '',
       confirmPassword: '',
     },
-    onValidate: ({ formData }) => parseSubmission(formData, { schema }),
+    onValidate: ({ formData }) =>
+      parseSubmission(formData, { schema: schema(t) }),
   });
   const { state } = useNavigation();
   const ok = !!lastSubmission?.ok;
 
   return (
     <div className="w-[20rem]">
-      <h1 className="font-bold mb-8">Reset password.</h1>
+      <h1 className="font-bold mb-8">{t('h1')}.</h1>
       <SwitchTransition state={ok} timeout={500} mode="out-in">
         {(ok, stage) => (
           <div
@@ -93,7 +82,18 @@ export default function Route() {
             )}
           >
             {ok ? (
-              <SuccessAlert />
+              <>
+                <InlineAlert
+                  variant="positive"
+                  title={t('successAlert.title')}
+                  body={t('successAlert.body')}
+                />
+                <div className="mt-4">
+                  <Button as="link" to="/login">
+                    {t('successAlert.back')}
+                  </Button>
+                </div>
+              </>
             ) : (
               <Form
                 action="?"
@@ -105,8 +105,8 @@ export default function Route() {
                   isRequired
                   name="password"
                   type="password"
-                  label="New password"
-                  description="Enter a new password for your account."
+                  label={t('password.label')}
+                  description={t('password.description')}
                   className="grid"
                   errorMessage={password.error}
                 />
@@ -114,8 +114,8 @@ export default function Route() {
                   isRequired
                   name="confirmPassword"
                   type="password"
-                  label="Confirm new password"
-                  description="Enter the password again."
+                  label={t('confirmPassword.label')}
+                  description={t('confirmPassword.description')}
                   className="grid"
                   errorMessage={confirmPassword.error}
                 />
@@ -130,7 +130,7 @@ export default function Route() {
                       'scale-0': state === 'submitting',
                     })}
                   >
-                    Update password
+                    {t('submit')}
                   </span>
                   <Transition
                     show={state === 'submitting'}
@@ -154,12 +154,11 @@ export default function Route() {
                   leave="transition ease-in-out duration-300"
                   leaveTo="opacity-0 translate-y-2"
                 >
-                  <div className="px-4 py-2 border border-negative-500 bg-neutral-50 rounded duration-500 animate-in fade-in">
-                    <h2 className="text-base font-bold leading-body mb-2">
-                      Unable to process your request
-                    </h2>
-                    <p className="text-neutral-700">{error}</p>
-                  </div>
+                  <InlineAlert
+                    variant="negative"
+                    title={t('unknownError')}
+                    body={error?.[0]!}
+                  />
                 </Transition>
               </Form>
             )}
@@ -171,8 +170,11 @@ export default function Route() {
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
+  const t = await i18next.getFixedT(request);
   const formData = await request.formData();
-  const submission = await parseSubmissionAsync(formData, { schema });
+  const submission = await parseSubmissionAsync(formData, {
+    schema: schema(t),
+  });
 
   if (!submission.ok) {
     return json(submission);

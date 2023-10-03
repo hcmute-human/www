@@ -1,0 +1,20 @@
+{
+  "welcomeBack": "Welcome back",
+  "h1": "Sign in to Human",
+  "email": {
+    "label": "Email address",
+    "required": "Enter a valid email address",
+    "invalid": "Enter a valid email address"
+  },
+  "password": {
+    "label": "Password",
+    "required": "Enter a password",
+    "min": "Enter a password with more than {{length}} characters"
+  },
+  "rememberMe": {
+    "label": "Remember me"
+  },
+  "forgotPassword": "Forgot password",
+  "signIn": "Sign in",
+  "unknownError": "Unable to process your request"
+}
