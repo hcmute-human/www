@@ -42,7 +42,7 @@ const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
       />
       {description ? (
         <Text slot="description" className="text-sm text-neutral-700 mt-0.5">
-          {description}
+          {description + (description.at(-1) === '.' ? '' : '.')}
         </Text>
       ) : null}
       {invalid ? (
@@ -52,7 +52,7 @@ const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
               peer-rac-invalid:transition peer-rac-invalid:ease-in-out peer-rac-invalid:duration-300
               peer-rac-invalid:animate-in peer-rac-invalid:fade-in peer-rac-invalid:slide-in-from-top-4"
         >
-          {errorMessage}
+          {errorMessage + (errorMessage.at(-1) === '.' ? '' : '.')}
         </Text>
       ) : null}
     </AriaTextField>

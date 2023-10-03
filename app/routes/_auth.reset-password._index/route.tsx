@@ -4,41 +4,32 @@ import TextField from '@components/TextField';
 import { useForm } from '@conform-to/react';
 import { Transition } from '@headlessui/react';
 import { ApiClient } from '@lib/services/api-client.server';
-import { parseSubmission, parseSubmissionAsync, toActionErrorsAsync } from '@lib/utils.server';
+import { toActionErrorsAsync } from '@lib/utils.server';
+import { parseSubmission, parseSubmissionAsync } from '@lib/utils';
 import { json, type ActionFunctionArgs } from '@remix-run/node';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
 import { SwitchTransition } from 'transition-hook';
 import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
+import i18next from '@lib/i18n/index.server';
+import InlineAlert from '@components/InlineAlert';
 
 interface FieldValues {
   email: string;
 }
 
-const schema = z.object({
-  email: z.string().email(),
-});
-
-function SuccessAlert() {
-  return (
-    <>
-      <div className="px-4 py-2 border border-positive-500 bg-neutral-50 rounded">
-        <h2 className="text-base font-bold leading-body mb-2">
-          Check your inbox
-        </h2>
-        <p className="text-neutral-700">
-          You{"'"}ll receive a link to reset your password in your inbox
-          shortly.
-        </p>
-      </div>
-      <div className="mt-4">
-        <Button as="link" to="/login">Back to login</Button>
-      </div>
-    </>
-  );
+function schema(t: TFunction) {
+  return z.object({
+    email: z
+      .string({ required_error: t('email.required') })
+      .email(t('email.invalid')),
+  });
 }
 
 export default function Route() {
+  const { t } = useTranslation('reset-password');
   const lastSubmission = useActionData<typeof action>();
   const [form, { email }] = useForm<FieldValues>({
     lastSubmission,
@@ -46,7 +37,8 @@ export default function Route() {
     defaultValue: {
       email: '',
     },
-    onValidate: ({ formData }) => parseSubmission(formData, { schema })
+    onValidate: ({ formData }) =>
+      parseSubmission(formData, { schema: schema(t) }),
   });
   const error = lastSubmission?.error.form ?? lastSubmission?.error.token;
   const { state } = useNavigation();
@@ -54,7 +46,7 @@ export default function Route() {
 
   return (
     <div className="w-[20rem]">
-      <h1 className="font-bold mb-8">Forgot password?</h1>
+      <h1 className="font-bold mb-8">{t('h1')}?</h1>
       <SwitchTransition state={ok} timeout={500} mode="out-in">
         {(ok, stage) => (
           <div
@@ -68,7 +60,18 @@ export default function Route() {
             )}
           >
             {ok ? (
-              <SuccessAlert />
+              <>
+                <InlineAlert
+                  variant="positive"
+                  title={t('successAlert.title')}
+                  body={t('successAlert.body') + '.'}
+                />
+                <div className="mt-4">
+                  <Button as="link" to="/login">
+                    {t('successAlert.back')}
+                  </Button>
+                </div>
+              </>
             ) : (
               <Form
                 action="?"
@@ -80,8 +83,8 @@ export default function Route() {
                   isRequired
                   name="email"
                   type="email"
-                  label="Email address"
-                  description="Enter your account's email address that will receive a reset link."
+                  label={t('email.label')}
+                  description={t('email.description')}
                   className="grid"
                   errorMessage={email.error}
                 />
@@ -97,7 +100,7 @@ export default function Route() {
                         'scale-0': state === 'submitting',
                       })}
                     >
-                      Send reset email
+                      {t('submit')}
                     </span>
                     <Transition
                       show={state === 'submitting'}
@@ -121,7 +124,7 @@ export default function Route() {
                     className="w-fit"
                     to="/login"
                   >
-                    Back
+                    {t('back')}
                   </Button>
                 </div>
                 <Transition
@@ -131,12 +134,11 @@ export default function Route() {
                   leave="transition ease-in-out duration-300"
                   leaveTo="opacity-0 translate-y-2"
                 >
-                  <div className="px-4 py-2 border border-negative-500 bg-neutral-50 rounded duration-500 animate-in fade-in">
-                    <h2 className="text-base font-bold leading-body mb-2">
-                      Unable to process your request
-                    </h2>
-                    <p className="text-neutral-700">{error}</p>
-                  </div>
+                  <InlineAlert
+                    variant="negative"
+                    title={t('unknownError')}
+                    body={error?.[0]!}
+                  />
                 </Transition>
               </Form>
             )}
@@ -148,8 +150,11 @@ export default function Route() {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
+  const t = await i18next.getFixedT(request);
   const formData = await request.formData();
-  const submission = await parseSubmissionAsync(formData, { schema });
+  const submission = await parseSubmissionAsync(formData, {
+    schema: schema(t),
+  });
 
   if (!submission.ok) {
     return json(submission);
