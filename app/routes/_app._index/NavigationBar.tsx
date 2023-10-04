@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 import Link from '@components/Link';
 import DropdownHome from './DropdownHome';
 
-export type PropsItemNavgigate = {
+export interface PropsItemNavgigate {
   text: string;
   href: string;
   Icon: any;
-};
+}
 type NavigationBarProps = {
   items: Array<PropsItemNavgigate>;
 };
