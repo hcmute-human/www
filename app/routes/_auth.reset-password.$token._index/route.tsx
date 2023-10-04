@@ -1,25 +1,25 @@
 import Button from '@components/Button';
+import Form from '@components/Form';
+import InlineAlert from '@components/InlineAlert';
 import ProgressCircle from '@components/ProgressCircle';
 import TextField from '@components/TextField';
-import { useForm } from '@conform-to/react';
 import { Transition } from '@headlessui/react';
+import i18next from '@lib/i18n/index.server';
 import { ApiClient } from '@lib/services/api-client.server';
-import { toActionErrorsAsync } from '@lib/utils.server';
 import { parseSubmission, parseSubmissionAsync } from '@lib/utils';
+import { toActionErrorsAsync } from '@lib/utils.server';
 import {
   json,
   redirect,
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
 } from '@remix-run/node';
-import { Form, useActionData, useNavigation } from '@remix-run/react';
+import { useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
+import type { TFunction } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { SwitchTransition } from 'transition-hook';
 import { z } from 'zod';
-import { useTranslation } from 'react-i18next';
-import InlineAlert from '@components/InlineAlert';
-import type { TFunction } from 'i18next';
-import i18next from '@lib/i18n/index.server';
 
 interface FieldValues {
   password: string;
@@ -53,16 +53,6 @@ export default function Route() {
   const { t } = useTranslation('reset-password-$token');
   const lastSubmission = useActionData<typeof action>();
   const error = lastSubmission?.error.form ?? lastSubmission?.error.token;
-  const [form, { password, confirmPassword }] = useForm<FieldValues>({
-    lastSubmission,
-    shouldValidate: 'onBlur',
-    defaultValue: {
-      password: '',
-      confirmPassword: '',
-    },
-    onValidate: ({ formData }) =>
-      parseSubmission(formData, { schema: schema(t) }),
-  });
   const { state } = useNavigation();
   const ok = !!lastSubmission?.ok;
 
@@ -95,11 +85,20 @@ export default function Route() {
                 </div>
               </>
             ) : (
-              <Form
+              <Form<FieldValues>
                 action="?"
                 method="post"
                 className="grid gap-6"
-                {...form.props}
+                config={{
+                  lastSubmission,
+                  shouldValidate: 'onBlur',
+                  defaultValue: {
+                    password: '',
+                    confirmPassword: '',
+                  },
+                  onValidate: ({ formData }) =>
+                    parseSubmission(formData, { schema: schema(t) }),
+                }}
               >
                 <TextField
                   isRequired
@@ -108,7 +107,6 @@ export default function Route() {
                   label={t('password.label')}
                   description={t('password.description')}
                   className="grid"
-                  errorMessage={password.error}
                 />
                 <TextField
                   isRequired
@@ -117,7 +115,6 @@ export default function Route() {
                   label={t('confirmPassword.label')}
                   description={t('confirmPassword.description')}
                   className="grid"
-                  errorMessage={confirmPassword.error}
                 />
                 <Button
                   type="submit"

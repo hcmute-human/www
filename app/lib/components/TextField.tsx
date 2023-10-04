@@ -1,12 +1,15 @@
 import { cn } from '@lib/utils';
-import { forwardRef } from 'react';
+import { forwardRef, useEffect, useMemo, useState } from 'react';
 import {
   TextField as AriaTextField,
   Text,
   type TextFieldProps,
 } from 'react-aria-components';
+import { useFormFieldsContext } from './Form';
 import Input from './Input';
 import Label from './Label';
+import { SwitchTransition } from 'transition-hook';
+import clsx from 'clsx';
 
 interface Props extends TextFieldProps {
   name: string;
@@ -28,9 +31,25 @@ const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
   }: Props,
   ref
 ) {
-  const invalid = errorMessage != null;
+  const { [props.name]: field } = useFormFieldsContext() ?? {};
+  const [errorDisplay, setErrorDisplay] = useState(
+    errorMessage ?? field?.error
+  );
+  const invalid = !!errorMessage || !!field?.error;
+
+  useEffect(() => {
+    if (!errorMessage && !field?.error) {
+      return;
+    }
+    setErrorDisplay(errorMessage ?? field?.error);
+  }, [errorMessage, field?.error]);
+
   return (
-    <AriaTextField {...props} isInvalid={!!props.isInvalid || invalid}>
+    <AriaTextField
+      defaultValue={field.defaultValue}
+      {...props}
+      isInvalid={!!props.isInvalid || invalid}
+    >
       <Label className={cn('mb-0.5', labelClassName)}>{label}</Label>
       <Input
         ref={ref}
@@ -40,20 +59,39 @@ const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
           'peer border-negative-500': invalid,
         })}
       />
-      {description ? (
-        <Text slot="description" className="text-sm text-neutral-700 mt-0.5">
-          {description + (description.at(-1) === '.' ? '' : '.')}
-        </Text>
-      ) : null}
-      {invalid ? (
-        <Text
-          slot="errorMessage"
-          className="text-sm text-negative-500 mt-0.5
-              peer-rac-invalid:transition peer-rac-invalid:ease-in-out peer-rac-invalid:duration-300
-              peer-rac-invalid:animate-in peer-rac-invalid:fade-in peer-rac-invalid:slide-in-from-top-4"
-        >
-          {errorMessage + (errorMessage.at(-1) === '.' ? '' : '.')}
-        </Text>
+      {invalid || description ? (
+        <SwitchTransition state={invalid} timeout={200} mode="out-in">
+          {(invalid, stage) => (
+            <div
+              className={clsx(
+                'transition-opacity duration-200',
+                {
+                  from: 'opacity-0 ease-out',
+                  enter: '',
+                  leave: 'opacity-0 ease-in',
+                }[stage]
+              )}
+            >
+              {invalid ? (
+                <Text
+                  slot="errorMessage"
+                  className="text-sm text-negative-500 mt-0.5"
+                >
+                  {errorDisplay + (errorDisplay?.at(-1) === '.' ? '' : '.')}
+                </Text>
+              ) : description ? (
+                <Text
+                  slot="description"
+                  className="text-sm text-neutral-700 mt-0.5"
+                >
+                  {description + (description.at(-1) === '.' ? '' : '.')}
+                </Text>
+              ) : (
+                ''
+              )}
+            </div>
+          )}
+        </SwitchTransition>
       ) : null}
     </AriaTextField>
   );

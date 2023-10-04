@@ -4,6 +4,7 @@ import {
   Checkbox as AriaCheckbox,
   type CheckboxProps,
 } from 'react-aria-components';
+import { useFormFieldsContext } from './Form';
 
 interface Props extends Omit<CheckboxProps, 'chilren'> {
   children?: ReactNode;
@@ -44,6 +45,7 @@ const InternalCheckbox = forwardRef<HTMLInputElement, Props>(
   }
 );
 
-export default function Checkbox({ name, ...props }: Props) {
-  return <InternalCheckbox name={name} {...props} />;
+export default function Checkbox(props: Props) {
+  const { [props.name as string]: field } = useFormFieldsContext() ?? {};
+  return <InternalCheckbox defaultSelected={field?.defaultValue} {...props} />;
 }

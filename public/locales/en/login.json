@@ -9,7 +9,7 @@
   "password": {
     "label": "Password",
     "required": "Enter a password",
-    "min": "Enter a password with more than {{length}} characters"
+    "min": "Enter a password with at least {{length}} characters"
   },
   "rememberMe": {
     "label": "Remember me"

@@ -1,5 +1,6 @@
 import Button from '@components/Button';
 import Checkbox from '@components/Checkbox';
+import Form from '@components/Form';
 import InlineAlert from '@components/InlineAlert';
 import Link from '@components/Link';
 import ProgressCircle from '@components/ProgressCircle';
@@ -12,7 +13,7 @@ import { commitSession, getSession } from '@lib/services/session.server';
 import { parseSubmission, parseSubmissionAsync } from '@lib/utils';
 import { toActionErrorsAsync } from '@lib/utils.server';
 import { json, redirect, type ActionFunctionArgs } from '@remix-run/node';
-import { Form, useActionData, useNavigation } from '@remix-run/react';
+import { useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
 import type { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -45,16 +46,6 @@ export default function Route() {
   const lastSubmission = useActionData<typeof action>();
   const error = lastSubmission?.error?.form;
   const { state } = useNavigation();
-  const [form, { email, password, rememberMe }] = useForm<FieldValues>({
-    lastSubmission,
-    defaultValue: {
-      email: '',
-      password: '',
-      rememberMe: 'true',
-    },
-    onValidate: ({ formData }) =>
-      parseSubmission(formData, { schema: schema(t) }),
-  });
 
   return (
     <div className="w-[20rem]">
@@ -62,11 +53,20 @@ export default function Route() {
         {t('welcomeBack')},
       </p>
       <h1 className="m-0 font-bold text-center">{t('h1')}.</h1>
-      <Form
+      <Form<FieldValues>
         action="?"
         method="post"
         className="grid gap-6 mt-8"
-        {...form.props}
+        config={{
+          lastSubmission,
+          defaultValue: {
+            email: '',
+            password: '',
+            rememberMe: true,
+          },
+          onValidate: ({ formData }) =>
+            parseSubmission(formData, { schema: schema(t) }),
+        }}
       >
         <TextField
           isRequired
@@ -74,8 +74,6 @@ export default function Route() {
           type="email"
           label={t('email.label')}
           className="grid"
-          defaultValue={email.defaultValue}
-          errorMessage={email.error}
         />
         <TextField
           isRequired
@@ -83,8 +81,6 @@ export default function Route() {
           type="password"
           label={t('password.label')}
           className="grid"
-          defaultValue={password.defaultValue}
-          errorMessage={password.error}
         />
         <div className="flex justify-between">
           <Checkbox
@@ -92,7 +88,6 @@ export default function Route() {
             id="rememberMe"
             name="rememberMe"
             className="flex gap-x-2 items-center w-fit"
-            defaultSelected={!!rememberMe.defaultValue}
           >
             {t('rememberMe.label')}
           </Checkbox>
