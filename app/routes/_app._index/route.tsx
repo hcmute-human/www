@@ -1,13 +1,11 @@
-import React from 'react';
-import LayoutHeader from './LayoutHeader';
-
 function Home() {
   return (
-    <div className="flex lg:flex-row flex-col">
-      <div className="">
-        <LayoutHeader></LayoutHeader>
+    <main className="lg:h-screen lg:max-w-[13rem] lg:w-full flex  lg:flex-col ">
+      <div className="p-7">
+        <p className="font-semibold text-xl text-gray-600">Home</p>
       </div>
-    </div>
+      <div className="p-7">Notification</div>
+    </main>
   );
 }
 
