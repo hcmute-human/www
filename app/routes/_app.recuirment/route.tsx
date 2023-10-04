@@ -1,7 +1,7 @@
 import React from 'react';
 
-function Requirement() {
-	return <div>Requirement</div>;
+function Recruitment() {
+  return <div>Recruitment</div>;
 }
 
-export default Requirement;
+export default Recruitment;
