@@ -13,12 +13,8 @@ type ToolBarProps = {
 export default function ToolBar({ items }: ToolBarProps) {
   const location = useLocation();
   return (
-    <div className="w-full gap-5 items-center">
-      <div className="flex gap-3 items-center px-8 py-7">
-        <div className="w-7 aspect-square bg-gray-500 rounded-full"></div>
-        <p className="font-bold text-gray-500">User</p>
-      </div>
-      <ul className=" lg:flex-col flex-row gap-2 px-4 py-5 sm:flex hidden">
+    <div className="w-full lg:gap-5 lg:flex-col flex-row flex">
+      <ul className=" gap-2 lg:px-4 py-5 lg:flex-col flex flex-row">
         {items.map(({ ...item }, idx) => (
           <li
             key={idx}
@@ -41,20 +37,34 @@ export default function ToolBar({ items }: ToolBarProps) {
                     ? 'text-primary-500'
                     : 'text-opacity-60 text-gray-950'
                 }
-                   no-underline relative flex px-2 gap-2 font-bold items-center`}
+                no-underline relative px-2 gap-2 font-bold items-center flex
+                ${item.text === 'Notification' && 'lg:hidden flex'}`}
               >
                 {item.Icon}
-                <p className="m-0 lg:flex flex sm:hidden">{item.text}</p>
+                <p
+                  className={` ${
+                    // item.text === 'Notification' &&
+                    'lg:flex hidden'
+                  }`}
+                >
+                  {item.text}
+                </p>
               </Link>
             ) : (
-              <div className="text-opacity-60 text-gray-950 no-underline relative flex px-2 gap-2 font-bold items-center">
+              <div className="text-opacity-60 text-gray-950 no-underline relative px-2 gap-2 font-bold items-center lg:flex hidden">
                 {item.Icon}
-                <p className="m-0 lg:flex flex sm:hidden">{item.text}</p>
+                <p className="m-0">{item.text}</p>
               </div>
             )}
           </li>
         ))}
       </ul>
+      <div className="flex gap-3 items-center lg:px-8 pr-7 py-5">
+        <div className="w-7 aspect-square bg-gray-500 rounded-full"></div>
+        <p className="font-bold text-gray-500 text-xs lg:flex hidden">
+          Qanh@gmai.com
+        </p>
+      </div>
     </div>
   );
 }

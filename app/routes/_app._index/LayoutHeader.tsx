@@ -55,9 +55,9 @@ const itemstoolbar: Array<PropsItemToolbar> = [
 ];
 function LayoutHeader() {
   return (
-    <header className="lg:h-screen lg:max-w-[13rem] lg:w-full flex justify-between lg:flex-col border-solid lg:border-r-[2px] border-b-[2px]">
+    <header className="lg:h-screen lg:max-w-[13rem] lg:w-full flex justify-between items-center lg:flex-col border-solid lg:border-r-[2px] border-b-[2px]">
       <div className="flex lg:flex-col items-center gap-3 w-full">
-        <Logo className="h-6 mt-7"></Logo>
+        <Logo className="h-6  lg:mt-7"></Logo>
         <NavigationBar items={itemsnavigate}></NavigationBar>
       </div>
       <div className="">
