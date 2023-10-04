@@ -1,22 +1,15 @@
-import Footer from '@components/Footer';
-import Rowdivider from '@components/Rowdivider';
-import LayoutHeader from '@components/layouts/LayoutHeader';
-import NavigationBar from '@lib/components/NavigationBar';
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from '@remix-run/react';
+import LayoutHeader from './_app._index/LayoutHeader';
 
 function App() {
-	return (
-		<div className="flex lg:flex-row flex-col">
-			<div className="">
-				<LayoutHeader></LayoutHeader>
-			</div>
-			<Outlet></Outlet>
-			<div>
-				<Footer></Footer>
-			</div>
-		</div>
-	);
+  return (
+    <div className="flex lg:flex-row flex-col">
+      <div className="">
+        <LayoutHeader></LayoutHeader>
+      </div>
+      <Outlet></Outlet>
+    </div>
+  );
 }
 
 export default App;
