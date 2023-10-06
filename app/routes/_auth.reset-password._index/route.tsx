@@ -1,5 +1,4 @@
 import Button from '@components/Button';
-<<<<<<< HEAD
 import ProgressCircle from '@components/ProgressCircle';
 import TextField from '@components/TextField';
 import { useForm } from '@conform-to/react';
@@ -17,22 +16,12 @@ import type { TFunction } from 'i18next';
 import i18next from '@lib/i18n/index.server';
 import InlineAlert from '@components/InlineAlert';
 import Form from '@components/Form';
-=======
-import Form from '@components/Form';
-import Link from '@components/Link';
-import ProgressCircle from '@components/ProgressCircle';
-import TextField from '@components/TextField';
-import { Transition } from '@headlessui/react';
-import { useActionData, useNavigation } from '@remix-run/react';
-import clsx from 'clsx';
-import { z } from 'zod';
->>>>>>> c1d6c3f (wip)
+
 
 interface FieldValues {
   email: string;
 }
 
-<<<<<<< HEAD
 function schema(t: TFunction) {
   return z.object({
     email: z
@@ -218,94 +207,4 @@ export async function action({ request }: ActionFunctionArgs) {
 
   return json(submission);
 }
-=======
-const schema = z.object({
-  email: z.string().email(),
-});
 
-export default function Route() {
-  const data = useActionData<{ errors: ActionError }>();
-  const error = data?.errors?.root;
-  const { state } = useNavigation();
-
-  return (
-    <div className="w-[20rem]">
-      <h1 className="font-bold">Reset your password.</h1>
-      <Form<FieldValues>
-        action="?"
-        method="post"
-        options={{
-          schema: schema,
-          mode: 'onChange',
-          delayError: 200,
-          defaultValues: {
-            email: '',
-          },
-          progressive: true,
-          criteriaMode: 'all',
-        }}
-        onSubmit={(e) => {
-          console.log(
-            Object.fromEntries(
-              new FormData(e.currentTarget as HTMLFormElement).entries()
-            )
-          );
-        }}
-        className="grid gap-6 mt-8"
-      >
-        <TextField
-          isRequired
-          name="email"
-          type="email"
-          label="Email address"
-          description="Enter the email address being resetted."
-          className="grid"
-        />
-        <Button
-          type="submit"
-          className="relative w-fit bg-primary-500"
-          isDisabled={state === 'submitting'}
-        >
-          <span
-            className={clsx('block transition ease-in-out', {
-              'opacity-0': state === 'submitting',
-              'scale-0': state === 'submitting',
-            })}
-          >
-            Reset
-          </span>
-          <Transition
-            show={state === 'submitting'}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3"
-            enter="transition ease-in-out"
-            enterFrom="opacity-0 scale-0"
-            leave="transition ease-in-out duration-300"
-            leaveTo="opacity-0 scale-0"
-          >
-            <ProgressCircle
-              isIndeterminate
-              className="w-full h-full text-neutral-500"
-              aria-label="signing in"
-            />
-          </Transition>
-        </Button>
-        {/* <Link to="/login">Back to login</Link> */}
-        <Transition
-          show={state !== 'submitting' && !!error}
-          enter="transition ease-in-out"
-          enterFrom="opacity-0 translate-y-8"
-          leave="transition ease-in-out duration-300"
-          leaveTo="opacity-0 translate-y-2"
-        >
-          <div className="px-4 py-2 border border-negative-500 bg-neutral-50 rounded duration-500 animate-in fade-in">
-            <h2 className="text-base font-bold leading-body mb-2">
-              Unable to process your request
-            </h2>
-            <p className="text-neutral-700">{error}</p>
-          </div>
-        </Transition>
-      </Form>
-    </div>
-  );
-}
->>>>>>> c1d6c3f (wip)
