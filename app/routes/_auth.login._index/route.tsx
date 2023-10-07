@@ -30,9 +30,7 @@ function schema(t: TFunction) {
     email: z
       .string({ required_error: t('email.required') })
       .email(t('email.invalid')),
-    password: z
-      .string({ required_error: t('password.required') })
-      .min(7, t('password.min', { length: 7 })),
+    password: z.string({ required_error: t('password.required') }),
     rememberMe: z.boolean().optional(),
   });
 }

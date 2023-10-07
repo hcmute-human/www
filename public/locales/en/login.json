@@ -8,8 +8,7 @@
   },
   "password": {
     "label": "Password",
-    "required": "Enter a password",
-    "min": "Enter a password with at least {{length}} characters"
+    "required": "Enter a password"
   },
   "rememberMe": {
     "label": "Remember me"
