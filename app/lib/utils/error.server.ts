@@ -1,6 +1,6 @@
 import { ZodError } from 'zod';
-import { problemDetailsSchema } from './schemas/problem-details.server';
-import { ApiError } from './services/api-client.server';
+import { problemDetailsSchema } from '@lib/schemas/problem-details.server';
+import { ApiError } from '@lib/services/api-client.server';
 
 export async function toActionErrorsAsync<T>(
   body: ZodError<T>
