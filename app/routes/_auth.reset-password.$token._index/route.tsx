@@ -7,7 +7,7 @@ import { Transition } from '@headlessui/react';
 import i18next from '@lib/i18n/index.server';
 import { ApiClient } from '@lib/services/api-client.server';
 import { parseSubmission, parseSubmissionAsync } from '@lib/utils';
-import { toActionErrorsAsync } from '@lib/utils.server';
+import { toActionErrorsAsync } from '@lib/utils/error.server';
 import {
   json,
   redirect,
@@ -40,6 +40,10 @@ function schema(t: TFunction) {
       message: t('confirmPassword.incorrect'),
       path: ['confirmPassword'],
     });
+}
+
+export function handle() {
+  return { i18n: 'reset-password-$token' };
 }
 
 export function loader({ params }: LoaderFunctionArgs) {

@@ -1,21 +1,20 @@
 import Button from '@components/Button';
+import Form from '@components/Form';
+import InlineAlert from '@components/InlineAlert';
 import ProgressCircle from '@components/ProgressCircle';
 import TextField from '@components/TextField';
-import { useForm } from '@conform-to/react';
 import { Transition } from '@headlessui/react';
+import i18next from '@lib/i18n/index.server';
 import { ApiClient } from '@lib/services/api-client.server';
-import { toActionErrorsAsync } from '@lib/utils.server';
 import { parseSubmission, parseSubmissionAsync } from '@lib/utils';
+import { toActionErrorsAsync } from '@lib/utils/error.server';
 import { json, type ActionFunctionArgs } from '@remix-run/node';
 import { useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
+import type { TFunction } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { SwitchTransition } from 'transition-hook';
 import { z } from 'zod';
-import { useTranslation } from 'react-i18next';
-import type { TFunction } from 'i18next';
-import i18next from '@lib/i18n/index.server';
-import InlineAlert from '@components/InlineAlert';
-import Form from '@components/Form';
 
 interface FieldValues {
   email: string;
@@ -27,6 +26,10 @@ function schema(t: TFunction) {
       .string({ required_error: t('email.required') })
       .email(t('email.invalid')),
   });
+}
+
+export function handle() {
+  return { i18n: 'reset-password' };
 }
 
 export default function Route() {
@@ -178,7 +181,7 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   }
 
-  const body = (await result.value.body.json()) as ResetPasswordResponse;
+  const body = (await result.value.json()) as ResetPasswordResponse;
   const sendResult = await ApiClient.instance.post('emails/send', {
     body: {
       subject: 'Human account password reset',
