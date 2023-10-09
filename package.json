@@ -33,7 +33,6 @@
     "remix-i18next": "^5.4.0",
     "tailwind-merge": "^1.14.0",
     "transition-hook": "^1.5.2",
-    "undici": "^5.25.4",
     "zod": "^3.22.2"
   },
   "devDependencies": {

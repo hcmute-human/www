@@ -181,7 +181,7 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   }
 
-  const body = (await result.value.body.json()) as ResetPasswordResponse;
+  const body = (await result.value.json()) as ResetPasswordResponse;
   const sendResult = await ApiClient.instance.post('emails/send', {
     body: {
       subject: 'Human account password reset',

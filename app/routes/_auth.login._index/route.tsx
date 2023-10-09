@@ -169,7 +169,7 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   }
 
-  const body = (await result.value.body.json()) as LoginResponse;
+  const body = (await result.value.json()) as LoginResponse;
   const session = await getSession(request);
   session.set('accessToken', body.accessToken);
   session.set('refreshToken', body.refreshToken);

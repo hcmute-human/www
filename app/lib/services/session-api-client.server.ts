@@ -10,17 +10,17 @@ export class SessionApiClient extends ApiClient {
   private constructor(private readonly _bearerToken: string) {
     if (!ApiClient._options) {
       throw new ReferenceError(
-        'Failed to initialize BearerApiClient. An option must be provided using `ApiClient.use(options)` first'
+        'Failed to initialize SessionApiClient. An option must be provided using `ApiClient.use(options)` first'
       );
     }
     super(ApiClient._options);
   }
 
-  protected request(
+  protected fetch(
     input: string | URL,
     options?: RequestOptions
   ): ResultAsync<ApiResponse, Error> {
-    return super.request(input, {
+    return super.fetch(input, {
       ...options,
       headers: {
         ...options?.headers,

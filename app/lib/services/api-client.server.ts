@@ -1,6 +1,5 @@
 import { problemDetailsSchema } from '@lib/schemas/problem-details.server';
 import { ResultAsync, errAsync, fromPromise, ok } from 'neverthrow';
-import { Dispatcher, FormData, request } from 'undici';
 
 interface ApiClientOptions {
   baseUrl: string;
@@ -16,16 +15,11 @@ function trim(input: string, char: string) {
   return input.substring(start, end + 1);
 }
 
-export interface RequestOptions
-  extends Omit<NonNullable<Parameters<typeof request>[1]>, 'body'> {
-  body?: Record<number | string, unknown> | unknown[] | FormData | Buffer;
+export interface RequestOptions extends Omit<RequestInit, 'body'> {
+  body?: Record<number | string, any> | any[] | FormData | Buffer;
 }
 
-export interface ApiResponse {
-  ok: boolean;
-  body: Dispatcher.ResponseData['body'];
-  statusCode: number;
-}
+export interface ApiResponse extends Response {}
 
 export class ApiError extends Error {
   private constructor(
@@ -58,7 +52,6 @@ export class ApiClient {
         );
       }
       ApiClient._instance = new ApiClient(ApiClient._options);
-      ApiClient._options = undefined;
     }
     return ApiClient._instance;
   }
@@ -67,13 +60,13 @@ export class ApiClient {
     ApiClient._options = options;
   }
 
-  protected request(
+  protected fetch(
     input: string | URL,
     options?: RequestOptions
   ): ResultAsync<ApiResponse, Error> {
     const url = typeof input === 'string' ? input : input.pathname;
     return fromPromise(
-      request(
+      fetch(
         this._options.baseUrl +
           '/' +
           trim(url, '/').split('/').join('/') +
@@ -92,20 +85,17 @@ export class ApiClient {
       ),
       (e) =>
         e instanceof Error ? e : new Error('Unexpected error', { cause: e })
-    ).andThen(({ statusCode, body }) => {
-      return statusCode >= 200 && statusCode <= 299
-        ? ok({ ok: true, statusCode, body })
-        : errAsync(body.json()).mapErr(async (x) => ApiError.from(await x));
-    });
+    ).andThen((x) =>
+      x.ok
+        ? ok(x)
+        : errAsync(x.json()).mapErr(async (x) => ApiError.from(await x))
+    );
   }
 
   public post(input: string | URL, options?: RequestOptions) {
-    return this.request(input, {
+    return this.fetch(input, {
       ...options,
       method: 'POST',
-      headers: {
-        ...options?.headers,
-      },
     });
   }
 }
