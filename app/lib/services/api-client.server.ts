@@ -1,5 +1,6 @@
 import { problemDetailsSchema } from '@lib/schemas/problem-details.server';
 import { ResultAsync, errAsync, fromPromise, ok } from 'neverthrow';
+import { Dispatcher, FormData, request } from 'undici';
 
 interface ApiClientOptions {
   baseUrl: string;
@@ -15,13 +16,15 @@ function trim(input: string, char: string) {
   return input.substring(start, end + 1);
 }
 
-export interface RequestOptions extends Omit<RequestInit, 'body'> {
+export interface RequestOptions
+  extends Omit<NonNullable<Parameters<typeof request>[1]>, 'body'> {
   body?: Record<number | string, unknown> | unknown[] | FormData | Buffer;
 }
 
 export interface ApiResponse {
   ok: boolean;
-  body: Response;
+  body: Dispatcher.ResponseData['body'];
+  statusCode: number;
 }
 
 export class ApiError extends Error {
@@ -43,9 +46,9 @@ export class ApiError extends Error {
 
 export class ApiClient {
   private static _instance: ApiClient | undefined = undefined;
-  private static _options: ApiClientOptions | undefined = undefined;
+  protected static _options: ApiClientOptions | undefined = undefined;
 
-  private constructor(private options: ApiClientOptions) {}
+  protected constructor(private readonly _options: ApiClientOptions) {}
 
   public static get instance() {
     if (!ApiClient._instance) {
@@ -70,12 +73,12 @@ export class ApiClient {
   ): ResultAsync<ApiResponse, Error> {
     const url = typeof input === 'string' ? input : input.pathname;
     return fromPromise(
-      fetch(
-        this.options.baseUrl +
+      request(
+        this._options.baseUrl +
           '/' +
           trim(url, '/').split('/').join('/') +
           '/' +
-          this.options.version,
+          this._options.version,
         options
           ? {
               ...options,
@@ -89,10 +92,10 @@ export class ApiClient {
       ),
       (e) =>
         e instanceof Error ? e : new Error('Unexpected error', { cause: e })
-    ).andThen((x) => {
-      return x.ok
-        ? ok({ ok: true, body: x })
-        : errAsync(x.json()).mapErr(async (x) => ApiError.from(await x));
+    ).andThen(({ statusCode, body }) => {
+      return statusCode >= 200 && statusCode <= 299
+        ? ok({ ok: true, statusCode, body })
+        : errAsync(body.json()).mapErr(async (x) => ApiError.from(await x));
     });
   }
 
