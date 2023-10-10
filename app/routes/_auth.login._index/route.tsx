@@ -61,6 +61,7 @@ export default function Route() {
             password: '',
             rememberMe: true,
           },
+          shouldValidate: 'onBlur',
           onValidate: ({ formData }) =>
             parseSubmission(formData, { schema: schema(t) }),
         }}
