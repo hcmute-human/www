@@ -20,7 +20,19 @@ export function rgbToHex(rgb: string) {
   return `#${RegExp(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/)
     .exec(rgb)
     ?.slice(1)
-    .map((n) => parseInt(n, 10).toString(16).padStart(2, '0'))
+    .map((x) => parseInt(x, 10).toString(16).padStart(2, '0'))
+    .join('')}`;
+}
+
+export function displayP3ToHex(rgb: string) {
+  return `#${RegExp(/^color\(display-p3\s([\d.]+)\s*([\d.]+)\s*([\d.]+)\)$/)
+    .exec(rgb)
+    ?.slice(1)
+    .map((x) =>
+      Math.round(Number(x) * 255)
+        .toString(16)
+        .padStart(2, '0')
+    )
     .join('')}`;
 }
 

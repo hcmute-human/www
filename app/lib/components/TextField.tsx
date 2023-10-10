@@ -76,7 +76,7 @@ const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
                 {errorDisplay + (errorDisplay?.at(-1) === '.' ? '' : '.')}
               </Text>
             ) : description ? (
-              <Text slot="description" className="text-neutral-700">
+              <Text slot="description" className="text-primary-700">
                 {description + (description.at(-1) === '.' ? '' : '.')}
               </Text>
             ) : null}

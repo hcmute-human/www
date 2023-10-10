@@ -31,6 +31,7 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^13.2.2",
     "remix-i18next": "^5.4.0",
+    "remix-utils": "^7.0.2",
     "tailwind-merge": "^1.14.0",
     "transition-hook": "^1.5.2",
     "zod": "^3.22.2"

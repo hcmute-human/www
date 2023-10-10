@@ -1,3 +1,4 @@
+import { ThemeProvider } from '@lib/contexts/theme.context';
 import { config } from '@lib/i18n';
 import { RemixBrowser } from '@remix-run/react';
 import i18next from 'i18next';
@@ -27,9 +28,11 @@ async function hydrate() {
     hydrateRoot(
       document,
       <I18nextProvider i18n={i18next}>
-        <StrictMode>
-          <RemixBrowser />
-        </StrictMode>
+        <ThemeProvider>
+          <StrictMode>
+            <RemixBrowser />
+          </StrictMode>
+        </ThemeProvider>
       </I18nextProvider>
     );
   });

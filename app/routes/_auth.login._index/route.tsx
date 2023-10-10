@@ -46,7 +46,7 @@ export default function Route() {
 
   return (
     <div className="w-[20rem]">
-      <p className="font-light m-0 text-neutral-700 text-center">
+      <p className="font-light m-0 text-primary-700 text-center">
         {t('welcomeBack')},
       </p>
       <h1 className="m-0 font-bold text-center">{t('h1')}.</h1>
@@ -116,7 +116,7 @@ export default function Route() {
           >
             <ProgressCircle
               isIndeterminate
-              className="w-full h-full text-neutral-500"
+              className="w-full h-full text-primary-500"
               aria-label="signing in"
             />
           </Transition>

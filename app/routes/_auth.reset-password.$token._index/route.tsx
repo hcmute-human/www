@@ -143,7 +143,7 @@ export default function Route() {
                   >
                     <ProgressCircle
                       isIndeterminate
-                      className="w-full h-full text-neutral-500"
+                      className="w-full h-full text-primary-500"
                       aria-label="signing in"
                     />
                   </Transition>
