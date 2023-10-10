@@ -1,15 +1,15 @@
 import { cn } from '@lib/utils';
-import { forwardRef, useEffect, useMemo, useState } from 'react';
+import clsx from 'clsx';
+import { forwardRef, useEffect, useState } from 'react';
 import {
   TextField as AriaTextField,
   Text,
   type TextFieldProps,
 } from 'react-aria-components';
+import { SwitchTransition } from 'transition-hook';
 import { useFormFieldsContext } from './Form';
 import Input from './Input';
 import Label from './Label';
-import { SwitchTransition } from 'transition-hook';
-import clsx from 'clsx';
 
 interface Props extends TextFieldProps {
   name: string;
@@ -59,40 +59,30 @@ const TextField = forwardRef<HTMLInputElement, Props>(function TextField(
           'peer border-negative-500': invalid,
         })}
       />
-      {invalid || description ? (
-        <SwitchTransition state={invalid} timeout={200} mode="out-in">
-          {(invalid, stage) => (
-            <div
-              className={clsx(
-                'transition-opacity duration-200',
-                {
-                  from: 'opacity-0 ease-out',
-                  enter: '',
-                  leave: 'opacity-0 ease-in',
-                }[stage]
-              )}
-            >
-              {invalid ? (
-                <Text
-                  slot="errorMessage"
-                  className="text-sm text-negative-500 mt-0.5"
-                >
-                  {errorDisplay + (errorDisplay?.at(-1) === '.' ? '' : '.')}
-                </Text>
-              ) : description ? (
-                <Text
-                  slot="description"
-                  className="text-sm text-neutral-700 mt-0.5"
-                >
-                  {description + (description.at(-1) === '.' ? '' : '.')}
-                </Text>
-              ) : (
-                ''
-              )}
-            </div>
-          )}
-        </SwitchTransition>
-      ) : null}
+      <SwitchTransition state={invalid} timeout={200} mode="out-in">
+        {(invalid, stage) => (
+          <div
+            className={clsx(
+              'transition-opacity duration-200 text-sm',
+              {
+                from: 'opacity-0 ease-in',
+                enter: '',
+                leave: 'opacity-0 ease-out',
+              }[stage]
+            )}
+          >
+            {invalid ? (
+              <Text slot="errorMessage" className="text-negative-500">
+                {errorDisplay + (errorDisplay?.at(-1) === '.' ? '' : '.')}
+              </Text>
+            ) : description ? (
+              <Text slot="description" className="text-neutral-700">
+                {description + (description.at(-1) === '.' ? '' : '.')}
+              </Text>
+            ) : null}
+          </div>
+        )}
+      </SwitchTransition>
     </AriaTextField>
   );
 });
