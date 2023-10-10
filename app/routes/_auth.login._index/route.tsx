@@ -5,7 +5,6 @@ import InlineAlert from '@components/InlineAlert';
 import Link from '@components/Link';
 import ProgressCircle from '@components/ProgressCircle';
 import TextField from '@components/TextField';
-import ThemeSwitch from '@components/ThemeSwitch';
 import { Transition } from '@headlessui/react';
 import i18next from '@lib/i18n/index.server';
 import { ApiClient } from '@lib/services/api-client.server';
@@ -17,7 +16,6 @@ import { useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
 import type { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { ClientOnly } from 'remix-utils/client-only';
 import { z } from 'zod';
 
 interface FieldValues {
@@ -48,8 +46,6 @@ export default function Route() {
 
   return (
     <div className="w-[20rem]">
-      <ClientOnly>{() => <ThemeSwitch />}</ClientOnly>
-
       <p className="font-light m-0 text-primary-700 text-center">
         {t('welcomeBack')},
       </p>

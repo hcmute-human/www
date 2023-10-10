@@ -39,7 +39,6 @@ export default function App() {
   const { i18n } = useTranslation();
   const theme = useTheme();
   const navigate = useNavigate();
-  console.log(theme);
 
   useChangeLanguage(locale);
 
