@@ -8,8 +8,7 @@ interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   variant?: 'positive' | 'negative';
 }
 
-const baseClass =
-  'px-4 py-2 border-2 bg-neutral-50 rounded duration-500 animate-in fade-in';
+const baseClass = 'px-4 py-2 border-2 bg-neutral-50 rounded duration-500';
 const variantClass: Record<NonNullable<Props['variant']>, string> = {
   positive: 'border-positive-500',
   negative: 'border-negative-500',
