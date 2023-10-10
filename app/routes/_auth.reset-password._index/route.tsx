@@ -62,7 +62,7 @@ export default function Route() {
                   body={t('successAlert.body') + '.'}
                 />
                 <div className="mt-4">
-                  <Button as="link" to="/login">
+                  <Button as="link" href="/login">
                     {t('successAlert.back')}
                   </Button>
                 </div>
@@ -121,10 +121,9 @@ export default function Route() {
                   </Button>
                   <Button
                     as="link"
-                    type="button"
                     variant="primary"
                     className="w-fit"
-                    to="/login"
+                    href="/login"
                   >
                     {t('back')}
                   </Button>

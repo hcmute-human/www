@@ -12,11 +12,13 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useNavigate,
 } from '@remix-run/react';
 import styles from './root.css';
 import { useTranslation } from 'react-i18next';
 import { useChangeLanguage } from 'remix-i18next';
 import i18next from '@lib/i18n/index.server';
+import { RouterProvider } from 'react-aria';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: styles },
@@ -34,6 +36,7 @@ export const handle = {
 export default function App() {
   const { locale } = useLoaderData<typeof loader>();
   const { i18n } = useTranslation();
+  const navigate = useNavigate();
 
   useChangeLanguage(locale);
 
@@ -56,7 +59,9 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet />
+        <RouterProvider navigate={navigate}>
+          <Outlet />
+        </RouterProvider>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

@@ -89,7 +89,7 @@ export default function Route() {
           >
             {t('rememberMe.label')}
           </Checkbox>
-          <Link to="/reset-password" className="text-sm">
+          <Link href="/reset-password" className="text-sm">
             {t('forgotPassword')}?
           </Link>
         </div>

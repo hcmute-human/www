@@ -83,7 +83,7 @@ export default function Route() {
                   body={t('successAlert.body')}
                 />
                 <div className="mt-4">
-                  <Button as="link" to="/login">
+                  <Button as="link" href="/login">
                     {t('successAlert.back')}
                   </Button>
                 </div>

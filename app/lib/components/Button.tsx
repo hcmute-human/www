@@ -9,7 +9,7 @@ interface DefaultProps extends ButtonProps {
 
 type Props =
   | ({ as?: never } & DefaultProps)
-  | ({ as: 'link' | 'a'; variant?: 'accent' | 'primary' } & Parameters<
+  | ({ as: 'link'; variant?: 'accent' | 'primary' } & Parameters<
       typeof Link
     >[0]);
 
@@ -35,8 +35,7 @@ export default function Button({
 }: Props) {
   let node: ReactNode;
   switch (props.as) {
-    case 'link':
-    case 'a': {
+    case 'link': {
       node = (
         <Link
           {...props}
