@@ -1,0 +1,101 @@
+:root {
+  --theme-primary-0: 1 1 1;
+  --theme-primary-50: 0.961 0.961 0.961;
+  --theme-primary-100: 0.91 0.91 0.91;
+  --theme-primary-200: 0.831 0.831 0.831;
+  --theme-primary-300: 0.741 0.741 0.741;
+  --theme-primary-400: 0.651 0.651 0.651;
+  --theme-primary-500: 0.565 0.565 0.565;
+  --theme-primary-600: 0.451 0.451 0.451;
+  --theme-primary-700: 0.341 0.341 0.341;
+  --theme-primary-800: 0.231 0.231 0.231;
+  --theme-primary-900: 0.11 0.11 0.11;
+  --theme-primary-950: 0.059 0.059 0.059;
+
+  --theme-accent-50: 0.882 0.933 1;
+  --theme-accent-100: 0.741 0.859 1;
+  --theme-accent-200: 0.482 0.714 0.996;
+  --theme-accent-300: 0.224 0.573 0.996;
+  --theme-accent-400: 0.004 0.431 0.953;
+  --theme-accent-500: 0.004 0.318 0.706;
+  --theme-accent-600: 0.004 0.251 0.557;
+  --theme-accent-700: 0.004 0.188 0.42;
+  --theme-accent-800: 0 0.125 0.278;
+  --theme-accent-900: 0 0.063 0.141;
+  --theme-accent-950: 0 0.035 0.078;
+
+  --theme-negative-50: 0.992 0.89 0.89;
+  --theme-negative-100: 0.984 0.8 0.796;
+  --theme-negative-200: 0.969 0.604 0.592;
+  --theme-negative-300: 0.953 0.404 0.388;
+  --theme-negative-400: 0.937 0.208 0.18;
+  --theme-negative-500: 0.827 0.082 0.063;
+  --theme-negative-600: 0.671 0.071 0.051;
+  --theme-negative-700: 0.502 0.055 0.039;
+  --theme-negative-800: 0.333 0.035 0.024;
+  --theme-negative-900: 0.169 0.02 0.012;
+  --theme-negative-950: 0.075 0.008 0.004;
+
+  --theme-positive-50: 0.839 1 0.859;
+  --theme-positive-100: 0.702 1 0.733;
+  --theme-positive-200: 0.4 1 0.471;
+  --theme-positive-300: 0.102 1 0.204;
+  --theme-positive-400: 0 0.78 0.09;
+  --theme-positive-500: 0 0.486 0.059;
+  --theme-positive-600: 0 0.38 0.043;
+  --theme-positive-700: 0 0.302 0.035;
+  --theme-positive-800: 0 0.2 0.024;
+  --theme-positive-900: 0 0.098 0.012;
+  --theme-positive-950: 0 0.039 0.004;
+}
+
+:root[class~='dark'] {
+  --theme-primary-0: 0 0 0;
+  --theme-primary-950: 0.961 0.961 0.961;
+  --theme-primary-900: 0.91 0.91 0.91;
+  --theme-primary-800: 0.831 0.831 0.831;
+  --theme-primary-700: 0.741 0.741 0.741;
+  --theme-primary-600: 0.651 0.651 0.651;
+  --theme-primary-500: 0.565 0.565 0.565;
+  --theme-primary-400: 0.451 0.451 0.451;
+  --theme-primary-300: 0.341 0.341 0.341;
+  --theme-primary-200: 0.231 0.231 0.231;
+  --theme-primary-100: 0.11 0.11 0.11;
+  --theme-primary-50: 0.059 0.059 0.059;
+
+  --theme-accent-950: 0.961 0.969 1;
+  --theme-accent-900: 0.898 0.918 1;
+  --theme-accent-800: 0.82 0.855 1;
+  --theme-accent-700: 0.722 0.773 1;
+  --theme-accent-600: 0.639 0.706 1;
+  --theme-accent-500: 0.545 0.631 1;
+  --theme-accent-400: 0.239 0.38 1;
+  --theme-accent-300: 0 0.169 0.922;
+  --theme-accent-200: 0 0.114 0.62;
+  --theme-accent-100: 0 0.055 0.302;
+  --theme-accent-50: 0 0.027 0.161;
+
+  --theme-negative-950: 0.992 0.89 0.89;
+  --theme-negative-900: 0.984 0.8 0.796;
+  --theme-negative-800: 0.969 0.604 0.592;
+  --theme-negative-700: 0.953 0.404 0.388;
+  --theme-negative-600: 0.937 0.208 0.18;
+  --theme-negative-500: 0.827 0.082 0.063;
+  --theme-negative-400: 0.671 0.071 0.051;
+  --theme-negative-300: 0.502 0.055 0.039;
+  --theme-negative-200: 0.333 0.035 0.024;
+  --theme-negative-100: 0.169 0.02 0.012;
+  --theme-negative-50: 0.075 0.008 0.004;
+
+  --theme-positive-950: 0.839 1 0.859;
+  --theme-positive-900: 0.702 1 0.733;
+  --theme-positive-800: 0.4 1 0.471;
+  --theme-positive-700: 0.102 1 0.204;
+  --theme-positive-600: 0 0.78 0.09;
+  --theme-positive-500: 0 0.486 0.059;
+  --theme-positive-400: 0 0.38 0.043;
+  --theme-positive-300: 0 0.302 0.035;
+  --theme-positive-200: 0 0.2 0.024;
+  --theme-positive-100: 0 0.098 0.012;
+  --theme-positive-50: 0 0.039 0.004;
+}
