@@ -1,3 +1,5 @@
+import { useTheme } from '@lib/contexts/theme.context';
+import i18next from '@lib/i18n/index.server';
 import { cssBundleHref } from '@remix-run/css-bundle';
 import {
   json,
@@ -14,11 +16,10 @@ import {
   useLoaderData,
   useNavigate,
 } from '@remix-run/react';
-import styles from './root.css';
+import { RouterProvider } from 'react-aria';
 import { useTranslation } from 'react-i18next';
 import { useChangeLanguage } from 'remix-i18next';
-import i18next from '@lib/i18n/index.server';
-import { RouterProvider } from 'react-aria';
+import styles from './root.css';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: styles },
@@ -36,12 +37,14 @@ export const handle = {
 export default function App() {
   const { locale } = useLoaderData<typeof loader>();
   const { i18n } = useTranslation();
+  const theme = useTheme();
   const navigate = useNavigate();
+  console.log(theme);
 
   useChangeLanguage(locale);
 
   return (
-    <html lang={locale} dir={i18n.dir()} className="dark">
+    <html lang={locale} dir={i18n.dir()} className={theme}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
