@@ -14,7 +14,7 @@ type Props =
     >[0]);
 
 const baseClass =
-  'px-4 py-0.5 rounded-lg transition-[background-color_outline] ease-in-out';
+  'px-4 py-0.5 rounded-lg transition-[background-color_outline] ease-in-out font-medium';
 
 const variantClass: Record<NonNullable<Props['variant']>, string> = {
   accent: 'bg-accent-500 text-primary-100 rac-hover:bg-accent-600',
