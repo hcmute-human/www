@@ -13,8 +13,8 @@ export default function Bar({ itemsNav, itemToolbar }: Props) {
   return (
     <AnimatePresence>
       <nav className="flex lg:flex-col items-center justify-between w-full h-full lg:py-8 sm:mx-5 lg:m-0">
-        <div className="sm:flex flex lg:flex-col gap-6 w-full lg:items-start items-center">
-          <Logo className="h-6 lg:ml-2"></Logo>
+        <div className="sm:flex flex lg:flex-col gap-6 w-full items-center">
+        <Logo className="h-6 mr-16"></Logo>
           <NavigationEntry items={itemsNav} />
           <div className="sm:hidden block my-2">
             <MenuDropBar items={itemsNav}></MenuDropBar>

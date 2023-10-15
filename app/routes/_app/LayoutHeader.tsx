@@ -46,7 +46,7 @@ const itemsNav: Array<PropsNavgigateType> = [
 ];
 function LayoutHeader() {
   return (
-    <header className="lg:h-screen lg:max-w-[13rem] lg:w-full flex lg:flex-col border-solid lg:border-r-[2px] border-b-[2px]">
+    <header className="lg:h-screen  lg:w-fit flex lg:flex-col border-solid lg:border-r-[2px] border-b-[2px]">
       <Bar itemsNav={itemsNav} itemToolbar={itemsToolbar}></Bar>
     </header>
   );

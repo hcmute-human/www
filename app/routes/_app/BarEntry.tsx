@@ -13,9 +13,9 @@ export type NavigationBarProps = Array<PropsNavgigateType>;
 const NavigationEntry = ({ items }: { items: NavigationBarProps }) => {
   const location = useLocation();
   return (
-    <div className="lg:px-2 sm:block hidden">
+    <div className="lg:px-4 sm:block hidden">
       <ul
-        className={`sm:flex lg:flex-col gap-3 px-2 justify-center sm:my-2 lg:my-0`}
+        className={`sm:flex lg:flex-col gap-3  justify-center sm:my-2 lg:my-0`}
       >
         {items.map((i, idx) => (
           <li key={idx} className="lg:w-[160px] w-fit relative">
