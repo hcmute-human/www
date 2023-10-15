@@ -6,7 +6,7 @@ if (!process.env.COOKIE_SECRET) {
 
 import { createCookieSessionStorage } from '@remix-run/node';
 
-interface SessionData {
+export interface SessionData {
   accessToken: string;
   refreshToken: string;
 }

@@ -1,3 +1,4 @@
+import { commitSession, getSession } from '@lib/services/session.server';
 import { authenticate } from '@lib/utils/auth.server';
 import {
   json,
@@ -14,10 +15,20 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  if (!(await authenticate(request))) {
-    throw redirect('/login');
+  const session = await getSession(request);
+
+  if (!(await authenticate(session))) {
+    throw redirect('/login', {
+      headers: {
+        'Set-Cookie': await commitSession(session),
+      },
+    });
   }
-  return json(null);
+  return json(null, {
+    headers: {
+      'Set-Cookie': await commitSession(session),
+    },
+  });
 }
 
 export default function Index() {

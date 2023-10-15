@@ -62,9 +62,14 @@ export class ApiClient {
 
   protected fetch(
     input: string | URL,
-    options?: RequestOptions
+    { headers, ...options }: RequestOptions = {}
   ): ResultAsync<ApiResponse, Error> {
     const url = typeof input === 'string' ? input : input.pathname;
+    const record: Record<string, string> = ApiClient.makeHeaders(headers);
+    record['Content-Type'] ??=
+      options?.body instanceof FormData || options?.body instanceof Buffer
+        ? 'multipart/form-data'
+        : 'application/json';
     return fromPromise(
       fetch(
         this._options.baseUrl +
@@ -75,6 +80,7 @@ export class ApiClient {
         options
           ? {
               ...options,
+              ...headers,
               body:
                 options?.body instanceof FormData ||
                 options?.body instanceof Buffer
@@ -97,5 +103,14 @@ export class ApiClient {
       ...options,
       method: 'POST',
     });
+  }
+
+  private static makeHeaders(headers?: HeadersInit): Record<string, string> {
+    if (!headers) return {};
+    return Array.isArray(headers)
+      ? Object.fromEntries(headers)
+      : headers instanceof Headers
+      ? Object.fromEntries(headers.entries())
+      : headers;
   }
 }
