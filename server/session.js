@@ -17,3 +17,22 @@ export const sessionStorage = createCookieSessionStorage({
     secure: true,
   },
 });
+
+export function WrappedSession(session) {
+  return {
+    ...session,
+    dirty: false,
+    set(name, value) {
+      session.set(name, value);
+      this.dirty = true;
+    },
+    flash(name, value) {
+      session.flash(name, value);
+      this.dirty = true;
+    },
+    unset(name) {
+      session.unset(name);
+      this.dirty = true;
+    },
+  };
+}

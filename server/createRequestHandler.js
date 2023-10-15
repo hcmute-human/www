@@ -10,15 +10,15 @@ export function createRequestHandler({
   mode = process.env.NODE_ENV,
   beforeResponse,
 }) {
-  let handleRequest = node.createRequestHandler(build, mode);
+  const handleRequest = node.createRequestHandler(build, mode);
   return async (req, res, next) => {
     try {
-      let request = createRemixRequest(req, res);
-      let loadContext = await (getLoadContext === null ||
+      const request = createRemixRequest(req, res);
+      const loadContext = await (getLoadContext === null ||
       getLoadContext === void 0
         ? void 0
         : getLoadContext(req, res));
-      let response = await handleRequest(request, loadContext);
+      const response = await handleRequest(request, loadContext);
       beforeResponse && (await beforeResponse());
       await sendRemixResponse(res, response);
     } catch (error) {

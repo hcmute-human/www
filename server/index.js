@@ -8,7 +8,7 @@ import compression from 'compression';
 import express from 'express';
 import morgan from 'morgan';
 import sourceMapSupport from 'source-map-support';
-import { sessionStorage } from './session.js';
+import { WrappedSession, sessionStorage } from './session.js';
 
 sourceMapSupport.install();
 installGlobals();
@@ -24,17 +24,20 @@ const remixHandler =
     ? await createDevRequestHandler(initialBuild)
     : async (req, res, next) => {
         const session = await sessionStorage.getSession(req.headers.cookie);
+        const wrapped = new WrappedSession(session);
         return createRequestHandler({
           build: initialBuild,
           mode: initialBuild.mode,
           getLoadContext() {
-            return { session };
+            return { session: wrapped };
           },
           beforeResponse: async () => {
-            res.appendHeader(
-              'Set-Cookie',
-              await sessionStorage.commitSession(session)
-            );
+            if (wrapped.dirty) {
+              res.appendHeader(
+                'Set-Cookie',
+                await sessionStorage.commitSession(session)
+              );
+            }
           },
         })(req, res, next);
       };
@@ -103,18 +106,21 @@ async function createDevRequestHandler(initialBuild) {
   // wrap request handler to make sure its recreated with the latest build for every request
   return async (req, res, next) => {
     const session = await sessionStorage.getSession(req.headers.cookie);
+    const wrapped = new WrappedSession(session);
     try {
       return createRequestHandler({
         build,
         mode: 'development',
         getLoadContext() {
-          return { session };
+          return { session: wrapped };
         },
         beforeResponse: async () => {
-          res.appendHeader(
-            'Set-Cookie',
-            await sessionStorage.commitSession(session)
-          );
+          if (wrapped.dirty) {
+            res.appendHeader(
+              'Set-Cookie',
+              await sessionStorage.commitSession(session)
+            );
+          }
         },
       })(req, res, next);
     } catch (error) {
