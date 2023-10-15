@@ -1,12 +1,20 @@
 import { cn } from '@lib/utils';
+import { forwardRef } from 'react';
 import { Link as AriaLink, type LinkProps } from 'react-aria-components';
 
 type Props = LinkProps;
 
 const baseClass = 'text-accent-500 underline underline-offset-2';
 
-export default function Link({ className, ...props }: Props) {
-  return (
-    <AriaLink className={cn(baseClass, className)} target="_self" {...props} />
-  );
-}
+const Link = forwardRef<HTMLAnchorElement, Props>(
+  ({ className, ...props }: Props, ref) => (
+    <AriaLink
+      ref={ref}
+      className={cn(baseClass, className)}
+      target="_self"
+      {...props}
+    />
+  )
+);
+
+export default Link;
