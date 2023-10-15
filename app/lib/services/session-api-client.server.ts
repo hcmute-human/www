@@ -79,6 +79,8 @@ export class SessionApiClient extends ApiClient {
   public static async from(
     session: Session<SessionData, unknown>
   ): Promise<ApiClient> {
-    return session.id ? new SessionApiClient(session) : ApiClient.instance;
+    return session.has('accessToken') || session.has('refreshToken')
+      ? new SessionApiClient(session)
+      : ApiClient.instance;
   }
 }
