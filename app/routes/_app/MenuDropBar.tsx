@@ -41,7 +41,7 @@ export default function MenuDropBar({ items }: { items: NavigationBarProps }) {
                   `}
                   >
                     {item.Icon}
-                    <p className="">{item.text}</p>
+                    <span>{item.text}</span>
                   </Link>
                 )}
               </Menu.Item>
