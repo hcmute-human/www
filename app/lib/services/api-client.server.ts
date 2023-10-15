@@ -80,7 +80,7 @@ export class ApiClient {
         options
           ? {
               ...options,
-              ...headers,
+              headers: record,
               body:
                 options?.body instanceof FormData ||
                 options?.body instanceof Buffer
