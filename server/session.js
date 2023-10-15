@@ -6,11 +6,7 @@ if (!process.env.COOKIE_SECRET) {
 
 import { createCookieSessionStorage } from '@remix-run/node';
 
-const {
-  getSession: __getSession,
-  commitSession,
-  destroySession,
-} = createCookieSessionStorage<SessionData, unknown>({
+export const sessionStorage = createCookieSessionStorage({
   cookie: {
     name: '__session',
     httpOnly: true,
@@ -21,9 +17,3 @@ const {
     secure: true,
   },
 });
-
-export function getSession(request: Request) {
-  return __getSession(request.headers.get('Cookie'));
-}
-
-export { commitSession, destroySession };

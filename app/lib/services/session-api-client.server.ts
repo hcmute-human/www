@@ -5,7 +5,6 @@ import {
   type ApiResponse,
   type RequestOptions,
 } from './api-client.server';
-import { type SessionData } from './session.server';
 import type { Session } from '@remix-run/node';
 
 export class SessionApiClient extends ApiClient {

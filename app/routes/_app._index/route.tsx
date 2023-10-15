@@ -1,22 +1,13 @@
-import { commitSession, getSession } from '@lib/services/session.server';
 import { authenticate } from '@lib/utils/auth.server';
-import { redirect, type LoaderFunctionArgs, json } from '@remix-run/node';
+import { json, redirect, type LoaderFunctionArgs } from '@remix-run/node';
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const session = await getSession(request);
-
+export async function loader({ context: { session } }: LoaderFunctionArgs) {
   if (!(await authenticate(session))) {
-    throw redirect('/login', {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    });
+    session.unset('accessToken');
+    session.unset('refreshToken');
+    throw redirect('/login');
   }
-  return json(null, {
-    headers: {
-      'Set-Cookie': await commitSession(session),
-    },
-  });
+  return json(null);
 }
 
 function Home() {
