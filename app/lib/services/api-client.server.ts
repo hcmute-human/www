@@ -66,10 +66,12 @@ export class ApiClient {
   ): ResultAsync<ApiResponse, Error> {
     const url = typeof input === 'string' ? input : input.pathname;
     const record: Record<string, string> = ApiClient.makeHeaders(headers);
-    record['Content-Type'] ??=
-      options?.body instanceof FormData || options?.body instanceof Buffer
-        ? 'multipart/form-data'
-        : 'application/json';
+    if (options?.body) {
+      record['Content-Type'] ??=
+        options.body instanceof FormData || options?.body instanceof Buffer
+          ? 'multipart/form-data'
+          : 'application/json';
+    }
     return fromPromise(
       fetch(
         this._options.baseUrl +
@@ -96,6 +98,13 @@ export class ApiClient {
         ? ok(x)
         : errAsync(x.json()).mapErr(async (x) => ApiError.from(await x))
     );
+  }
+
+  public get(input: string | URL, options?: RequestOptions) {
+    return this.fetch(input, {
+      ...options,
+      method: 'GET',
+    });
   }
 
   public post(input: string | URL, options?: RequestOptions) {
