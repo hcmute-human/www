@@ -3,9 +3,11 @@ import LayoutHeader from './LayoutHeader';
 
 function App() {
   return (
-    <div className="flex lg:flex-row flex-col">
+    <div className="flex flex-col lg:flex-row w-full min-h-screen">
       <LayoutHeader />
-      <Outlet />
+      <div className="bg-primary-0 flex-grow">
+        <Outlet />
+      </div>
     </div>
   );
 }
