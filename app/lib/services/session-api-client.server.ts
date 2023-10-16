@@ -7,6 +7,11 @@ import {
 } from './api-client.server';
 import type { Session } from '@remix-run/node';
 
+export interface AuthorizeRequest {
+  permissions: string[];
+  allPermission?: boolean;
+}
+
 export class SessionApiClient extends ApiClient {
   private constructor(
     private readonly _session: Session<SessionData, unknown>
@@ -75,11 +80,17 @@ export class SessionApiClient extends ApiClient {
       });
   }
 
-  public static async from(
-    session: Session<SessionData, unknown>
-  ): Promise<ApiClient> {
-    return session.has('accessToken') || session.has('refreshToken')
-      ? new SessionApiClient(session)
-      : ApiClient.instance;
+  public async authenticate() {
+    const result = await this.post('auth/authenticate');
+    return !result.isErr() && result.value.ok;
+  }
+
+  public async authorize(body: AuthorizeRequest = { permissions: [] }) {
+    const result = await this.post('auth/authorize', { body });
+    return !result.isErr() && result.value.ok;
+  }
+
+  public static from(session: Session<SessionData, unknown>): SessionApiClient {
+    return new SessionApiClient(session);
   }
 }
