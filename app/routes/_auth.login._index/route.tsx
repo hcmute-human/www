@@ -2,9 +2,9 @@ import Button from '@components/Button';
 import Checkbox from '@components/Checkbox';
 import Form from '@components/Form';
 import InlineAlert from '@components/InlineAlert';
-import Link from '@components/Link';
 import ProgressCircle from '@components/ProgressCircle';
 import TextField from '@components/TextField';
+import TextLink from '@components/TextLink';
 import { Transition } from '@headlessui/react';
 import i18next from '@lib/i18n/index.server';
 import { ApiClient } from '@lib/services/api-client.server';
@@ -89,9 +89,9 @@ export default function Route() {
           >
             {t('rememberMe.label')}
           </Checkbox>
-          <Link href="/reset-password" className="text-sm">
+          <TextLink href="/reset-password" className="text-sm">
             {t('forgotPassword')}?
-          </Link>
+          </TextLink>
         </div>
         <Button
           type="submit"

@@ -1,14 +1,16 @@
 import { cn } from '@lib/utils';
 import { forwardRef } from 'react';
-import { Link as AriaLink, type LinkProps } from 'react-aria-components';
+import {
+  Link as AriaLink,
+  type LinkProps as AriaLinkProps,
+} from 'react-aria-components';
 
-type Props = LinkProps;
+export type LinkProps = AriaLinkProps;
 
-const baseClass =
-  'text-accent-500 underline underline-offset-2 rac-pressed:outline-none';
+const baseClass = 'no-underline rac-pressed:outline-none';
 
-const Link = forwardRef<HTMLAnchorElement, Props>(
-  ({ className, ...props }: Props, ref) => (
+const Link = forwardRef<HTMLAnchorElement, LinkProps>(
+  ({ className, ...props }: LinkProps, ref) => (
     <AriaLink
       ref={ref}
       className={cn(baseClass, className)}

@@ -39,12 +39,7 @@ export default function Button({
       node = (
         <Link
           {...props}
-          className={cn(
-            baseClass,
-            variantClass[variant],
-            'no-underline',
-            className
-          )}
+          className={cn(baseClass, variantClass[variant], className)}
         />
       );
       break;
