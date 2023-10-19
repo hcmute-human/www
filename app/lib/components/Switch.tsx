@@ -23,12 +23,15 @@ export default function Switch({
   return (
     <AriaSwitch
       {...props}
-      className={cn('flex group gap-2 rac-focus:outline-none', className)}
+      className={cn(
+        'flex group gap-2 rac-focus:outline-none items-center',
+        className
+      )}
     >
+      {children}
       <div className={cn(trackBaseClass, trackClass)}>
         <span className={cn(indicatorBaseClass, indicatorClass)} />
       </div>
-      {children}
     </AriaSwitch>
   );
 }
