@@ -1,0 +1,11 @@
+{
+    "root": {
+        "home": "Home",
+        "recruitment": "Recruitment",
+        "department": "Deparment",
+        "absence": "Absence",
+        "setting": "Setting"
+    },
+    "notification": "Notification",
+    "logout": "Logout"
+}
