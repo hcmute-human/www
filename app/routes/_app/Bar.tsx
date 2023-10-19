@@ -4,6 +4,7 @@ import NavigationEntry from './BarEntry';
 import Logo from '@components/Logo';
 import MenuDropBar from './MenuDropBar';
 import ToolBar from './ToolBar';
+import ThemeSwitch from '@components/ThemeSwitch';
 
 type Props = {
   itemsNav: NavigationBarProps;
@@ -23,8 +24,15 @@ export default function Bar({ itemsNav, itemToolbar }: Props) {
           </div>
         </div>
         <div className="lg:mb-3 flex lg:flex-col items-center gap-4">
-          <NavigationEntry items={itemToolbar} />
-          <ToolBar />
+          <div className="lg:block hidden">
+            <NavigationEntry items={itemToolbar} />
+          </div>
+          <div className="text-left mr-5 lg:block hidden">
+            <ThemeSwitch></ThemeSwitch>
+          </div>
+          <div className="lg:hidden block">
+            <ToolBar></ToolBar>
+          </div>
         </div>
       </nav>
     </AnimatePresence>

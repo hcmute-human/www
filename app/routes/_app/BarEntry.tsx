@@ -27,7 +27,7 @@ const NavigationEntry = ({ items }: { items: NavigationBarProps }) => {
             <Link
               href={i.href}
               className={clsx(
-                'no-underline flex items-center w-full text-primary-900 sm:py-2 gap-2 rounded-md px-2',
+                'no-underline flex items-center w-full text-primary-900 sm:py-2 gap-2 rounded-md lg:px-4 px-2',
                 { 'text-accent-500': location.pathname === i.href }
               )}
             >
