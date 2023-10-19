@@ -9,5 +9,9 @@ export default function ThemeSwitch() {
     setTheme(dark ? 'dark' : 'light');
   }
 
-  return <Switch onChange={handleChange}>{theme}</Switch>;
+  return (
+    <Switch onChange={handleChange}>
+      {theme === 'light' ? 'Light mode' : 'Dark mode'}
+    </Switch>
+  );
 }
