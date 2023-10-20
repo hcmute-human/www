@@ -11,12 +11,12 @@ export default function NavigationBarItems({
 }: {
   items: INavigationBarItem[];
 }) {
-  const location = useLocation();
+  const { pathname } = useLocation();
   return (
     <ul className={`flex lg:flex-col gap-2 justify-center`}>
       {items.map((i, idx) => (
         <li key={idx} className="lg:w-[24ch] relative">
-          {location.pathname === i.href && (
+          {pathname === i.href && (
             <motion.div
               layoutId="underline"
               className="absolute -z-30 bg-primary-100 w-full h-full rounded-md"
@@ -34,7 +34,7 @@ export default function NavigationBarItems({
                 {i.text}
               </MyTooltip>
               {i.icon}
-              <p className="lg:block hidden">{i.text}</p>
+              <p className="lg:block hidden ml-1">{i.text}</p>
             </Link>
           </TooltipTrigger>
         </li>
