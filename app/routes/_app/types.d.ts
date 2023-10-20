@@ -1,5 +1,7 @@
+import type { ReactNode } from 'react';
+
 export type INavigationBarItem = {
   text: string;
   href: string;
-  Icon: any;
+  icon: ReactNode;
 };

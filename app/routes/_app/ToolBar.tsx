@@ -5,7 +5,7 @@ import { BellIcon } from '@heroicons/react/20/solid';
 import { useTranslation } from 'react-i18next';
 
 export default function ToolBar() {
-  const {t} = useTranslation('home');
+  const { t } = useTranslation('home');
   const [items] = useState([
     {
       text: t('logout'),
@@ -19,10 +19,10 @@ export default function ToolBar() {
 
   return (
     <div className="self-center justify-end items-center lg:p-4 flex gap-3">
-      <div className=''>
-        <div className='border-solid border-primary-950 border-[1px] p-2 rounded-full relative bg-primary-100 bg-opacity-50 border-opacity-20'>
+      <div className="">
+        <div className="border-solid border-primary-950 border-[1px] p-2 rounded-full relative bg-primary-100 bg-opacity-50 border-opacity-20">
           <div className="h-2 aspect-square bg-blue-500 right-2 rounded-full absolute" />
-          <BellIcon className='h-5 w-5'></BellIcon>
+          <BellIcon className="h-5 w-5"></BellIcon>
         </div>
       </div>
       <Menu as="div" className="relative w-fit">
