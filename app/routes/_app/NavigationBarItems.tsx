@@ -33,7 +33,7 @@ export default function NavigationBarItems({
               <MyTooltip className="lg:hidden inline-block rounded bg-primary-100 px-4 py-1 mt-2">
                 {i.text}
               </MyTooltip>
-              {i.Icon}
+              {i.icon}
               <p className="lg:block hidden">{i.text}</p>
             </Link>
           </TooltipTrigger>

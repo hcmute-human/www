@@ -17,7 +17,7 @@ export default function Header() {
     {
       text: t('logout'),
       href: '/logout',
-      Icon: (
+      icon: (
         <ArrowLeftOnRectangleIcon className="w-4 h-4"></ArrowLeftOnRectangleIcon>
       ),
     },
@@ -26,27 +26,27 @@ export default function Header() {
     {
       text: t('bar.home'),
       href: '/',
-      Icon: <Square2StackIcon className="w-4 h-4"></Square2StackIcon>,
+      icon: <Square2StackIcon className="w-4 h-4"></Square2StackIcon>,
     },
     {
       text: t('bar.recruitment'),
       href: '/recuirment',
-      Icon: <WrenchIcon className="w-4 h-4"></WrenchIcon>,
+      icon: <WrenchIcon className="w-4 h-4"></WrenchIcon>,
     },
     {
       text: t('bar.department'),
       href: '/departments',
-      Icon: <RectangleGroupIcon className="w-4 h-4"></RectangleGroupIcon>,
+      icon: <RectangleGroupIcon className="w-4 h-4"></RectangleGroupIcon>,
     },
     {
       text: t('bar.absence'),
       href: '/absence',
-      Icon: <MapIcon className="w-4 h-4"></MapIcon>,
+      icon: <MapIcon className="w-4 h-4"></MapIcon>,
     },
     {
       text: t('bar.setting'),
       href: '/setting',
-      Icon: <Cog6ToothIcon className="w-4 h-4"></Cog6ToothIcon>,
+      icon: <Cog6ToothIcon className="w-4 h-4"></Cog6ToothIcon>,
     },
   ];
   return (

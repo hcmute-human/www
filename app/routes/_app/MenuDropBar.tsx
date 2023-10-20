@@ -37,7 +37,7 @@ export default function MenuDropBar({
                     }
                   `}
                 >
-                  {item.Icon}
+                  {item.icon}
                   <span className="ml-1">{item.text}</span>
                 </Link>
               )}
