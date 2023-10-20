@@ -3,15 +3,14 @@ import MyTooltip from '@components/Tooltip';
 import { useLocation } from '@remix-run/react';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-export type PropsNavgigateType = {
-  text: string;
-  href: string;
-  Icon: any;
-};
 import { TooltipTrigger } from 'react-aria-components';
+import type { INavigationBarItem } from './types';
 
-export type NavigationBarProps = Array<PropsNavgigateType>;
-const NavigationEntry = ({ items }: { items: NavigationBarProps }) => {
+export default function NavigationBarItems({
+  items,
+}: {
+  items: INavigationBarItem[];
+}) {
   const location = useLocation();
   return (
     <ul className={`flex lg:flex-col gap-2 justify-center`}>
@@ -42,6 +41,4 @@ const NavigationEntry = ({ items }: { items: NavigationBarProps }) => {
       ))}
     </ul>
   );
-};
-
-export default NavigationEntry;
+}

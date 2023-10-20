@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import LayoutBar from './LayoutBar';
+import Header from './Header';
 import ToolBar from './ToolBar';
 import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import i18next from '@lib/i18n/index.server';
@@ -22,7 +22,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 function App() {
   return (
     <div className="flex flex-col lg:flex-row w-full min-h-screen">
-      <LayoutBar />
+      <Header />
       <div className="bg-primary-0 flex-grow">
         <div className="lg:inline-block w-full hidden">
           <ToolBar />
