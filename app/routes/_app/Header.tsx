@@ -52,7 +52,7 @@ export default function Header() {
       <NavigationBar
         navigationItems={navigationItems}
         toolBarItems={toolBarItems}
-      ></NavigationBar>
+      />
     </header>
   );
 }

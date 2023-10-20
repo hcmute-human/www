@@ -19,7 +19,7 @@ export default function NavigationBarItems({
           {pathname === i.href && (
             <motion.div
               layoutId="underline"
-              className="absolute -z-30 bg-primary-100 w-full h-full rounded-md"
+              className="absolute -z-30 bg-primary-100 w-full h-full rounded-lg"
             />
           )}
           <TooltipTrigger delay={200}>
@@ -27,7 +27,7 @@ export default function NavigationBarItems({
               href={i.href}
               className={clsx(
                 'no-underline flex items-center w-full text-primary-900 sm:py-2 gap-2 rounded-md lg:px-4 px-2',
-                { 'text-accent-500': location.pathname === i.href }
+                { 'text-accent-500': pathname === i.href }
               )}
             >
               <MyTooltip className="lg:hidden inline-block rounded bg-primary-100 px-4 py-1 mt-2">
