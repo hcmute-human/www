@@ -24,27 +24,27 @@ export default function Header() {
   ];
   const itemsNav: INavigationBarItem[] = [
     {
-      text: t('root.home'),
+      text: t('bar.home'),
       href: '/',
       Icon: <Square2StackIcon className="w-4 h-4"></Square2StackIcon>,
     },
     {
-      text: t('root.recruitment'),
+      text: t('bar.recruitment'),
       href: '/recuirment',
       Icon: <WrenchIcon className="w-4 h-4"></WrenchIcon>,
     },
     {
-      text: t('root.department'),
+      text: t('bar.department'),
       href: '/departments',
       Icon: <RectangleGroupIcon className="w-4 h-4"></RectangleGroupIcon>,
     },
     {
-      text: t('root.absence'),
+      text: t('bar.absence'),
       href: '/absence',
       Icon: <MapIcon className="w-4 h-4"></MapIcon>,
     },
     {
-      text: t('root.setting'),
+      text: t('bar.setting'),
       href: '/setting',
       Icon: <Cog6ToothIcon className="w-4 h-4"></Cog6ToothIcon>,
     },
