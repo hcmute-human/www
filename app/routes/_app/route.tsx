@@ -1,31 +1,23 @@
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import ToolBar from './ToolBar';
-import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
-import i18next from '@lib/i18n/index.server';
-
-export function handle() {
-  return { i18n: ['meta', 'home'] };
-}
-
-export const meta: MetaFunction<typeof loader> = ({ data: { title } = {} }) => {
-  return [{ title }];
-};
-
-export async function loader({ request }: LoaderFunctionArgs) {
-  const title = await i18next
-    .getFixedT(request, 'meta')
-    .then((x) => x('home.title'));
-  return { title };
-}
+import { useMatches } from '@remix-run/react';
 
 function App() {
+  const matches = useMatches();
+
   return (
     <div className="flex flex-col lg:flex-row w-full min-h-screen">
       <Header />
-      <div className="bg-primary-0 flex-grow">
-        <div className="lg:inline-block w-full hidden">
-          <ToolBar />
+      <div className="bg-primary-0 flex-grow px-4 py-2">
+        <div className="flex items-center justify-between">
+          <h1>
+            {(matches.at(-1)?.data as Record<string, string | undefined> | null)
+              ?.title ?? ''}
+          </h1>
+          <div className="hidden lg:block">
+            <ToolBar />
+          </div>
         </div>
         <Outlet />
       </div>
