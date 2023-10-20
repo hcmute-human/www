@@ -1,21 +1,19 @@
-import Logo from '@components/Logo';
 import {
+  ArrowLeftOnRectangleIcon,
+  Cog6ToothIcon,
   MapIcon,
   RectangleGroupIcon,
   Square2StackIcon,
   WrenchIcon,
-  Cog6ToothIcon,
-  BellIcon,
-  ArrowLeftOnRectangleIcon,
 } from '@heroicons/react/20/solid';
-import type { PropsNavgigateType } from './BarEntry';
-import Bar from './Bar';
 import { useTranslation } from 'react-i18next';
+import NavigationBar from './NavigationBar';
+import type { INavigationBarItem } from './types';
 
-function LayoutHeader() {
+export default function Header() {
   const { t } = useTranslation('home');
 
-  const itemsToolbar: Array<PropsNavgigateType> = [
+  const itemsToolbar: INavigationBarItem[] = [
     {
       text: t('logout'),
       href: '/logout',
@@ -24,7 +22,7 @@ function LayoutHeader() {
       ),
     },
   ];
-  const itemsNav: Array<PropsNavgigateType> = [
+  const itemsNav: INavigationBarItem[] = [
     {
       text: t('root.home'),
       href: '/',
@@ -53,9 +51,10 @@ function LayoutHeader() {
   ];
   return (
     <header className="lg:min-h-screen border-solid border-primary-200 lg:border-r-2 lg:border-b-0 border-b-2">
-      <Bar itemsNav={itemsNav} itemToolbar={itemsToolbar}></Bar>
+      <NavigationBar
+        navigationItems={itemsNav}
+        toolBarItems={itemsToolbar}
+      ></NavigationBar>
     </header>
   );
 }
-
-export default LayoutHeader;

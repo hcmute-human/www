@@ -1,31 +1,35 @@
-import type { NavigationBarProps, PropsNavgigateType } from './BarEntry';
-import { AnimatePresence } from 'framer-motion';
-import NavigationEntry from './BarEntry';
 import Logo from '@components/Logo';
-import MenuDropBar from './MenuDropBar';
-import ToolBar from './ToolBar';
 import ThemeSwitch from '@components/ThemeSwitch';
+import { AnimatePresence } from 'framer-motion';
+import MenuDropBar from './MenuDropBar';
+import NavigationBarItems from './NavigationBarItems';
+import ToolBar from './ToolBar';
+import type { INavigationBarItem } from './types';
 
 type Props = {
-  itemsNav: NavigationBarProps;
-  itemToolbar: NavigationBarProps;
+  navigationItems: INavigationBarItem[];
+  toolBarItems: INavigationBarItem[];
 };
-export default function Bar({ itemsNav, itemToolbar }: Props) {
+
+export default function NavigationBar({
+  navigationItems,
+  toolBarItems,
+}: Props) {
   return (
     <AnimatePresence>
       <nav className="flex lg:flex-col items-center justify-between gap-8 w-full h-full px-4 py-2 lg:px-0">
         <div className="flex lg:flex-col gap-4 w-full items-center px-4">
           <Logo className="w-20 lg:self-start" />
           <div className="sm:block hidden">
-            <NavigationEntry items={itemsNav} />
+            <NavigationBarItems items={navigationItems} />
           </div>
           <div className="sm:hidden">
-            <MenuDropBar items={itemsNav}></MenuDropBar>
+            <MenuDropBar items={navigationItems}></MenuDropBar>
           </div>
         </div>
         <div className="lg:mb-3 flex lg:flex-col items-center gap-4">
           <div className="lg:block hidden">
-            <NavigationEntry items={itemToolbar} />
+            <NavigationBarItems items={toolBarItems} />
           </div>
           <div className="text-left mr-5 lg:block hidden">
             <ThemeSwitch></ThemeSwitch>

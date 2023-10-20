@@ -1,10 +1,14 @@
-import { Menu, Transition } from '@headlessui/react';
-import type { NavigationBarProps } from './BarEntry';
 import Link from '@components/Link';
+import { Menu, Transition } from '@headlessui/react';
 import { useLocation } from '@remix-run/react';
+import type { INavigationBarItem } from './types';
 
-export default function MenuDropBar({ items }: { items: NavigationBarProps }) {
-  const location = useLocation();
+export default function MenuDropBar({
+  items,
+}: {
+  items: INavigationBarItem[];
+}) {
+  const { pathname } = useLocation();
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Menu.Button className="w-full justify-center rounded-md bg-accent-500 px-3 text-primary-50 rac-focus-visible:focus-outline">
@@ -27,7 +31,7 @@ export default function MenuDropBar({ items }: { items: NavigationBarProps }) {
                   href={item.href}
                   className={`no-underline relative flex items-center p-2
                     ${
-                      location.pathname.toString() === item.href
+                      pathname.toString() === item.href
                         ? 'text-accent-500 bg-primary-50 rounded-md w-full'
                         : 'text-primary-700'
                     }
