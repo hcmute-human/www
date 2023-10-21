@@ -19,7 +19,7 @@ export default function NavigationBar({
     <AnimatePresence>
       <nav className="flex lg:flex-col items-center justify-between gap-8 w-full h-full px-4 py-2 lg:px-0">
         <div className="flex lg:flex-col gap-4 w-full items-center px-4">
-          <Logo className="w-20 lg:self-start" />
+          <Logo className="w-20 lg:self-start lg:mt-3 lg:ml-3" />
           <div className="sm:block hidden">
             <NavigationBarItems items={navigationItems} />
           </div>
@@ -31,7 +31,7 @@ export default function NavigationBar({
           <div className="lg:block hidden">
             <NavigationBarItems items={toolBarItems} />
           </div>
-          <div className="text-left mr-5 lg:block hidden">
+          <div className="text-left mr-3 lg:block hidden">
             <ThemeSwitch></ThemeSwitch>
           </div>
           <div className="lg:hidden block">
