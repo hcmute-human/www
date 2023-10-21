@@ -24,7 +24,7 @@ export default function Switch({
     <AriaSwitch
       {...props}
       className={cn(
-        'flex group gap-2 rac-focus:outline-none items-center',
+        'flex group gap-4 rac-focus:outline-none items-center',
         className
       )}
     >
