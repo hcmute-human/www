@@ -16,7 +16,7 @@ export default function NavigationBarItems({
     <ul className={`flex lg:flex-col gap-2 justify-center`}>
       {items.map((i, idx) => (
         <li key={idx} className="lg:w-[24ch] relative">
-          {pathname === i.href && (
+          {pathname.startsWith(i.href) && (
             <motion.div
               layoutId="underline"
               className="absolute -z-30 bg-primary-100 w-full h-full rounded-lg"
