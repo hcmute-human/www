@@ -3,7 +3,7 @@
 
 import type { Session } from '@remix-run/node';
 import type { UIMatch as UIMatch } from '@remix-run/react';
-import type { ReactNode } from 'react';
+import type { TFunction } from 'i18next';
 
 declare global {
   interface SessionData {
@@ -11,9 +11,18 @@ declare global {
     refreshToken: string;
   }
 
+  interface RouteData {
+    title?: string;
+  }
+
   interface RouteHandle {
     i18n?: string | string[];
-    breadcrumb?: (match?: UIMatch<unknown, RouteHandle>) => ReactNode;
+    breadcrumb?: true;
+  }
+
+  interface BreadcrumbContext {
+    match: UIMatch<unknown, RouteHandle>;
+    t: TFunction<'meta', undefined>;
   }
 }
 
@@ -24,5 +33,8 @@ declare module '@remix-run/server-runtime' {
 }
 
 declare module '@remix-run/react' {
-  export function useMatches(): UIMatch<unknown, RouteHandle>[];
+  export function useMatches(): UIMatch<
+    RouteData | unknown,
+    RouteHandle | unknown
+  >[];
 }

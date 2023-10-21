@@ -48,7 +48,7 @@ export default function Header() {
     },
   ];
   return (
-    <header className="lg:min-h-screen border-solid border-primary-200 lg:border-r-2 lg:border-b-0 border-b-2">
+    <header className="lg:min-h-screen border-solid border-primary-200 lg:border-r lg:border-b-0 border-b">
       <NavigationBar
         navigationItems={navigationItems}
         toolBarItems={toolBarItems}
