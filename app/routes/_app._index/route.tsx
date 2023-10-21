@@ -7,14 +7,6 @@ import {
   type MetaFunction,
 } from '@remix-run/node';
 
-export function handle() {
-  return { i18n: ['meta', 'home'] };
-}
-
-export const meta: MetaFunction<typeof loader> = ({ data: { title } = {} }) => {
-  return [{ title }];
-};
-
 export async function loader({
   request,
   context: { session },
@@ -30,6 +22,10 @@ export async function loader({
     .then((x) => x('home.title'));
   return json({ title });
 }
+
+export const meta: MetaFunction<typeof loader> = ({ data: { title } = {} }) => {
+  return [{ title: title }];
+};
 
 function Home() {
   return <div>Homepage</div>;
