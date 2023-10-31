@@ -72,13 +72,16 @@ export class ApiClient {
           ? 'multipart/form-data'
           : 'application/json';
     }
+    const [path, query] = url.split('?', 2);
     return fromPromise(
       fetch(
         this._options.baseUrl +
           '/' +
-          trim(url, '/').split('/').join('/') +
+          trim(path, '/').split('/').join('/') +
           '/' +
-          this._options.version,
+          this._options.version +
+          '?' +
+          query,
         options
           ? {
               ...options,
