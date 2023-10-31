@@ -3,22 +3,29 @@ import type { ReactNode } from 'react';
 import { Button as AriaButton, type ButtonProps } from 'react-aria-components';
 import Link from './Link';
 
-interface DefaultProps extends ButtonProps {
-  variant?: 'accent' | 'primary';
+interface BaseProps {
+  size?: 'sm' | 'md';
+  variant?: 'accent' | 'primary' | 'negative';
 }
+
+type DefaultProps = BaseProps & ButtonProps;
 
 type Props =
   | ({ as?: never } & DefaultProps)
-  | ({ as: 'link'; variant?: 'accent' | 'primary' } & Parameters<
-      typeof Link
-    >[0]);
+  | ({ as: 'link' } & BaseProps & Parameters<typeof Link>[0]);
 
 const baseClass =
-  'px-4 py-0.5 rounded-lg transition-[background-color_outline] ease-in-out font-medium';
+  'leading-none rounded-lg transition-[background-color_outline] ease-in-out font-medium';
 
 const variantClass: Record<NonNullable<Props['variant']>, string> = {
   accent: 'bg-accent-500 text-primary-100 rac-hover:bg-accent-600',
   primary: 'bg-primary-900 text-primary-100',
+  negative: 'bg-negative-500 text-primary-100',
+};
+
+const sizeClass: Record<NonNullable<Props['size']>, string> = {
+  sm: 'p-1',
+  md: 'px-4 py-2',
 };
 
 const disabledClass =
@@ -30,6 +37,7 @@ export function buildVariantClass(variant: NonNullable<Props['variant']>) {
 
 export default function Button({
   className,
+  size = 'md',
   variant = 'accent',
   ...props
 }: Props) {
@@ -39,7 +47,12 @@ export default function Button({
       node = (
         <Link
           {...props}
-          className={cn(baseClass, variantClass[variant], className)}
+          className={cn(
+            baseClass,
+            variantClass[variant],
+            sizeClass[size],
+            className
+          )}
         />
       );
       break;
@@ -51,6 +64,7 @@ export default function Button({
           className={cn(
             baseClass,
             variantClass[variant],
+            sizeClass[size],
             disabledClass,
             className
           )}

@@ -11,11 +11,11 @@ interface Props extends Omit<CheckboxProps, 'chilren'> {
   checkboxClassName?: string;
 }
 
-const baseClass1 = 'group rounded outline-none';
-const baseClass2 =
-  'w-4 h-4 p-0.5 text-lg border border-primary-300 rounded transition-[outline_background-color_border-color] ease-in-out group-rac-selected:bg-primary-900 group-rac-selected:border-primary-900 group-rac-focus-visible:outline-focus';
-const baseClass3 =
-  'stroke-primary-50 transition-[stroke-dashoffset_stroke] ease-in-out duration-300 [stroke-dashoffset:66] group-rac-selected:[stroke-dashoffset:44]';
+const baseClass = {
+  checkbox: 'group rounded outline-none',
+  div: 'w-4 h-4 p-0.5 text-lg border border-primary-300 rounded transition-[outline_background-color_border-color] ease-in-out group-rac-indeterminate:bg-primary-900 group-rac-indeterminate:border-primary-900 group-rac-selected:bg-primary-900 group-rac-selected:border-primary-900 group-rac-focus-visible:outline-focus',
+  svg: 'stroke-primary-50',
+};
 
 const InternalCheckbox = forwardRef<HTMLInputElement, Props>(
   function InternalCheckbox(
@@ -23,29 +23,50 @@ const InternalCheckbox = forwardRef<HTMLInputElement, Props>(
     ref
   ) {
     return (
-      <AriaCheckbox {...props} ref={ref} className={cn(baseClass1, className)}>
-        <div className={cn(baseClass2, checkboxClassName)}>
-          <svg
-            viewBox="-2 -2 20 20"
-            aria-hidden="true"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="3px"
-            strokeDasharray="22px"
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            className={baseClass3}
-          >
-            <polyline points="1 9 7 14 15 4" />
-          </svg>
-        </div>
-        <span className="text-sm text-primary-700">{children}</span>
+      <AriaCheckbox
+        {...props}
+        ref={ref}
+        className={cn(baseClass.checkbox, className)}
+      >
+        {({ isIndeterminate, isSelected }) => (
+          <>
+            <div className={cn(baseClass.div, checkboxClassName)}>
+              <svg
+                viewBox="-2 -2 20 20"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3px"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                className={baseClass.svg}
+              >
+                {isIndeterminate ? (
+                  <rect x={1} y={8.5} width={15} height={1} />
+                ) : isSelected ? (
+                  <polyline points="1 9 7 14 15 4" />
+                ) : null}
+              </svg>
+            </div>
+            {children ? (
+              <span className="text-sm text-primary-700">{children}</span>
+            ) : null}
+          </>
+        )}
       </AriaCheckbox>
     );
   }
 );
 
-export default function Checkbox(props: Props) {
+const Checkbox = forwardRef<HTMLInputElement, Props>(function (props, ref) {
   const { [props.name as string]: field } = useFormFieldsContext() ?? {};
-  return <InternalCheckbox defaultSelected={field?.defaultValue} {...props} />;
-}
+  return (
+    <InternalCheckbox
+      ref={ref}
+      defaultSelected={field?.defaultValue}
+      {...props}
+    />
+  );
+});
+
+export default Checkbox;
