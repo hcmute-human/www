@@ -1,0 +1,19 @@
+{
+    "empty": "There is currently no departments",
+    "table": {
+        "ariaLabel": "Table of deparments",
+        "header": {
+            "name": "Name",
+            "id": "ID",
+            "createdTime": "Created Time",
+            "actions": "Actions"
+        },
+        "body": {
+            "empty": "There is currently no departments",
+            "actions": {
+                "details": "Details",
+                "delete": "Delete"
+            }
+        }
+    }
+}
