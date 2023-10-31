@@ -12,17 +12,17 @@
   --theme-primary-900: 0.11 0.11 0.11;
   --theme-primary-950: 0.059 0.059 0.059;
 
-  --theme-accent-50: 0.882 0.933 1;
-  --theme-accent-100: 0.741 0.859 1;
-  --theme-accent-200: 0.482 0.714 0.996;
-  --theme-accent-300: 0.224 0.573 0.996;
-  --theme-accent-400: 0.004 0.431 0.953;
-  --theme-accent-500: 0.004 0.318 0.706;
-  --theme-accent-600: 0.004 0.251 0.557;
-  --theme-accent-700: 0.004 0.188 0.42;
-  --theme-accent-800: 0 0.125 0.278;
-  --theme-accent-900: 0 0.063 0.141;
-  --theme-accent-950: 0 0.035 0.078;
+  --theme-accent-50: 215deg 79% 95%;
+  --theme-accent-100: 214deg 77% 85%;
+  --theme-accent-200: 214deg 77% 75%;
+  --theme-accent-300: 214deg 77% 64%;
+  --theme-accent-400: 214deg 77% 54%;
+  --theme-accent-500: 214deg 96% 44%;
+  --theme-accent-600: 214deg 97% 36%;
+  --theme-accent-700: 214deg 96% 28%;
+  --theme-accent-800: 214deg 96% 20%;
+  --theme-accent-900: 214deg 97% 12%;
+  --theme-accent-950: 213deg 100% 4%;
 
   --theme-negative-50: 0.992 0.89 0.89;
   --theme-negative-100: 0.984 0.8 0.796;
@@ -63,17 +63,17 @@
   --theme-primary-100: 0.11 0.11 0.11;
   --theme-primary-50: 0.059 0.059 0.059;
 
-  --theme-accent-950: 0.961 0.969 1;
-  --theme-accent-900: 0.898 0.918 1;
-  --theme-accent-800: 0.82 0.855 1;
-  --theme-accent-700: 0.722 0.773 1;
-  --theme-accent-600: 0.639 0.706 1;
-  --theme-accent-500: 0.545 0.631 1;
-  --theme-accent-400: 0.239 0.38 1;
-  --theme-accent-300: 0 0.169 0.922;
-  --theme-accent-200: 0 0.114 0.62;
-  --theme-accent-100: 0 0.055 0.302;
-  --theme-accent-50: 0 0.027 0.161;
+  --theme-accent-50: 227deg 100% 97.3%;
+  --theme-accent-100: 225deg 95.1% 92%;
+  --theme-accent-200: 224deg 97% 86.9%;
+  --theme-accent-300: 224deg 97.8% 81.8%;
+  --theme-accent-400: 224deg 96.6% 76.7%;
+  --theme-accent-500: 224deg 97.2% 71.6%;
+  --theme-accent-600: 224deg 54.5% 58.6%;
+  --theme-accent-700: 225deg 38.5% 45.9%;
+  --theme-accent-800: 224deg 38.1% 32.9%;
+  --theme-accent-900: 224deg 39.2% 20%;
+  --theme-accent-950: 223deg 38.9% 7.1%;
 
   --theme-negative-950: 0.992 0.89 0.89;
   --theme-negative-900: 0.984 0.8 0.796;
