@@ -2,19 +2,14 @@ import Button from '@components/Button';
 import Cell from '@components/Cell';
 import Checkbox from '@components/Checkbox';
 import Column from '@components/Column';
+import { Listbox } from '@components/Listbox';
 import { PaginationBar } from '@components/PaginationBar';
 import Row from '@components/Row';
 import Table from '@components/Table';
 import TableBody from '@components/TableBody';
 import TableHeader from '@components/TableHeader';
 import UncontrolledTextField from '@components/UncontrolledTextField';
-import { Listbox, Transition, type ListboxProps } from '@headlessui/react';
-import {
-  CheckIcon,
-  ChevronUpDownIcon,
-  InformationCircleIcon,
-  XCircleIcon,
-} from '@heroicons/react/20/solid';
+import { InformationCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import { useDebounceSubmit } from '@lib/hooks/debounceSubmit';
 import { useSearchParamsOr } from '@lib/hooks/searchParams';
 import type { Department } from '@lib/models/department';
@@ -38,7 +33,7 @@ import {
   type SortingState,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
-import { Fragment, useMemo, useState, type Key, type ReactNode } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { GetDepartmentsResult } from './types';
 
@@ -60,92 +55,6 @@ const sizes = [
   { id: 4, value: 50 },
   { id: 5, value: 100 },
 ];
-
-function MyListbox<TType extends { id: Key }, TActualType>({
-  items,
-  render,
-  ...props
-}: Omit<ListboxProps<'div', TType, TActualType>, 'value' | 'onChange'> & {
-  items: TType[];
-  value?: TType;
-  onChange?(value: TType): void;
-  render(value: TType): ReactNode;
-}) {
-  return (
-    <Listbox<'div', TType, TActualType> {...props}>
-      {({ open, value }) => (
-        <>
-          <div className="relative max-w-[16ch]">
-            <Listbox.Button className="leading-none relative w-full cursor-default rounded-md bg-primary-0 py-2 pl-2 pr-6 text-left shadow-sm border border-primary-200 rac-focus-visible:outline-focus">
-              <span className="block truncate">{render(value)}</span>
-              <span className="pointer-events-none absolute inset-y-0 right-2 flex items-center">
-                <ChevronUpDownIcon
-                  className="h-4 w-4 text-primary-300"
-                  aria-hidden="true"
-                />
-              </span>
-            </Listbox.Button>
-
-            <Transition
-              show={open}
-              as={Fragment}
-              enter="transition transform ease-in-out"
-              enterFrom="-translate-y-2 opacity-0"
-              leave="transition ease-in-out"
-              leaveTo="opacity-0 -translate-y-2"
-            >
-              <Listbox.Options className="absolute z-10 mt-1 w-full overflow-auto rounded-md bg-primary-0 py-2 text-base shadow-lg border border-primary-200">
-                {items.map((x) => (
-                  <Listbox.Option
-                    key={x.id}
-                    className={({ active }) =>
-                      clsx(
-                        'relative cursor-default select-none py-2 pl-2 pr-6',
-                        {
-                          'bg-accent-500 text-primary-50': active,
-                        }
-                      )
-                    }
-                    value={x}
-                  >
-                    {({ selected, active }) => {
-                      return (
-                        <>
-                          <span
-                            className={clsx(
-                              selected ? 'font-semibold' : 'font-normal',
-                              'block truncate'
-                            )}
-                          >
-                            {render(x)}
-                          </span>
-
-                          {selected ? (
-                            <span
-                              className={clsx(
-                                'absolute inset-y-0 right-2 flex items-center',
-                                { 'text-primary-50': active }
-                              )}
-                            >
-                              <CheckIcon
-                                className="h-4 w-4"
-                                aria-hidden="true"
-                              />
-                            </span>
-                          ) : null}
-                        </>
-                      );
-                    }}
-                  </Listbox.Option>
-                ))}
-              </Listbox.Options>
-            </Transition>
-          </div>
-        </>
-      )}
-    </Listbox>
-  );
-}
 
 export default function DepartmentTable() {
   const [t] = useTranslation('departments');
@@ -264,16 +173,6 @@ export default function DepartmentTable() {
 
   return (
     <>
-      <MyListbox
-        items={sizes}
-        value={selectedSize}
-        onChange={(x) => {
-          setSelectedSize(x);
-          searchParams.set('size', x.value + '');
-          submit(searchParams, { replace: true });
-        }}
-        render={(x) => `Show ${x.value}`}
-      />
       <Table
         className={clsx('w-full table-auto mt-4', {
           'animate-pulse pointer-events-none': state === 'loading',
@@ -372,15 +271,31 @@ export default function DepartmentTable() {
           ))}
         </tfoot> */}
       </Table>
-      <Form
-        method="get"
-        preventScrollReset
-        className={clsx('mt-4', {
+      <div
+        className={clsx('flex justify-between gap-8 mt-4 items-center', {
           'animate-pulse pointer-events-none': state === 'loading',
         })}
       >
-        <PaginationBar totalCount={totalCount} />
-      </Form>
+        <div className="flex w-full gap-2 items-center">
+          Displaying
+          <Listbox
+            items={sizes}
+            value={selectedSize}
+            onChange={(x) => {
+              setSelectedSize(x);
+              searchParams.set('size', x.value + '');
+              submit(searchParams, { replace: true });
+            }}
+            placement="top"
+            render={({ value }) => value}
+            className="w-full max-w-[5rem]"
+          />
+          out of {totalCount}.
+        </div>
+        <Form method="get" preventScrollReset>
+          <PaginationBar totalCount={totalCount} />
+        </Form>
+      </div>
     </>
   );
 }
