@@ -254,30 +254,17 @@ export default function DepartmentTable() {
             </Row>
           ))}
         </TableBody>
-        {/* <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot> */}
       </Table>
       <div
-        className={clsx('flex justify-between gap-8 mt-4 items-center', {
-          'animate-pulse pointer-events-none': state === 'loading',
-        })}
+        className={clsx(
+          'flex justify-between xl:justify-start gap-8 mt-4 items-center',
+          {
+            'animate-pulse pointer-events-none': state === 'loading',
+          }
+        )}
       >
-        <div className="flex w-full gap-2 items-center">
-          Displaying
+        <div className="flex gap-2 items-center min-w-max">
+          <span>Displaying</span>
           <Listbox
             items={sizes}
             value={selectedSize}
@@ -288,9 +275,9 @@ export default function DepartmentTable() {
             }}
             placement="top"
             render={({ value }) => value}
-            className="w-full max-w-[5rem]"
+            className="w-16"
           />
-          out of {totalCount}.
+          <span className="min-w-max">out of {totalCount}.</span>
         </div>
         <Form method="get" preventScrollReset>
           <PaginationBar totalCount={totalCount} />
