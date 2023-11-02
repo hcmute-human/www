@@ -1,4 +1,4 @@
-import { displayP3ToHex } from '@lib/utils';
+import { displayP3ToHex, rgbToHex } from '@lib/utils';
 import { generateJSXMeshGradient } from 'meshgrad';
 import { useEffect, useRef, useState } from 'react';
 
@@ -15,7 +15,7 @@ export default function MeshGradient({
     setGradientStyle(
       generateJSXMeshGradient(
         6,
-        displayP3ToHex(
+        rgbToHex(
           window
             .getComputedStyle(ref.current!)
             .getPropertyValue('background-color')
