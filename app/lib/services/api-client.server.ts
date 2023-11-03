@@ -117,6 +117,13 @@ export class ApiClient {
     });
   }
 
+  public delete(input: string | URL, options?: RequestOptions) {
+    return this.fetch(input, {
+      ...options,
+      method: 'DELETE',
+    });
+  }
+
   private static makeHeaders(headers?: HeadersInit): Record<string, string> {
     if (!headers) return {};
     return Array.isArray(headers)

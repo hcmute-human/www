@@ -9,13 +9,13 @@ import Header from './Header';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const title = await i18next
-    .getFixedT(request, 'meta')
-    .then((t) => t('home.title'));
+    .getFixedT(request, 'home')
+    .then((t) => t('meta.title'));
   return json({ title });
 }
 
 export const handle = {
-  i18n: 'meta',
+  i18n: 'home',
   breadcrumb: true,
 };
 

@@ -1,7 +1,7 @@
 import { cn } from '@lib/utils';
-import type { HTMLAttributes } from 'react';
+import type { TdHTMLAttributes } from 'react';
 
-interface Props extends HTMLAttributes<HTMLTableCellElement> {}
+interface Props extends TdHTMLAttributes<HTMLTableCellElement> {}
 
 export default function Cell({ className, ...props }: Props) {
   return (

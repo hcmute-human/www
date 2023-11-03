@@ -1,7 +1,7 @@
 import Button from '@components/Button';
 import Checkbox from '@components/Checkbox';
 import Form from '@components/Form';
-import InlineAlert from '@components/InlineAlert';
+import BoxAlert from '@components/InlineAlert';
 import ProgressCircle from '@components/ProgressCircle';
 import TextField from '@components/TextField';
 import TextLink from '@components/TextLink';
@@ -128,7 +128,7 @@ export default function Route() {
           leave="transition ease-in-out duration-300"
           leaveTo="opacity-0 translate-y-2"
         >
-          <InlineAlert
+          <BoxAlert
             variant="negative"
             title={t('unknownError')}
             body={error?.[0]!}

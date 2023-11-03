@@ -1,6 +1,6 @@
 import Button from '@components/Button';
 import Form from '@components/Form';
-import InlineAlert from '@components/InlineAlert';
+import BoxAlert from '@components/InlineAlert';
 import ProgressCircle from '@components/ProgressCircle';
 import TextField from '@components/TextField';
 import { Transition } from '@headlessui/react';
@@ -77,7 +77,7 @@ export default function Route() {
           >
             {ok ? (
               <>
-                <InlineAlert
+                <BoxAlert
                   variant="positive"
                   title={t('successAlert.title')}
                   body={t('successAlert.body')}
@@ -155,7 +155,7 @@ export default function Route() {
                   leave="transition ease-in-out duration-300"
                   leaveTo="opacity-0 translate-y-2"
                 >
-                  <InlineAlert
+                  <BoxAlert
                     variant="negative"
                     title={t('unknownError')}
                     body={error?.[0]!}

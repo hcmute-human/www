@@ -1,8 +1,8 @@
 import type { Config } from 'tailwindcss';
-import tailwindCssAnimate from 'tailwindcss-animate';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import tailwindCssReactAriaComponents from 'tailwindcss-react-aria-components';
+import { withAnimations } from 'animated-tailwindcss';
 
 const fontFamilyBase =
   "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif";
@@ -94,10 +94,9 @@ const config: Config = {
   },
   darkMode: ['class'],
   plugins: [
-    tailwindCssAnimate,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     tailwindCssReactAriaComponents({ prefix: 'rac' }),
   ],
 };
 
-export default config;
+export default withAnimations(config as any);

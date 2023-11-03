@@ -42,7 +42,6 @@ export default function ProgressCircle({
         strokeDasharray={`${c} ${c}`}
         strokeDashoffset={offset}
         transform="rotate(-90 16 16)"
-        className="opacity-80"
       >
         {props.isIndeterminate && (
           <animateTransform
