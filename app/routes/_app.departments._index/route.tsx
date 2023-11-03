@@ -1,4 +1,3 @@
-import TextLink from '@components/TextLink';
 import i18next from '@lib/i18n/index.server';
 import { SessionApiClient } from '@lib/services/session-api-client.server';
 import {
@@ -16,10 +15,11 @@ import { Await, useLoaderData } from '@remix-run/react';
 import { Suspense } from 'react';
 import DepartmentTable from './DepartmentTable';
 import type { GetDepartmentsResult } from './types';
+import Button from '@components/Button';
+import { PlusCircleIcon } from '@heroicons/react/20/solid';
 
 export const handle = {
-  i18n: ['meta', 'departments'],
-  breadcrumb: () => <TextLink href="/departments">Departments</TextLink>,
+  i18n: 'departments',
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data: { title } = {} }) => {
@@ -44,8 +44,8 @@ export async function loader({
     () => ({ totalCount: 0, items: [] })
   ) as Promise<GetDepartmentsResult>;
   const title = await i18next
-    .getFixedT(request, 'meta')
-    .then((t) => t('departments.title'));
+    .getFixedT(request, 'departments')
+    .then((t) => t('meta.title'));
 
   return defer({
     title,
@@ -54,10 +54,21 @@ export async function loader({
 }
 
 export default function Route() {
-  const { departmentsPromise } = useLoaderData<typeof loader>();
+  const { title, departmentsPromise } = useLoaderData<typeof loader>();
 
   return (
     <>
+      <div className="flex justify-between items-center gap-8">
+        <h1>{title}</h1>
+        <Button
+          as="link"
+          href="/departments/new"
+          className="w-fit flex gap-2 items-center capitalize"
+        >
+          <PlusCircleIcon className="w-4" />
+          <span className="mr-1">Create department</span>
+        </Button>
+      </div>
       <Suspense fallback="Loading">
         <Await resolve={departmentsPromise}>
           <DepartmentTable />

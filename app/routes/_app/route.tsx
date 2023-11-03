@@ -53,16 +53,12 @@ function App() {
         </>
       ),
     }));
-  const title = (
-    matches.at(-1)?.data as unknown as Record<string, string | undefined> | null
-  )?.title;
 
   return (
     <div className="flex flex-col lg:flex-row w-full min-h-screen">
       <Header />
       <div className="bg-primary-0 flex-grow p-4">
-        <Breadcrumbs items={breadcrumbItems} className="mb-4" />
-        {title ? <h1 className="leading-none">{title}</h1> : null}
+        <Breadcrumbs items={breadcrumbItems} />
         <div className="mt-4">
           <Outlet />
         </div>
