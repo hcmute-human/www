@@ -1,7 +1,7 @@
 import { cn } from '@lib/utils';
 import type { ReactNode } from 'react';
 import { Button as AriaButton, type ButtonProps } from 'react-aria-components';
-import Link from './Link';
+import Link, { type LinkProps } from './Link';
 
 interface BaseProps {
   size?: 'sm' | 'md';
@@ -12,7 +12,7 @@ type DefaultProps = BaseProps & ButtonProps;
 
 type Props =
   | ({ as?: never } & DefaultProps)
-  | ({ as: 'link' } & BaseProps & Parameters<typeof Link>[0]);
+  | ({ as: 'link' } & BaseProps & Omit<LinkProps, 'href'> & { href: string });
 
 const baseClass =
   'leading-none rounded-lg transition-[background-color_outline] ease-in-out font-medium';
