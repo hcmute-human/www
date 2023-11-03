@@ -18,8 +18,8 @@ export const meta: MetaFunction<typeof loader> = ({ data: { title } = {} }) => {
 export async function loader({ request }: LoaderFunctionArgs) {
   return json({
     title: await i18next
-      .getFixedT(request, 'meta')
-      .then((t) => t('departments.title')),
+      .getFixedT(request, 'departments')
+      .then((t) => t('meta.title')),
   });
 }
 
