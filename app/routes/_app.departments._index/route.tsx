@@ -1,22 +1,22 @@
+import Button from '@components/Button';
+import { PlusCircleIcon } from '@heroicons/react/20/solid';
 import i18next from '@lib/i18n/index.server';
 import { SessionApiClient } from '@lib/services/session-api-client.server';
-import {
-  filterable,
-  pageable,
-  searchParams,
-} from '@lib/utils/searchParams.server';
+import { toActionErrorsAsync } from '@lib/utils/error.server';
+import { pageable, searchParams } from '@lib/utils/searchParams.server';
 import {
   defer,
+  json,
   redirect,
+  type ActionFunctionArgs,
   type LoaderFunctionArgs,
   type MetaFunction,
 } from '@remix-run/node';
 import { Await, useLoaderData } from '@remix-run/react';
 import { Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import DepartmentTable from './DepartmentTable';
 import type { GetDepartmentsResult } from './types';
-import Button from '@components/Button';
-import { PlusCircleIcon } from '@heroicons/react/20/solid';
 
 export const handle = {
   i18n: 'departments',
@@ -30,7 +30,12 @@ export async function loader({
   request,
   context: { session },
 }: LoaderFunctionArgs) {
-  const params = filterable(pageable(searchParams(request)), 'name');
+  const params = pageable(
+    searchParams(request, {
+      order: '-createdTime',
+    })
+  );
+
   const api = SessionApiClient.from(session);
   if (!(await api.authorize({ permissions: ['read:department'] }))) {
     throw redirect('/');
@@ -54,12 +59,13 @@ export async function loader({
 }
 
 export default function Route() {
-  const { title, departmentsPromise } = useLoaderData<typeof loader>();
+  const { departmentsPromise } = useLoaderData<typeof loader>();
+  const { t } = useTranslation('departments');
 
   return (
     <>
-      <div className="flex justify-between items-center gap-8">
-        <h1>{title}</h1>
+      <div className="flex justify-between items-center gap-8 mt-4">
+        <h1>{t('h1')}</h1>
         <Button
           as="link"
           href="/departments/new"
@@ -76,4 +82,24 @@ export default function Route() {
       </Suspense>
     </>
   );
+}
+
+export async function action({
+  request,
+  context: { session },
+}: ActionFunctionArgs) {
+  const api = SessionApiClient.from(session);
+  const formData = await request.formData();
+  if (formData.get('_action') === 'delete') {
+    const result = await api.delete(`departments/${formData.get('id')}`);
+    if (result.isErr()) {
+      return json({
+        ok: false,
+        error: await toActionErrorsAsync(result.error),
+        id: formData.get('id') as string,
+      });
+    }
+    return json({ ok: true });
+  }
+  return json(null);
 }

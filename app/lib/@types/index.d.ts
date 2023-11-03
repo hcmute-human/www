@@ -10,3 +10,8 @@ declare namespace NodeJS {
     COOKIE_SECRET?: string;
   }
 }
+
+declare module 'tailwindcss-animated' {
+  const plugin: { handler: () => void };
+  export = plugin;
+}

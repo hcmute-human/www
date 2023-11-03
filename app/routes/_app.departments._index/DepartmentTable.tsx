@@ -1,5 +1,3 @@
-import Button from '@components/Button';
-import Cell from '@components/Cell';
 import Checkbox from '@components/Checkbox';
 import Column from '@components/Column';
 import { Listbox } from '@components/Listbox';
@@ -9,7 +7,6 @@ import Table from '@components/Table';
 import TableBody from '@components/TableBody';
 import TableHeader from '@components/TableHeader';
 import UncontrolledTextField from '@components/UncontrolledTextField';
-import { InformationCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import { useDebounceSubmit } from '@lib/hooks/debounceSubmit';
 import { useSearchParamsOr } from '@lib/hooks/searchParams';
 import type { Department } from '@lib/models/department';
@@ -35,7 +32,9 @@ import {
 import clsx from 'clsx';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import DepartmentRow from './DepartmentRow';
 import type { GetDepartmentsResult } from './types';
+import Cell from '@components/Cell';
 
 declare module '@tanstack/table-core' {
   interface FilterFns {
@@ -62,6 +61,7 @@ export default function DepartmentTable() {
   const [searchParams] = useSearchParams();
   const [{ name, size }] = useSearchParamsOr({ name: '', size: 10 });
   const { state } = useNavigation();
+  const submitting = state === 'submitting';
   const sortedDepartments = items;
   const submit = useDebounceSubmit(100);
   const [rowSelection, setRowSelection] = useState({});
@@ -73,22 +73,15 @@ export default function DepartmentTable() {
         id: 'select',
         header: ({ table }) => (
           <Checkbox
-            checkboxClassName="mt-2 lg:mt-0"
+            checkboxClassName="mt-2 lg:mt-0 bg-primary-0"
             isSelected={table.getIsAllRowsSelected()}
             isIndeterminate={table.getIsSomeRowsSelected()}
             onChange={(x) => table.toggleAllRowsSelected(x)}
           />
         ),
-        cell: ({ row }) => (
-          <Checkbox
-            isSelected={row.getIsSelected()}
-            onChange={(x) => row.toggleSelected(x)}
-          />
-        ),
       }),
       columnHelper.accessor('name', {
         header: t('table.header.name'),
-        cell: (info) => info.getValue(),
         enableSorting: true,
         enableColumnFilter: true,
         filterFn: 'fuzzyFilter',
@@ -96,43 +89,16 @@ export default function DepartmentTable() {
       }),
       columnHelper.accessor('id', {
         header: t('table.header.id'),
-        cell: (info) => info.getValue(),
         enableColumnFilter: false,
       }),
       columnHelper.accessor('createdTime', {
         header: t('table.header.createdTime'),
-        cell: (info) =>
-          Intl.DateTimeFormat('en-US', {
-            dateStyle: 'medium',
-            timeStyle: 'short',
-          }).format(new Date(info.getValue())),
         enableSorting: true,
         enableColumnFilter: false,
       }),
       columnHelper.display({
         id: 'actions',
         header: t('table.header.actions'),
-        cell: (info) => (
-          <div className="flex items-stretch gap-2 w-max">
-            <Button
-              as="link"
-              href={`/departments/${info.row.getValue<string>('id')}`}
-              size="sm"
-              aria-label={t('table.body.actions.details')}
-            >
-              <InformationCircleIcon className="w-5 h-5" />
-            </Button>
-            <Button
-              as="link"
-              variant="negative"
-              href={`/departments/${info.row.getValue<string>('id')}`}
-              size="sm"
-              aria-label={t('table.body.actions.delete')}
-            >
-              <XCircleIcon className="w-5 h-5" />
-            </Button>
-          </div>
-        ),
       }),
     ],
     [t]
@@ -173,95 +139,83 @@ export default function DepartmentTable() {
 
   return (
     <>
-      <Table
-        className={clsx('w-full table-auto mt-4', {
-          'animate-pulse pointer-events-none': state === 'loading',
-        })}
-      >
-        <TableHeader className="text-left">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <Row key={headerGroup.id} className="align-top lg:align-middle">
-              {headerGroup.headers.map((header) => (
-                <Column
-                  key={header.id}
-                  className={clsx({
-                    'w-0': header.id === 'select',
-                    'hidden lg:table-cell': header.id === 'id',
-                  })}
-                >
-                  <div className="lg:flex items-center gap-8 w-full">
-                    <div
-                      className={clsx('flex gap-2', {
-                        'cursor-pointer select-none':
-                          header.column.getCanSort(),
-                      })}
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      <span>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </span>
-                      {{
-                        asc: '🔼',
-                        desc: '🔽',
-                      }[header.column.getIsSorted() as string] ?? null}
+      <div className="max-h-[32rem] overflow-y-auto mt-4">
+        <Table
+          className={clsx('w-full table-auto', {
+            'animate-twPulse pointer-events-none': submitting,
+          })}
+        >
+          <TableHeader className="text-left">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <Row key={headerGroup.id} className="align-top lg:align-middle">
+                {headerGroup.headers.map((header) => (
+                  <Column
+                    key={header.id}
+                    className={clsx({
+                      'w-0': header.id === 'select',
+                      'hidden lg:table-cell': header.id === 'id',
+                    })}
+                  >
+                    <div className="lg:flex items-center gap-8 w-full">
+                      <div
+                        className={clsx('flex gap-2', {
+                          'cursor-pointer select-none':
+                            header.column.getCanSort(),
+                        })}
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        <span>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </span>
+                        {{
+                          asc: '🔼',
+                          desc: '🔽',
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
+                      {header.column.getCanFilter() ? (
+                        <UncontrolledTextField
+                          type="text"
+                          id={header.column.id}
+                          name={header.column.id}
+                          inputClassName="max-w-[32ch] w-full text-sm font-normal"
+                          defaultValue={name}
+                          onChange={(value) => {
+                            header.column.setFilterValue(value);
+                            searchParams.set(header.column.id, value);
+                            submit(searchParams, { replace: true });
+                          }}
+                        />
+                      ) : null}
                     </div>
-                    {header.column.getCanFilter() ? (
-                      <UncontrolledTextField
-                        type="text"
-                        id={header.column.id}
-                        name={header.column.id}
-                        inputClassName="max-w-[32ch] w-full text-sm font-normal"
-                        defaultValue={name}
-                        onChange={(value) => {
-                          header.column.setFilterValue(value);
-                          searchParams.set(header.column.id, value);
-                          submit(searchParams, { replace: true });
-                        }}
-                      />
-                    ) : null}
-                  </div>
-                </Column>
-              ))}
-            </Row>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <Row
-              key={row.id}
-              className={clsx(
-                'transition-[background-color_outline] duration-75 ease-in-out hover:bg-primary-50 focus-within:outline-focus-within',
-                {
-                  'bg-primary-50': row.getIsSelected(),
-                }
-              )}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <Cell
-                  key={cell.id}
-                  className={clsx({
-                    'hidden lg:table-cell': cell.column.id === 'id',
-                  })}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Cell>
-              ))}
-            </Row>
-          ))}
-        </TableBody>
-      </Table>
+                  </Column>
+                ))}
+              </Row>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.length === 0 ? (
+              <Row>
+                <Cell colSpan={100}>No departments found.</Cell>
+              </Row>
+            ) : (
+              table
+                .getRowModel()
+                .rows.map((row) => (
+                  <DepartmentRow row={row} key={row.getValue<string>('id')} />
+                ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
       <div
-        className={clsx(
-          'flex justify-between xl:justify-start gap-8 mt-4 items-center',
-          {
-            'animate-pulse pointer-events-none': state === 'loading',
-          }
-        )}
+        className={clsx('flex justify-between gap-8 mt-4 items-center', {
+          'animate-twPulse pointer-events-none': submitting,
+        })}
       >
         <div className="flex gap-2 items-center min-w-max">
           <span>Displaying</span>

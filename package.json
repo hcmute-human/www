@@ -57,6 +57,7 @@
     "@types/source-map-support": "^0.5.8",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@typescript-eslint/parser": "^6.7.3",
+    "animated-tailwindcss": "^4.0.0",
     "autoprefixer": "^10.4.16",
     "chokidar": "^3.5.3",
     "cssnano": "^6.0.1",

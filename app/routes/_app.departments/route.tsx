@@ -7,7 +7,7 @@ import {
 import { Outlet } from '@remix-run/react';
 
 export const handle = {
-  i18n: 'meta',
+  i18n: 'departments',
   breadcrumb: true,
 };
 
