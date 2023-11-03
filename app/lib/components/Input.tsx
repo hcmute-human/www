@@ -1,16 +1,13 @@
-import { cn } from '@lib/utils';
+import clsx from 'clsx';
 import { forwardRef } from 'react';
 import { Input as AriaInput, type InputProps } from 'react-aria-components';
-
-const baseClass =
-  'border border-primary-300 bg-primary-50 px-2 py-0.5 rounded transition-[background-color_outline] ease-in-out';
 
 const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   { className, ...props }: InputProps,
   ref
 ) {
   return (
-    <AriaInput ref={ref} {...props} className={cn(baseClass, className)} />
+    <AriaInput ref={ref} {...props} className={clsx('c-input', className)} />
   );
 });
 
