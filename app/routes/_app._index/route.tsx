@@ -18,8 +18,8 @@ export async function loader({
   }
 
   const title = await i18next
-    .getFixedT(request, 'meta')
-    .then((x) => x('home.title'));
+    .getFixedT(request, 'home')
+    .then((x) => x('meta.title'));
   return json({ title });
 }
 

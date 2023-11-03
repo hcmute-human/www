@@ -2,6 +2,7 @@ import Logo from '@components/Logo';
 import ThemeSwitch from '@components/ThemeSwitch';
 import {
   ArrowLeftOnRectangleIcon,
+  HomeIcon,
   Square2StackIcon,
 } from '@heroicons/react/20/solid';
 import { useTranslation } from 'react-i18next';
@@ -21,6 +22,11 @@ export default function Header() {
     {
       text: t('navigation.home'),
       href: '/',
+      icon: <HomeIcon className="w-5" />,
+    },
+    {
+      text: t('navigation.department'),
+      href: '/departments',
       icon: <Square2StackIcon className="w-5" />,
     },
   ];

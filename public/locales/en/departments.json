@@ -1,7 +1,8 @@
 {
     "meta": {
-        "title": "Departments"
+        "title": "Department"
     },
+    "h1": "Available departments",
     "empty": "There is currently no departments",
     "table": {
         "ariaLabel": "Table of deparments",
