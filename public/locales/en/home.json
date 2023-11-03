@@ -3,7 +3,8 @@
         "title": "Homepage"
     },
     "navigation": {
-        "home": "Home"
+        "home": "Home",
+        "department": "Department"
     },
     "notification": "Notification",
     "logout": "Logout"
