@@ -1,0 +1,10 @@
+{
+    "meta": {
+        "title": "Create department"
+    },
+    "name": {
+        "label": "Name",
+        "description": "Enter department name",
+        "required": "Enter a name for this department"
+    }
+}
