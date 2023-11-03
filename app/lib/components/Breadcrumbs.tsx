@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import type { Key, ReactNode } from 'react';
 import {
   Breadcrumbs as AriaBreadcrumbs,
@@ -12,7 +13,7 @@ type Props = Omit<BreadcrumbsProps<BreadcrumbProps>, 'items'> & {
 
 export default function Breadcrumbs({ className, items, ...props }: Props) {
   return (
-    <AriaBreadcrumbs {...props} className="flex gap-1">
+    <AriaBreadcrumbs {...props} className={clsx('flex gap-1', className)}>
       {items.map(({ key, node }) => (
         <Breadcrumb key={key} className="group flex gap-1 items-center">
           {node}

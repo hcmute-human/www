@@ -1,10 +1,9 @@
 {
-    "bar": {
-        "home": "Home",
-        "recruitment": "Recruitment",
-        "department": "Deparment",
-        "absence": "Absence",
-        "setting": "Setting"
+    "meta": {
+        "title": "Homepage"
+    },
+    "navigation": {
+        "home": "Home"
     },
     "notification": "Notification",
     "logout": "Logout"

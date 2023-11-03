@@ -1,10 +1,8 @@
+import Logo from '@components/Logo';
+import ThemeSwitch from '@components/ThemeSwitch';
 import {
   ArrowLeftOnRectangleIcon,
-  Cog6ToothIcon,
-  MapIcon,
-  RectangleGroupIcon,
   Square2StackIcon,
-  WrenchIcon,
 } from '@heroicons/react/20/solid';
 import { useTranslation } from 'react-i18next';
 import NavigationBar from './NavigationBar';
@@ -12,47 +10,36 @@ import type { INavigationBarItem } from './types';
 
 export default function Header() {
   const { t } = useTranslation('home');
-
   const toolBarItems: INavigationBarItem[] = [
     {
       text: t('logout'),
       href: '/logout',
-      icon: <ArrowLeftOnRectangleIcon className="w-5 h-5" />,
+      icon: <ArrowLeftOnRectangleIcon className="w-4" />,
     },
   ];
   const navigationItems: INavigationBarItem[] = [
     {
-      text: t('bar.home'),
+      text: t('navigation.home'),
       href: '/',
-      icon: <Square2StackIcon className="w-5 h-5" />,
-    },
-    {
-      text: t('bar.recruitment'),
-      href: '/recuirment',
-      icon: <WrenchIcon className="w-5 h-5" />,
-    },
-    {
-      text: t('bar.department'),
-      href: '/departments',
-      icon: <RectangleGroupIcon className="w-5 h-5" />,
-    },
-    {
-      text: t('bar.absence'),
-      href: '/absence',
-      icon: <MapIcon className="w-5 h-5" />,
-    },
-    {
-      text: t('bar.setting'),
-      href: '/setting',
-      icon: <Cog6ToothIcon className="w-5 h-5" />,
+      icon: <Square2StackIcon className="w-5" />,
     },
   ];
+
   return (
-    <header className="lg:min-h-screen border-solid border-primary-200 lg:border-r lg:border-b-0 border-b">
-      <NavigationBar
-        navigationItems={navigationItems}
-        toolBarItems={toolBarItems}
-      />
+    <header
+      className="flex gap-4 items-center p-4 bg-primary-50 border-r border-primary-200
+      lg:flex-col"
+    >
+      <Logo className="w-32 self-start px-4" />
+      <div className="flex-grow flex justify-between gap-1 lg:grid lg:content-between">
+        <NavigationBar items={navigationItems} />
+        <div className="flex gap-1 flex-nowrap lg:block">
+          <NavigationBar items={toolBarItems} />
+          <div className="whitespace-nowrap lg:px-4">
+            <ThemeSwitch />
+          </div>
+        </div>
+      </div>
     </header>
   );
 }

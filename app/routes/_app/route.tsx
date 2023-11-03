@@ -6,7 +6,6 @@ import { json, type LoaderFunctionArgs } from '@remix-run/node';
 import { useMatches, type UIMatch } from '@remix-run/react';
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
-import ToolBar from './ToolBar';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const title = await i18next
@@ -61,13 +60,8 @@ function App() {
   return (
     <div className="flex flex-col lg:flex-row w-full min-h-screen">
       <Header />
-      <div className="bg-primary-0 flex-grow px-4 py-2">
-        <div className="flex items-center justify-between">
-          <Breadcrumbs items={breadcrumbItems} />
-          <div className="hidden lg:block">
-            <ToolBar />
-          </div>
-        </div>
+      <div className="bg-primary-0 flex-grow p-4">
+        <Breadcrumbs items={breadcrumbItems} className="mb-4" />
         {title ? <h1 className="leading-none">{title}</h1> : null}
         <div className="mt-4">
           <Outlet />
