@@ -1,18 +1,17 @@
 import Link from '@components/Link';
-import { useLocation } from '@remix-run/react';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
-import { TooltipTrigger } from 'react-aria-components';
 import type { INavigationBarItem } from './types';
 
-export default function NavigationBarItem({
-  item: { href, icon, text },
-}: {
+interface Props {
+  isActive: boolean;
   item: INavigationBarItem;
-}) {
-  const { pathname } = useLocation();
-  const isActive = pathname === href;
+}
 
+export default function NavigationBarItem({
+  isActive,
+  item: { href, icon, text },
+}: Props) {
   return (
     <li>
       <Link
@@ -32,7 +31,7 @@ export default function NavigationBarItem({
             transition={{
               type: 'tween',
               ease: 'anticipate',
-              duration: '0.4',
+              duration: '0.3',
             }}
             className="absolute inset-0 bg-accent-500 rounded-md"
           />
