@@ -10,7 +10,7 @@ interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   variant?: 'positive' | 'negative';
 }
 
-const baseClass = 'flex gap-2 justify-between items-center text-base';
+const baseClass = 'flex gap-2 items-center text-base';
 const variantClass: Record<NonNullable<Props['variant']>, string> = {
   positive: 'text-positive-500',
   negative: 'text-negative-500',
