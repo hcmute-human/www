@@ -64,7 +64,7 @@ export default function Route() {
   const { title } = useLoaderData<typeof loader>();
   const lastSubmission = useActionData<typeof action>();
   const navigation = useNavigation();
-  const loading = navigation.state === 'submitting';
+  const submitting = navigation.state === 'submitting';
 
   return (
     <>
@@ -101,21 +101,21 @@ export default function Route() {
             labelClassName="text-base"
           />
           <div className="flex gap-4">
-            <Button type="submit" className="w-fit" isDisabled={loading}>
-              <Loading loading={loading}>Create</Loading>
+            <Button type="submit" className="w-fit" isDisabled={submitting}>
+              <Loading loading={submitting}>Create</Loading>
             </Button>
             <Button type="reset" variant="primary" className="w-fit">
               Reset
             </Button>
-            {lastSubmission?.ok === true ? (
-              <InlineAlert
-                variant="positive"
-                text="Department created."
-                className="ml-auto animate-distance-2 animate-duration-300 animate-fadeInLeftBig"
-              />
-            ) : null}
           </div>
         </Form>
+        {!submitting && lastSubmission?.ok === true ? (
+          <InlineAlert
+            variant="positive"
+            text={`Department '${lastSubmission.value.name}' created.`}
+            className="animate-distance-2 animate-duration-300 animate-fadeInLeftBig"
+          />
+        ) : null}
       </div>
     </>
   );
