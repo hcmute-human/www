@@ -1,3 +1,4 @@
+import Cell from '@components/Cell';
 import Checkbox from '@components/Checkbox';
 import Column from '@components/Column';
 import { Listbox } from '@components/Listbox';
@@ -7,6 +8,11 @@ import Table from '@components/Table';
 import TableBody from '@components/TableBody';
 import TableHeader from '@components/TableHeader';
 import UncontrolledTextField from '@components/UncontrolledTextField';
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  ArrowsUpDownIcon,
+} from '@heroicons/react/20/solid';
 import { useDebounceSubmit } from '@lib/hooks/debounceSubmit';
 import { useSearchParamsOr } from '@lib/hooks/searchParams';
 import type { Department } from '@lib/models/department';
@@ -34,7 +40,6 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DepartmentRow from './DepartmentRow';
 import type { GetDepartmentsResult } from './types';
-import Cell from '@components/Cell';
 
 declare module '@tanstack/table-core' {
   interface FilterFns {
@@ -158,7 +163,7 @@ export default function DepartmentTable() {
                   >
                     <div className="lg:flex items-center gap-8 w-full">
                       <div
-                        className={clsx('flex gap-2', {
+                        className={clsx('flex gap-2 items-center', {
                           'cursor-pointer select-none':
                             header.column.getCanSort(),
                         })}
@@ -172,10 +177,19 @@ export default function DepartmentTable() {
                                 header.getContext()
                               )}
                         </span>
-                        {{
-                          asc: '🔼',
-                          desc: '🔽',
-                        }[header.column.getIsSorted() as string] ?? null}
+                        {header.column.getCanSort() ? (
+                          header.column.getIsSorted() ? (
+                            <ArrowUpIcon
+                              className={clsx(
+                                'w-4 h-4 transition-transform ease-in-out',
+                                header.column.getIsSorted() === 'desc' &&
+                                  'rotate-180'
+                              )}
+                            />
+                          ) : (
+                            <ArrowsUpDownIcon className="w-4 h-4 text-primary-300" />
+                          )
+                        ) : null}
                       </div>
                       {header.column.getCanFilter() ? (
                         <UncontrolledTextField
