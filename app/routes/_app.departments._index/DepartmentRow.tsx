@@ -4,6 +4,7 @@ import Checkbox from '@components/Checkbox';
 import Row from '@components/Row';
 import { InformationCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import type { Department } from '@lib/models/department';
+import { formatRelativeTimeFromNow } from '@lib/utils/date';
 import { useFetcher } from '@remix-run/react';
 import type { Row as TRow } from '@tanstack/react-table';
 import clsx from 'clsx';
@@ -40,10 +41,13 @@ export default function DepartmentRow({ row }: Props) {
         {row.getValue<string>('id')}
       </Cell>
       <Cell key="createdTime">
-        {Intl.DateTimeFormat('en-US', {
+        {/* {Intl.DateTimeFormat('en-US', {
           dateStyle: 'medium',
           timeStyle: 'short',
-        }).format(new Date(row.getValue<string>('createdTime')))}
+        }).format(new Date(row.getValue<string>('createdTime')))} */}
+        {formatRelativeTimeFromNow(
+          new Date(row.getValue<string>('createdTime'))
+        )}
       </Cell>
       <Cell key="actions">
         <div className="flex items-center gap-2 w-max">

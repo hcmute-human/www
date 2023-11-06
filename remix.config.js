@@ -7,5 +7,5 @@ export default {
   // serverBuildPath: "build/index.js",
   postcss: true,
   tailwind: true,
-  serverDependenciesToBundle: ['remix-i18next'],
+  serverDependenciesToBundle: ['remix-i18next', /date-fns.*/],
 };
