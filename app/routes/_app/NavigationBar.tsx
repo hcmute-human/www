@@ -10,7 +10,7 @@ export default function NavigationBar({ items }: Props) {
     <nav>
       <ul className="flex gap-1 lg:block lg:space-y-1">
         {items.map((item) => (
-          <NavigationBarItem item={item} />
+          <NavigationBarItem key={item.href} item={item} />
         ))}
       </ul>
     </nav>
