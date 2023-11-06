@@ -1,6 +1,7 @@
 import Button from '@components/Button';
 import Cell from '@components/Cell';
 import Checkbox from '@components/Checkbox';
+import Popover from '@components/Popover';
 import Row from '@components/Row';
 import { InformationCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
 import type { Department } from '@lib/models/department';
@@ -8,6 +9,8 @@ import { formatRelativeTimeFromNow } from '@lib/utils/date';
 import { useFetcher } from '@remix-run/react';
 import type { Row as TRow } from '@tanstack/react-table';
 import clsx from 'clsx';
+import { useRef, useState } from 'react';
+import { Dialog, DialogTrigger } from 'react-aria-components';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -18,6 +21,8 @@ export default function DepartmentRow({ row }: Props) {
   const { t } = useTranslation('departments');
   const fetcher = useFetcher<any>();
   const isDeleting = fetcher.formData?.get('id') === row.getValue<string>('id');
+  const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   return (
     <Row className={clsx(isDeleting && 'hidden')}>
@@ -59,20 +64,52 @@ export default function DepartmentRow({ row }: Props) {
           >
             <InformationCircleIcon className="w-5 h-5" />
           </Button>
-          <fetcher.Form method="post" className="flex">
-            <input type="hidden" name="id" value={row.getValue<string>('id')} />
+          <DialogTrigger isOpen={isOpen} onOpenChange={setIsOpen}>
             <Button
-              type="submit"
+              ref={triggerRef}
+              type="button"
               variant="negative"
-              href={`/departments/${row.getValue<string>('id')}`}
               size="sm"
               aria-label={t('table.body.actions.delete')}
-              name="_action"
-              value="delete"
+              onPress={() => setIsOpen(true)}
             >
               <XCircleIcon className="w-5 h-5" />
             </Button>
-          </fetcher.Form>
+            <Popover>
+              <Dialog className="p-4 outline-none">
+                <fetcher.Form method="post" className="space-y-2">
+                  <input
+                    type="hidden"
+                    name="id"
+                    value={row.getValue<string>('id')}
+                  />
+                  <p>Are you sure to delete this department?</p>
+                  <div className="flex gap-2 justify-between">
+                    <Button
+                      type="submit"
+                      variant="negative"
+                      name="_action"
+                      value="delete"
+                      onPress={(e) => {
+                        setIsOpen(false);
+                        e.continuePropagation();
+                      }}
+                    >
+                      {t('table.body.actions.delete')}
+                    </Button>
+                    <Button
+                      form="deleteForm"
+                      type="button"
+                      variant="primary"
+                      onPress={() => setIsOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </fetcher.Form>
+              </Dialog>
+            </Popover>
+          </DialogTrigger>
         </div>
       </Cell>
     </Row>

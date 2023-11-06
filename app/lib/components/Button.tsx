@@ -1,5 +1,5 @@
 import { cn } from '@lib/utils';
-import type { ReactNode } from 'react';
+import { forwardRef, type ForwardedRef, type ReactNode, type Ref } from 'react';
 import { Button as AriaButton, type ButtonProps } from 'react-aria-components';
 import Link, { type LinkProps } from './Link';
 
@@ -35,18 +35,17 @@ export function buildVariantClass(variant: NonNullable<Props['variant']>) {
   return cn(baseClass, variantClass[variant]);
 }
 
-export default function Button({
-  className,
-  size = 'md',
-  variant = 'accent',
-  ...props
-}: Props) {
+function Button(
+  { className, size = 'md', variant = 'accent', ...props }: Props,
+  ref: ForwardedRef<HTMLAnchorElement | HTMLButtonElement>
+) {
   let node: ReactNode;
   switch (props.as) {
     case 'link': {
       node = (
         <Link
           {...props}
+          ref={ref as Ref<HTMLAnchorElement>}
           className={cn(
             baseClass,
             variantClass[variant],
@@ -61,6 +60,7 @@ export default function Button({
       node = (
         <AriaButton
           {...props}
+          ref={ref as Ref<HTMLButtonElement>}
           className={cn(
             baseClass,
             variantClass[variant],
@@ -76,3 +76,5 @@ export default function Button({
 
   return node;
 }
+
+export default forwardRef(Button);
