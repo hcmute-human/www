@@ -1,6 +1,6 @@
 import Button from '@components/Button';
 import Form from '@components/Form';
-import BoxAlert from '@components/InlineAlert';
+import BoxAlert from '@components/BoxAlert';
 import ProgressCircle from '@components/ProgressCircle';
 import TextField from '@components/TextField';
 import { Transition } from '@headlessui/react';
