@@ -18,7 +18,7 @@ const baseClass =
   'leading-none rounded-lg transition-[background-color_outline] ease-in-out font-medium';
 
 const variantClass: Record<NonNullable<Props['variant']>, string> = {
-  accent: 'bg-accent-500 text-primary-100 rac-hover:bg-accent-600',
+  accent: 'bg-accent-500 text-primary-100 hover:bg-accent-600',
   primary: 'bg-primary-900 text-primary-100',
   negative: 'bg-negative-500 text-primary-100',
 };
@@ -28,8 +28,7 @@ const sizeClass: Record<NonNullable<Props['size']>, string> = {
   md: 'px-4 py-2',
 };
 
-const disabledClass =
-  'rac-disabled:bg-primary-300 rac-disabled:text-primary-500';
+const disabledClass = 'disabled:bg-primary-300 disabled:text-primary-500';
 
 export function buildVariantClass(variant: NonNullable<Props['variant']>) {
   return cn(baseClass, variantClass[variant]);

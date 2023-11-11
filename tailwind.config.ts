@@ -95,7 +95,9 @@ const config: Config = {
   darkMode: ['class'],
   plugins: [
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    tailwindCssReactAriaComponents({ prefix: 'rac' }),
+    tailwindCssReactAriaComponents({
+      target: 'modern',
+    }),
   ],
 };
 

@@ -7,7 +7,7 @@ import {
 
 export type LinkProps = AriaLinkProps;
 
-const baseClass = 'no-underline rac-pressed:outline-none';
+const baseClass = 'no-underline pressed:outline-none';
 
 const Link = forwardRef<HTMLAnchorElement, LinkProps>(
   ({ className, ...props }: LinkProps, ref) => (

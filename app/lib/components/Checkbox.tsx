@@ -13,7 +13,7 @@ interface Props extends Omit<CheckboxProps, 'chilren'> {
 
 const baseClass = {
   checkbox: 'group rounded outline-none',
-  div: 'w-4 h-4 p-0.5 text-lg border border-primary-300 rounded transition-[outline_background-color_border-color] ease-in-out group-rac-indeterminate:bg-primary-900 group-rac-indeterminate:border-primary-900 group-rac-selected:bg-primary-900 group-rac-selected:border-primary-900 group-rac-focus-visible:outline-focus',
+  div: 'w-4 h-4 p-0.5 text-lg border border-primary-300 rounded transition-[outline_background-color_border-color] ease-in-out group-indeterminate:bg-primary-900 group-indeterminate:border-primary-900 group-selected:bg-primary-900 group-selected:border-primary-900 group-focus-visible:outline-focus',
   svg: 'stroke-primary-50',
 };
 

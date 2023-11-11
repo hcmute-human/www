@@ -30,7 +30,7 @@ export function Listbox<TType extends { id: Key }, TActualType>({
       {({ open, value }) => (
         <>
           <div className={clsx('relative', className)}>
-            <HeadlessUiListbox.Button className="font-bold leading-none relative w-full cursor-default rounded-md bg-primary-0 py-2 pl-2 pr-6 text-left shadow-sm border border-primary-200 rac-focus-visible:outline-focus">
+            <HeadlessUiListbox.Button className="font-bold leading-none relative w-full cursor-default rounded-md bg-primary-0 py-2 pl-2 pr-6 text-left shadow-sm border border-primary-200 focus-visible:outline-focus">
               <span className="block truncate">{render(value)}</span>
               <span className="pointer-events-none absolute inset-y-0 right-2 flex items-center">
                 <ChevronUpDownIcon

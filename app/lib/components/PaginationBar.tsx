@@ -10,7 +10,7 @@ import { Group } from 'react-aria-components';
 import Button from './Button';
 
 const baseClass =
-  'rounded duration-75 p-2 w-8 h-8 bg-transparent text-primary-950 rac-disabled:bg-transparent rac-disabled:text-primary-200 rac-hover:bg-primary-200';
+  'rounded duration-75 p-2 w-8 h-8 bg-transparent text-primary-950 disabled:bg-transparent disabled:text-primary-200 hover:bg-primary-200';
 
 export function PaginationBar({ totalCount }: { totalCount: number }) {
   const [{ page, size }, searchParams] = usePagination();
@@ -84,7 +84,7 @@ export function PaginationBar({ totalCount }: { totalCount: number }) {
               isDisabled={isCurrentPage}
               className={cn(
                 baseClass,
-                'rac-disabled:text-primary-50 rac-disabled:bg-primary-950'
+                'disabled:text-primary-50 disabled:bg-primary-950'
               )}
             >
               {pageNumber}
