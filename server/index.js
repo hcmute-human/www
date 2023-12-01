@@ -68,7 +68,7 @@ app.listen(port, async () => {
   console.log(`Express server listening on http://127.0.0.1:${port}`);
 
   if (process.env.NODE_ENV === 'development') {
-    broadcastDevReady(initialBuild);
+    await broadcastDevReady(initialBuild);
   }
 });
 
@@ -95,7 +95,7 @@ async function createDevRequestHandler(initialBuild) {
     // 1. re-import the server build
     build = await reimportServer();
     // 2. tell Remix that this app server is now up-to-date and ready
-    broadcastDevReady(build);
+    await broadcastDevReady(build);
   }
   const chokidar = await import('chokidar');
   chokidar
