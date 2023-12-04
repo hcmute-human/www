@@ -1,10 +1,6 @@
 import Logo from '@components/Logo';
 import ThemeSwitch from '@components/ThemeSwitch';
-import {
-  ArrowLeftOnRectangleIcon,
-  HomeIcon,
-  Square2StackIcon,
-} from '@heroicons/react/20/solid';
+import { ArrowLeftOnRectangleIcon, HomeIcon, Square2StackIcon, UsersIcon } from '@heroicons/react/20/solid';
 import { useTranslation } from 'react-i18next';
 import NavigationBar from './NavigationBar';
 import type { INavigationBarItem } from './types';
@@ -29,19 +25,21 @@ export default function Header() {
       href: '/departments',
       icon: <Square2StackIcon className="w-5" />,
     },
+    {
+      text: t('navigation.employee'),
+      href: '/employees',
+      icon: <UsersIcon className="w-5" />,
+    },
   ];
 
   return (
-    <header
-      className="flex gap-4 items-center p-4 bg-primary-50 border-r border-primary-200
-      lg:flex-col"
-    >
-      <Logo className="w-32 self-start px-4" />
-      <div className="flex-grow flex justify-between gap-1 lg:grid lg:content-between">
+    <header className="flex gap-4 items-center p-4 border-r border-primary-100 lg:flex-col">
+      <Logo className="w-24 lg:self-start lg:ml-4" />
+      <div className="flex-grow flex justify-between items-center gap-1 lg:grid lg:content-between">
         <NavigationBar items={navigationItems} />
-        <div className="flex gap-1 flex-nowrap lg:block">
+        <div className="flex gap-1 items-center flex-nowrap lg:block">
           <NavigationBar items={toolBarItems} />
-          <div className="whitespace-nowrap lg:px-4">
+          <div className="whitespace-nowrap lg:px-4 lg:mt-1">
             <ThemeSwitch />
           </div>
         </div>

@@ -1,0 +1,10 @@
+{
+    "meta": {
+        "title": "New position"
+    },
+    "name": {
+        "label": "Name",
+        "description": "Enter position name",
+        "required": "Enter a name for this position"
+    }
+}

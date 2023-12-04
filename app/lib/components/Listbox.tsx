@@ -7,24 +7,24 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import clsx from 'clsx';
 import { Fragment, type Key, type ReactNode } from 'react';
 
-type Props<TType, TActualType> = Omit<
+export type ListboxProps<TType, TActualType> = Omit<
   HeadlessUiListboxProps<'div', TType, TActualType>,
   'value' | 'onChange'
 > & {
   items: TType[];
+  render(value: TType): ReactNode;
   placement?: 'top' | 'bottom';
   value?: TType;
   onChange?(value: TType): void;
-  render(value: TType): ReactNode;
 };
 
-export function Listbox<TType extends { id: Key }, TActualType>({
+export function Listbox<TType extends { key: Key }, TActualType>({
   items,
   render,
   className,
   placement = 'top',
   ...props
-}: Props<TType, TActualType>) {
+}: ListboxProps<TType, TActualType>) {
   return (
     <HeadlessUiListbox<'div', TType, TActualType> {...props}>
       {({ open, value }) => (
@@ -39,7 +39,6 @@ export function Listbox<TType extends { id: Key }, TActualType>({
                 />
               </span>
             </HeadlessUiListbox.Button>
-
             <Transition
               show={open}
               as={Fragment}
@@ -59,7 +58,7 @@ export function Listbox<TType extends { id: Key }, TActualType>({
               >
                 {items.map((x) => (
                   <HeadlessUiListbox.Option
-                    key={x.id}
+                    key={x.key}
                     className={({ active }) =>
                       clsx(
                         'relative cursor-default select-none py-2 pl-2 pr-6',

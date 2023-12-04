@@ -27,32 +27,19 @@ export default function DepartmentRow({ row }: Props) {
   return (
     <Row className={clsx(isDeleting && 'hidden')}>
       <Cell key="select">
-        <Checkbox
-          isSelected={row.getIsSelected()}
-          onChange={(x) => row.toggleSelected(x)}
-          aria-label="Select"
-        />
+        <Checkbox isSelected={row.getIsSelected()} onChange={(x) => row.toggleSelected(x)} aria-label="Select" />
       </Cell>
       <Cell key="name">
         <span>{row.getValue<string>('name')}</span>
-        {fetcher.data?.ok === false &&
-        fetcher.data.id === row.getValue<string>('id') ? (
-          <span className="ml-2 px-1 font-bold text-xs text-primary-50 bg-negative-500 rounded">
-            Unable to delete
-          </span>
+        {fetcher.data?.ok === false && fetcher.data.id === row.getValue<string>('id') ? (
+          <span className="ml-2 px-1 font-bold text-xs text-primary-50 bg-negative-500 rounded">Unable to delete</span>
         ) : null}
       </Cell>
-      <Cell key="id" className="hidden lg:table-cell">
+      <Cell key="id" className="hidden md:table-cell">
         {row.getValue<string>('id')}
       </Cell>
-      <Cell key="createdTime">
-        {/* {Intl.DateTimeFormat('en-US', {
-          dateStyle: 'medium',
-          timeStyle: 'short',
-        }).format(new Date(row.getValue<string>('createdTime')))} */}
-        {formatRelativeTimeFromNow(
-          new Date(row.getValue<string>('createdTime'))
-        )}
+      <Cell key="createdTime" className="hidden sm:table-cell">
+        {formatRelativeTimeFromNow(new Date(row.getValue<string>('createdTime')))}
       </Cell>
       <Cell key="actions">
         <div className="flex items-center gap-2 w-max">
@@ -78,11 +65,7 @@ export default function DepartmentRow({ row }: Props) {
             <Popover>
               <Dialog className="p-4 outline-none">
                 <fetcher.Form method="post" className="space-y-2">
-                  <input
-                    type="hidden"
-                    name="id"
-                    value={row.getValue<string>('id')}
-                  />
+                  <input type="hidden" name="id" value={row.getValue<string>('id')} />
                   <p>Are you sure to delete this department?</p>
                   <div className="flex gap-2 justify-between">
                     <Button
@@ -97,12 +80,7 @@ export default function DepartmentRow({ row }: Props) {
                     >
                       {t('table.body.actions.delete')}
                     </Button>
-                    <Button
-                      form="deleteForm"
-                      type="button"
-                      variant="primary"
-                      onPress={() => setIsOpen(false)}
-                    >
+                    <Button form="deleteForm" type="button" variant="primary" onPress={() => setIsOpen(false)}>
                       Cancel
                     </Button>
                   </div>

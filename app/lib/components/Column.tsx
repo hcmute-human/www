@@ -10,7 +10,7 @@ export default function Column({ className, ...props }: Props) {
     <th
       {...props}
       className={cn(
-        'sticky top-0 px-4 py-2 border-b border-primary-200 bg-primary-50 font-bold text-left cursor-default first:rounded-tl last:rounded-tr whitespace-nowrap outline-none',
+        'sticky z-10 top-0 px-4 py-2 group-hover:bg-red-500 border-l first-of-type:border-l-0 border-primary-100 font-semibold text-left cursor-default first:rounded-tl last:rounded-tr whitespace-nowrap outline-none',
         className
       )}
     />

@@ -1,11 +1,9 @@
 import type { Submission } from '@conform-to/react';
 import { parse } from '@conform-to/zod';
+import { Gender } from '@lib/models/employee';
+import type { UIMatch } from '@remix-run/react';
 import { compareItems, rankItem } from '@tanstack/match-sorter-utils';
-import {
-  sortingFns,
-  type FilterFn,
-  type SortingFn,
-} from '@tanstack/react-table';
+import { sortingFns, type FilterFn, type SortingFn } from '@tanstack/react-table';
 import { clsx, type ClassValue } from 'clsx';
 import { useId } from 'react';
 import { twMerge } from 'tailwind-merge';
@@ -68,12 +66,7 @@ export function parseSubmission<Schema extends ZodTypeAny>(
   } as SubmissionWithOk<output<Schema>>;
 }
 
-export const fuzzyFilter: FilterFn<unknown> = (
-  row,
-  columnId,
-  value,
-  addMeta
-) => {
+export const fuzzyFilter: FilterFn<unknown> = (row, columnId, value, addMeta) => {
   const itemRank = rankItem(row.getValue(columnId), value);
   addMeta({
     itemRank,
@@ -84,11 +77,33 @@ export const fuzzyFilter: FilterFn<unknown> = (
 export const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   let dir = 0;
   if (rowA.columnFiltersMeta[columnId]) {
-    dir = compareItems(
-      rowA.columnFiltersMeta[columnId]?.itemRank!,
-      rowB.columnFiltersMeta[columnId]?.itemRank!
-    );
+    dir = compareItems(rowA.columnFiltersMeta[columnId]?.itemRank!, rowB.columnFiltersMeta[columnId]?.itemRank!);
   }
 
   return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
 };
+
+export function formatGender(gender: Gender) {
+  switch (gender) {
+    case Gender.Male:
+      return 'Male';
+    case Gender.Female:
+      return 'Female';
+    default:
+      return '';
+  }
+}
+
+type Match = { data: unknown; pathname: string };
+export function buildTitle(matches: Match[]) {
+  type PageData = { title: string };
+  return [
+    {
+      title: matches
+        .filter((x) => x.data && typeof x.data === 'object' && 'title' in x.data && typeof x.data.title === 'string')
+        .slice(-2)
+        .map((x) => (x.data as PageData).title)
+        .join(' · '),
+    },
+  ];
+}

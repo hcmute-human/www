@@ -1,0 +1,25 @@
+{
+    "meta": {
+        "title": "Employee"
+    },
+    "h1": "Employees",
+    "empty": "There is currently no employees",
+    "table": {
+        "ariaLabel": "Table of employees",
+        "header": {
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "email": "Email",
+            "id": "ID",
+            "createdTime": "Created Time",
+            "actions": "Actions"
+        },
+        "body": {
+            "empty": "There is currently no employees",
+            "actions": {
+                "details": "Details",
+                "delete": "Delete"
+            }
+        }
+    }
+}

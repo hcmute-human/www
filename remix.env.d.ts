@@ -6,6 +6,7 @@ import type { UIMatch as UIMatch } from '@remix-run/react';
 import type { TFunction } from 'i18next';
 
 declare global {
+  type RequiredProps<T, P extends keyof NonNullable<T>> = Omit<T, P> & Required<Pick<NonNullable<T>, P>>;
   interface SessionData {
     accessToken: string;
     refreshToken: string;
@@ -33,8 +34,5 @@ declare module '@remix-run/server-runtime' {
 }
 
 declare module '@remix-run/react' {
-  export function useMatches(): UIMatch<
-    RouteData | unknown,
-    RouteHandle | unknown
-  >[];
+  export function useMatches(): UIMatch<RouteData | unknown, RouteHandle | unknown>[];
 }

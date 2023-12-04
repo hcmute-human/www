@@ -1,24 +1,25 @@
 import clsx from 'clsx';
-import type { Key, ReactNode } from 'react';
-import {
-  Breadcrumbs as AriaBreadcrumbs,
-  Breadcrumb,
-  type BreadcrumbProps,
-  type BreadcrumbsProps,
-} from 'react-aria-components';
+import { type Key, type OlHTMLAttributes, type ReactNode } from 'react';
 
-type Props = Omit<BreadcrumbsProps<BreadcrumbProps>, 'items'> & {
+type Props = OlHTMLAttributes<HTMLOListElement> & {
   items: { key: Key; node: ReactNode }[];
 };
 
 export default function Breadcrumbs({ className, items, ...props }: Props) {
   return (
-    <AriaBreadcrumbs {...props} className={clsx('flex gap-1', className)}>
+    <ol {...props} className={clsx('flex gap-1 text-base', className)}>
       {items.map(({ key, node }) => (
-        <Breadcrumb key={key} className="group flex gap-1 items-center">
+        <li key={key} className="group flex items-center gap-1">
           {node}
-        </Breadcrumb>
+        </li>
       ))}
-    </AriaBreadcrumbs>
+    </ol>
+    // <AriaBreadcrumbs {...props} items={items} className={clsx('flex gap-1', className)}>
+    //   {({ key, node }) => (
+    //     <Breadcrumb key={key} className="group flex gap-1 items-center">
+    //       {node}
+    //     </Breadcrumb>
+    //   )}
+    // </AriaBreadcrumbs>
   );
 }

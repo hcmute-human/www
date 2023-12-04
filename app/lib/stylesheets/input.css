@@ -2,7 +2,7 @@
 
 @layer components {
   .c-input {
-    border-color: theme('colors.primary.300');
+    border-color: theme('colors.primary.200');
     background-color: theme('colors.primary.0');
     border-width: theme('borderWidth.DEFAULT');
     padding-inline: theme('padding.2');
@@ -11,5 +11,13 @@
     transition-timing-function: ease-in-out;
     transition-property: background-color outline;
     transition-duration: theme('transitionDuration.DEFAULT');
+
+    &:disabled,
+    &[data-disabled='true'] {
+      color: theme('colors.primary.500');
+      border-color: theme('colors.primary.100');
+      background-color: theme('colors.primary.50');
+      cursor: not-allowed;
+    }
   }
 }

@@ -1,5 +1,7 @@
 @import './theme.css';
 @import './lib/stylesheets/input.css';
+@import './lib/stylesheets/listbox-item.css';
+@import '@fontsource-variable/inter-tight';
 
 @tailwind base;
 @tailwind components;
@@ -8,7 +10,7 @@
 @layer base {
   .outline-focus {
     outline: 2px solid theme('colors.accent.400');
-    outline-offset: 1px;
+    outline-offset: -1px;
   }
   .outline-focus-within {
     outline: 2px dashed theme('colors.accent.400');
@@ -23,8 +25,8 @@
 
   body {
     font-family: theme('fontFamily.sans-serif');
-    color: theme('colors.primary.950');
-    background-color: theme('colors.primary.50');
+    color: theme('colors.primary.900');
+    background-color: theme('colors.primary.0');
     font-weight: 400;
     line-height: theme('lineHeight.body');
     min-width: 100vw;
@@ -54,8 +56,8 @@
   h4,
   h5,
   h6 {
+    color: theme('colors.primary.950');
     font-family: theme('fontFamily.display');
-    font-weight: 400;
     line-height: theme('lineHeight.heading');
   }
 
@@ -73,6 +75,7 @@
 
   h4 {
     font-size: theme('fontSize.lg');
+    font-weight: 700;
   }
 
   h5 {
@@ -102,5 +105,9 @@
 
   .typo p {
     margin-bottom: 1rem;
+  }
+
+  hr {
+    border-top-color: theme('colors.primary.100');
   }
 }

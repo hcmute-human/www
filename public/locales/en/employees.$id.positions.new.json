@@ -1,0 +1,41 @@
+{
+    "meta": {
+        "title": "New position"
+    },
+    "departmentId": {
+        "label": "Department",
+        "description": "Select a department",
+        "required": "Select a department"
+    },
+    "departmentPositionId": {
+        "label": "Position",
+        "description": "Select a position",
+        "required": "Select a position"
+    },
+    "employmentType": {
+        "label": "Employment type",
+        "description": "Select an employment type",
+        "required": "Select an employment type"
+    },
+    "startTime": {
+        "label": "Start time",
+        "description": "Enter a start time",
+        "required": "Enter a start time",
+        "invalidDate": "Enter a start time",
+        "invalidType": "Enter a start time"
+    },
+    "endTime": {
+        "label": "End time",
+        "description": "Enter a end time",
+        "required": "Enter a end time",
+        "invalidDate": "Enter a end time",
+        "invalidType": "Enter a end time"
+    },
+    "salary": {
+        "label": "Salary",
+        "description": "Enter a salary",
+        "required": "Enter a salary",
+        "invalidType": "Enter a number",
+        "min": "Enter a number that is at least {{min}}"
+    }
+}
