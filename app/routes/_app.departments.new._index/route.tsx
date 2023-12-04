@@ -1,13 +1,13 @@
+import BoxAlert from '@components/BoxAlert';
 import Button from '@components/Button';
 import Form from '@components/Form';
-import BoxAlert from '@components/BoxAlert';
+import InlineAlert from '@components/InlineAlert';
 import Loading from '@components/Loading';
 import TextField from '@components/TextField';
 import TextLink from '@components/TextLink';
-import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import i18next from '@lib/i18n/index.server';
 import { SessionApiClient } from '@lib/services/session-api-client.server';
-import { parseSubmission, parseSubmissionAsync } from '@lib/utils';
+import { buildTitle, parseSubmission, parseSubmissionAsync } from '@lib/utils';
 import { toActionErrorsAsync } from '@lib/utils/error.server';
 import {
   json,
@@ -20,7 +20,6 @@ import { useActionData, useLoaderData, useNavigation } from '@remix-run/react';
 import type { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
-import InlineAlert from '@components/InlineAlert';
 
 export const handle = {
   i18n: 'departments',
@@ -29,9 +28,8 @@ export const handle = {
   ),
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data: { title } = {} }) => {
-  return [{ title }];
-};
+export const meta: MetaFunction<typeof loader> = ({ matches }) =>
+  buildTitle(matches);
 
 export async function loader({
   request,

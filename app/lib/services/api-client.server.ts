@@ -22,9 +22,7 @@ export interface RequestOptions extends Omit<RequestInit, 'body'> {
 export interface ApiResponse extends Response {}
 
 export class ApiError extends Error {
-  private constructor(
-    private readonly details_: Zod.infer<typeof problemDetailsSchema>
-  ) {
+  private constructor(private readonly details_: Zod.infer<typeof problemDetailsSchema>) {
     super();
   }
 
@@ -60,10 +58,7 @@ export class ApiClient {
     ApiClient._options = options;
   }
 
-  protected fetch(
-    input: string | URL,
-    { headers, ...options }: RequestOptions = {}
-  ): ResultAsync<ApiResponse, Error> {
+  protected fetch(input: string | URL, { headers, ...options }: RequestOptions = {}): ResultAsync<ApiResponse, Error> {
     const url = typeof input === 'string' ? input : input.pathname;
     const record: Record<string, string> = ApiClient.makeHeaders(headers);
     if (options?.body) {
@@ -75,32 +70,20 @@ export class ApiClient {
     const [path, query] = url.split('?', 2);
     return fromPromise(
       fetch(
-        this._options.baseUrl +
-          '/' +
-          trim(path, '/').split('/').join('/') +
-          '/' +
-          this._options.version +
-          '?' +
-          query,
+        this._options.baseUrl + '/' + trim(path, '/').split('/').join('/') + '/' + this._options.version + '?' + query,
         options
           ? {
               ...options,
               headers: record,
               body:
-                options?.body instanceof FormData ||
-                options?.body instanceof Buffer
+                options?.body instanceof FormData || options?.body instanceof Buffer
                   ? options.body
                   : JSON.stringify(options?.body),
             }
           : undefined
       ),
-      (e) =>
-        e instanceof Error ? e : new Error('Unexpected error', { cause: e })
-    ).andThen((x) =>
-      x.ok
-        ? ok(x)
-        : errAsync(x.json()).mapErr(async (x) => ApiError.from(await x))
-    );
+      (e) => (e instanceof Error ? e : new Error('Unexpected error', { cause: e }))
+    ).andThen((x) => (x.ok ? ok(x) : errAsync(x.json()).mapErr(async (x) => ApiError.from(await x))));
   }
 
   public get(input: string | URL, options?: RequestOptions) {
@@ -122,6 +105,31 @@ export class ApiClient {
       ...options,
       method: 'DELETE',
     });
+  }
+
+  public head(input: string | URL, options?: RequestOptions) {
+    return this.fetch(input, {
+      ...options,
+      method: 'HEAD',
+    });
+  }
+
+  public count(input: string | URL, options?: RequestOptions) {
+    return this.head(input, options).andThen((x) =>
+      ok(x.ok ? this.parseContentRangeTotalCount(x.headers.get('Content-Range')) : 0)
+    );
+  }
+
+  public put(input: string | URL, options?: RequestOptions) {
+    return this.fetch(input, {
+      ...options,
+      method: 'PUT',
+    });
+  }
+
+  private parseContentRangeTotalCount(contentRange?: string | null) {
+    if (!contentRange) return 0;
+    return Number(contentRange.substring(contentRange.lastIndexOf('/') + 1).trim());
   }
 
   private static makeHeaders(headers?: HeadersInit): Record<string, string> {

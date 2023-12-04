@@ -1,17 +1,11 @@
 import Button from '@components/Button';
 import { PlusCircleIcon } from '@heroicons/react/20/solid';
 import i18next from '@lib/i18n/index.server';
+import { paginated } from '@lib/models/paginated';
 import { SessionApiClient } from '@lib/services/session-api-client.server';
 import { toActionErrorsAsync } from '@lib/utils/error.server';
 import { pageable, searchParams } from '@lib/utils/searchParams.server';
-import {
-  defer,
-  json,
-  redirect,
-  type ActionFunctionArgs,
-  type LoaderFunctionArgs,
-  type MetaFunction,
-} from '@remix-run/node';
+import { defer, json, redirect, type ActionFunctionArgs, type LoaderFunctionArgs } from '@remix-run/node';
 import { Await, useLoaderData } from '@remix-run/react';
 import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,14 +16,7 @@ export const handle = {
   i18n: 'departments',
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data: { title } = {} }) => {
-  return [{ title }];
-};
-
-export async function loader({
-  request,
-  context: { session },
-}: LoaderFunctionArgs) {
+export async function loader({ request, context: { session } }: LoaderFunctionArgs) {
   const params = pageable(
     searchParams(request, {
       order: '-createdTime',
@@ -42,15 +29,10 @@ export async function loader({
   }
 
   const departmentsPromise = api.get(`departments?${params.toString()}`).match(
-    (x) =>
-      x.ok
-        ? (x.json() as Promise<GetDepartmentsResult>)
-        : { totalCount: 0, items: [] },
-    () => ({ totalCount: 0, items: [] })
+    (x) => (x.ok ? (x.json() as Promise<GetDepartmentsResult>) : paginated()),
+    () => paginated()
   ) as Promise<GetDepartmentsResult>;
-  const title = await i18next
-    .getFixedT(request, 'departments')
-    .then((t) => t('meta.title'));
+  const title = await i18next.getFixedT(request, 'departments').then((t) => t('meta.title'));
 
   return defer({
     title,
@@ -64,13 +46,9 @@ export default function Route() {
 
   return (
     <>
-      <div className="flex justify-between items-center gap-8 mt-4">
+      <div className="flex justify-between items-center gap-8">
         <h1>{t('h1')}</h1>
-        <Button
-          as="link"
-          href="/departments/new"
-          className="w-fit flex gap-2 items-center capitalize"
-        >
+        <Button as="link" href="/departments/new" className="w-fit flex gap-2 items-center capitalize">
           <PlusCircleIcon className="w-4" />
           <span className="mr-1">Create department</span>
         </Button>
@@ -84,10 +62,7 @@ export default function Route() {
   );
 }
 
-export async function action({
-  request,
-  context: { session },
-}: ActionFunctionArgs) {
+export async function action({ request, context: { session } }: ActionFunctionArgs) {
   const api = SessionApiClient.from(session);
   const formData = await request.formData();
   if (formData.get('_action') === 'delete') {

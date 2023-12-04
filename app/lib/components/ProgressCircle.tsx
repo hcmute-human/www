@@ -1,60 +1,31 @@
-import { type AriaProgressBarProps, useProgressBar } from 'react-aria';
-
-const center = 16;
-const strokeWidth = 4;
-const r = 16 - strokeWidth;
-const c = 2 * r * Math.PI;
+import clsx from 'clsx';
+import type { SVGAttributes } from 'react';
 
 export default function ProgressCircle({
   className,
   ...props
-}: AriaProgressBarProps & { className?: string }) {
-  const { isIndeterminate, value, minValue = 0, maxValue = 100 } = props;
-  const { progressBarProps } = useProgressBar(props);
-
-  const percentage = isIndeterminate
-    ? 0.25
-    : (value! - minValue) / (maxValue - minValue);
-  const offset = c - percentage * c;
-
+}: SVGAttributes<SVGElement>) {
   return (
     <svg
-      {...progressBarProps}
-      viewBox="0 0 32 32"
+      className={clsx('animate-twSpin animate-infinite', className)}
+      xmlns="http://www.w3.org/2000/svg"
       fill="none"
-      strokeWidth={strokeWidth}
-      className={className}
+      viewBox="0 0 24 24"
+      {...props}
     >
       <circle
-        role="presentation"
-        cx={center}
-        cy={center}
-        r={r}
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
         stroke="currentColor"
-        className="opacity-20"
-      />
-      <circle
-        role="presentation"
-        cx={center}
-        cy={center}
-        r={r}
-        stroke="currentColor"
-        strokeDasharray={`${c} ${c}`}
-        strokeDashoffset={offset}
-        transform="rotate(-90 16 16)"
-      >
-        {props.isIndeterminate && (
-          <animateTransform
-            attributeName="transform"
-            type="rotate"
-            begin="0s"
-            dur="1s"
-            from="0 16 16"
-            to="360 16 16"
-            repeatCount="indefinite"
-          />
-        )}
-      </circle>
+        strokeWidth="4"
+      ></circle>
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+      ></path>
     </svg>
   );
 }

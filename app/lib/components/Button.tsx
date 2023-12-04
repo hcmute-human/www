@@ -6,6 +6,7 @@ import Link, { type LinkProps } from './Link';
 interface BaseProps {
   size?: 'sm' | 'md';
   variant?: 'accent' | 'primary' | 'negative';
+  outlined?: boolean;
 }
 
 type DefaultProps = BaseProps & ButtonProps;
@@ -14,13 +15,18 @@ type Props =
   | ({ as?: never } & DefaultProps)
   | ({ as: 'link' } & BaseProps & Omit<LinkProps, 'href'> & { href: string });
 
-const baseClass =
-  'leading-none rounded-lg transition-[background-color_outline] ease-in-out font-medium';
+const baseClass = 'leading-none rounded-lg transition-[background-color_outline] ease-in-out font-medium';
 
 const variantClass: Record<NonNullable<Props['variant']>, string> = {
   accent: 'bg-accent-500 text-primary-100 hover:bg-accent-600',
   primary: 'bg-primary-900 text-primary-100',
   negative: 'bg-negative-500 text-primary-100',
+};
+
+const outlineClass: Record<NonNullable<Props['variant']>, string> = {
+  accent: 'text-accent-500 border border-accent-300 hover:border-accent-500',
+  primary: 'text-primary-950 border border-primary-300 hover:border-primary-700',
+  negative: 'text-negative-500 border border-negative-200 hover:border-negative-500',
 };
 
 const sizeClass: Record<NonNullable<Props['size']>, string> = {
@@ -35,40 +41,24 @@ export function buildVariantClass(variant: NonNullable<Props['variant']>) {
 }
 
 function Button(
-  { className, size = 'md', variant = 'accent', ...props }: Props,
+  { className, size = 'md', variant = 'accent', outlined = false, ...props }: Props,
   ref: ForwardedRef<HTMLAnchorElement | HTMLButtonElement>
 ) {
   let node: ReactNode;
+  className = cn(
+    baseClass,
+    outlined ? outlineClass[variant] : variantClass[variant],
+    sizeClass[size],
+    disabledClass,
+    className
+  );
   switch (props.as) {
     case 'link': {
-      node = (
-        <Link
-          {...props}
-          ref={ref as Ref<HTMLAnchorElement>}
-          className={cn(
-            baseClass,
-            variantClass[variant],
-            sizeClass[size],
-            className
-          )}
-        />
-      );
+      node = <Link {...props} ref={ref as Ref<HTMLAnchorElement>} className={className} />;
       break;
     }
     default: {
-      node = (
-        <AriaButton
-          {...props}
-          ref={ref as Ref<HTMLButtonElement>}
-          className={cn(
-            baseClass,
-            variantClass[variant],
-            sizeClass[size],
-            disabledClass,
-            className
-          )}
-        />
-      );
+      node = <AriaButton {...props} ref={ref as Ref<HTMLButtonElement>} className={className} />;
       break;
     }
   }

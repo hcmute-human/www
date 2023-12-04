@@ -1,7 +1,7 @@
 import { cn } from '@lib/utils';
 import clsx from 'clsx';
 import { forwardRef, useEffect, useState } from 'react';
-import { TextField, Text, type TextFieldProps } from 'react-aria-components';
+import { Text, TextField, type TextFieldProps } from 'react-aria-components';
 import { SwitchTransition } from 'transition-hook';
 import Input from './Input';
 import Label from './Label';

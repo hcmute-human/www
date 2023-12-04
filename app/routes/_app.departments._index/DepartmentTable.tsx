@@ -8,21 +8,12 @@ import Table from '@components/Table';
 import TableBody from '@components/TableBody';
 import TableHeader from '@components/TableHeader';
 import UncontrolledTextField from '@components/UncontrolledTextField';
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  ArrowsUpDownIcon,
-} from '@heroicons/react/20/solid';
+import { ArrowDownIcon, ArrowUpIcon, ArrowsUpDownIcon } from '@heroicons/react/20/solid';
 import { useDebounceSubmit } from '@lib/hooks/debounceSubmit';
 import { useSearchParamsOr } from '@lib/hooks/searchParams';
 import type { Department } from '@lib/models/department';
 import { fuzzyFilter, fuzzySort } from '@lib/utils';
-import {
-  Form,
-  useAsyncValue,
-  useNavigation,
-  useSearchParams,
-} from '@remix-run/react';
+import { Form, useAsyncValue, useNavigation, useSearchParams } from '@remix-run/react';
 import { type RankingInfo } from '@tanstack/match-sorter-utils';
 import {
   createColumnHelper,
@@ -53,11 +44,11 @@ declare module '@tanstack/table-core' {
 const columnHelper = createColumnHelper<Department>();
 
 const sizes = [
-  { id: 1, value: 5 },
-  { id: 2, value: 10 },
-  { id: 3, value: 20 },
-  { id: 4, value: 50 },
-  { id: 5, value: 100 },
+  { key: 1, value: 5 },
+  { key: 2, value: 10 },
+  { key: 3, value: 20 },
+  { key: 4, value: 50 },
+  { key: 5, value: 100 },
 ];
 
 export default function DepartmentTable() {
@@ -127,10 +118,7 @@ export default function DepartmentTable() {
       if (!sorts.length) {
         searchParams.delete('order');
       } else {
-        searchParams.set(
-          'order',
-          sorts.map((x) => (x.desc ? '-' : '') + x.id).join(',')
-        );
+        searchParams.set('order', sorts.map((x) => (x.desc ? '-' : '') + x.id).join(','));
       }
       submit(searchParams, { replace: true });
     },
@@ -138,9 +126,7 @@ export default function DepartmentTable() {
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
-  const [selectedSize, setSelectedSize] = useState(
-    sizes.find(({ value }) => value === size) ?? sizes[1]
-  );
+  const [selectedSize, setSelectedSize] = useState(sizes.find(({ value }) => value === size) ?? sizes[1]);
 
   return (
     <>
@@ -158,32 +144,28 @@ export default function DepartmentTable() {
                     key={header.id}
                     className={clsx({
                       'w-0': header.id === 'select',
-                      'hidden lg:table-cell': header.id === 'id',
+                      'hidden md:table-cell': header.id === 'id',
+                      'hidden sm:table-cell': header.id === 'createdTime',
                     })}
                   >
                     <div className="lg:flex items-center gap-8 w-full">
                       <div
                         className={clsx('flex gap-2 items-center', {
-                          'cursor-pointer select-none':
-                            header.column.getCanSort(),
+                          'cursor-pointer select-none': header.column.getCanSort(),
                         })}
                         onClick={header.column.getToggleSortingHandler()}
                       >
                         <span>
                           {header.isPlaceholder
                             ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
+                            : flexRender(header.column.columnDef.header, header.getContext())}
                         </span>
                         {header.column.getCanSort() ? (
                           header.column.getIsSorted() ? (
                             <ArrowUpIcon
                               className={clsx(
                                 'w-4 h-4 transition-transform ease-in-out',
-                                header.column.getIsSorted() === 'desc' &&
-                                  'rotate-180'
+                                header.column.getIsSorted() === 'desc' && 'rotate-180'
                               )}
                             />
                           ) : (
@@ -217,11 +199,7 @@ export default function DepartmentTable() {
                 <Cell colSpan={100}>No departments found.</Cell>
               </Row>
             ) : (
-              table
-                .getRowModel()
-                .rows.map((row) => (
-                  <DepartmentRow row={row} key={row.getValue<string>('id')} />
-                ))
+              table.getRowModel().rows.map((row) => <DepartmentRow row={row} key={row.getValue<string>('id')} />)
             )}
           </TableBody>
         </Table>

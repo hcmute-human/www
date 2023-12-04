@@ -12,8 +12,10 @@
   "dependencies": {
     "@conform-to/react": "^0.9.0",
     "@conform-to/zod": "^0.9.0",
+    "@fontsource-variable/inter-tight": "^5.0.18",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "@internationalized/date": "^3.5.0",
     "@remix-run/css-bundle": "^2.0.1",
     "@remix-run/express": "^2.0.1",
     "@remix-run/node": "^2.0.1",
@@ -45,7 +47,8 @@
     "tailwind-merge": "^2.0.0",
     "transition-hook": "^1.5.2",
     "use-debouncy": "^5.0.1",
-    "zod": "^3.22.2"
+    "zod": "^3.22.2",
+    "zod_utilz": "^0.7.3"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.0.1",

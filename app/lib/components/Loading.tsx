@@ -27,7 +27,6 @@ export default function Loading({ loading, children }: Props) {
         leaveTo="opacity-0 scale-0"
       >
         <ProgressCircle
-          isIndeterminate
           className="w-full h-full text-primary-50"
           aria-label="Loading"
         />

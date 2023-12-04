@@ -113,7 +113,6 @@ export default function Route() {
                       leaveTo="opacity-0 scale-0"
                     >
                       <ProgressCircle
-                        isIndeterminate
                         className="w-full h-full text-primary-500"
                         aria-label="signing in"
                       />

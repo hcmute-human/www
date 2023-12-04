@@ -1,10 +1,11 @@
 {
     "meta": {
-        "title": "Homepage"
+        "title": "Home"
     },
     "navigation": {
         "home": "Home",
-        "department": "Department"
+        "department": "Department",
+        "employee": "Employee"
     },
     "notification": "Notification",
     "logout": "Logout"

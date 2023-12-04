@@ -1,0 +1,23 @@
+@tailwind components;
+
+@layer components {
+  .c-listbox-item {
+    cursor: default;
+    user-select: none;
+    line-height: 1;
+    padding: theme('padding.2') theme('padding.4');
+    border-radius: theme('borderRadius.DEFAULT');
+    transition-property: color background-color;
+    transition-duration: theme('transitionDuration.75');
+    transition-timing-function: theme('transitionTimingFunction.in-out');
+
+    &[data-selected][data-hovered],
+    &[data-hovered] {
+      color: theme('colors.primary.50');
+      background-color: theme('colors.accent.500');
+    }
+    &[data-focused] {
+      outline: none;
+    }
+  }
+}
