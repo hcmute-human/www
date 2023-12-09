@@ -1,5 +1,5 @@
 import { problemDetailsSchema } from '@lib/schemas/problem-details.server';
-import { ResultAsync, errAsync, fromPromise, ok } from 'neverthrow';
+import { ResultAsync, err, errAsync, fromPromise, fromSafePromise, ok } from 'neverthrow';
 
 interface ApiClientOptions {
   baseUrl: string;
@@ -59,7 +59,7 @@ export class ApiClient {
   }
 
   protected fetch(input: string | URL, { headers, ...options }: RequestOptions = {}): ResultAsync<ApiResponse, Error> {
-    const url = typeof input === 'string' ? input : input.pathname;
+    let url = typeof input === 'string' ? input : input.pathname;
     const record: Record<string, string> = ApiClient.makeHeaders(headers);
     if (options?.body) {
       record['Content-Type'] ??=
@@ -68,9 +68,13 @@ export class ApiClient {
           : 'application/json';
     }
     const [path, query] = url.split('?', 2);
+    url = this._options.baseUrl + '/' + trim(path, '/').split('/').join('/') + '/' + this._options.version;
+    if (query) {
+      url += '?' + query;
+    }
     return fromPromise(
       fetch(
-        this._options.baseUrl + '/' + trim(path, '/').split('/').join('/') + '/' + this._options.version + '?' + query,
+        url,
         options
           ? {
               ...options,
@@ -83,7 +87,38 @@ export class ApiClient {
           : undefined
       ),
       (e) => (e instanceof Error ? e : new Error('Unexpected error', { cause: e }))
-    ).andThen((x) => (x.ok ? ok(x) : errAsync(x.json()).mapErr(async (x) => ApiError.from(await x))));
+    ).andThen((x) =>
+      x.ok
+        ? ok(x)
+        : fromPromise(x.json(), () =>
+            fromSafePromise(
+              ApiError.from({
+                status: x.status,
+                title: x.statusText,
+                type: 'https://tools.ietf.org/html/rfc7231#section-6.5.5',
+              })
+            ).andThen((x) => err(x))
+          )
+            .andThen((x) =>
+              fromPromise(ApiError.from(x), () =>
+                fromSafePromise(
+                  ApiError.from({
+                    status: x.status,
+                    title: x.statusText,
+                    type: 'https://tools.ietf.org/html/rfc7231#section-6.5.5',
+                  })
+                ).andThen((x) => err(x))
+              ).andThen((x) => err(x))
+            )
+            .mapErr(async (x) =>
+              x instanceof ResultAsync
+                ? x.match(
+                    (x) => x,
+                    (x) => x
+                  )
+                : x
+            )
+    );
   }
 
   public get(input: string | URL, options?: RequestOptions) {
@@ -124,6 +159,20 @@ export class ApiClient {
     return this.fetch(input, {
       ...options,
       method: 'PUT',
+    });
+  }
+
+  public exists(input: string | URL, options?: RequestOptions) {
+    return this.head(input, options).match(
+      (x) => x.ok,
+      () => false
+    );
+  }
+
+  public patch(input: string | URL, options?: RequestOptions) {
+    return this.fetch(input, {
+      ...options,
+      method: 'PATCH',
     });
   }
 

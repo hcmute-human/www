@@ -32,15 +32,6 @@ import { useTranslation } from 'react-i18next';
 import DepartmentRow from './PositionRow';
 import type { GetDepartmentPositionResult } from './types';
 
-declare module '@tanstack/table-core' {
-  interface FilterFns {
-    fuzzyFilter: FilterFn<unknown>;
-  }
-  interface FilterMeta {
-    itemRank: RankingInfo;
-  }
-}
-
 const columnHelper = createColumnHelper<DepartmentPosition>();
 
 const sizes = [

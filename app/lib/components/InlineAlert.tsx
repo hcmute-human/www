@@ -1,12 +1,10 @@
-import {
-  CheckCircleIcon,
-  ExclamationCircleIcon,
-} from '@heroicons/react/20/solid';
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/20/solid';
 import { cn } from '@lib/utils';
 import type { HTMLAttributes, ReactNode } from 'react';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   text: string;
+  iconPlacement?: 'left' | 'right';
   variant?: 'positive' | 'negative';
 }
 
@@ -19,6 +17,7 @@ const variantClass: Record<NonNullable<Props['variant']>, string> = {
 export default function InlineAlert({
   text,
   variant = 'positive',
+  iconPlacement = 'left',
   className,
   ...props
 }: Props) {
@@ -34,7 +33,10 @@ export default function InlineAlert({
     }
   }
   return (
-    <div {...props} className={cn(baseClass, variantClass[variant], className)}>
+    <div
+      {...props}
+      className={cn(baseClass, variantClass[variant], iconPlacement === 'left' ? '' : 'flex-row-reverse', className)}
+    >
       {icon}
       <p className="font-bold leading-body">{text}</p>
     </div>

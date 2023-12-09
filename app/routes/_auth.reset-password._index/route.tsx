@@ -22,9 +22,7 @@ interface FieldValues {
 
 function schema(t: TFunction) {
   return z.object({
-    email: z
-      .string({ required_error: t('email.required') })
-      .email(t('email.invalid')),
+    email: z.string({ required_error: t('email.required') }).email(t('email.invalid')),
   });
 }
 
@@ -56,11 +54,7 @@ export default function Route() {
           >
             {ok ? (
               <>
-                <BoxAlert
-                  variant="positive"
-                  title={t('successAlert.title')}
-                  body={t('successAlert.body') + '.'}
-                />
+                <BoxAlert variant="positive" title={t('successAlert.title')} body={t('successAlert.body') + '.'} />
                 <div className="mt-4">
                   <Button as="link" href="/login">
                     {t('successAlert.back')}
@@ -78,8 +72,7 @@ export default function Route() {
                   defaultValue: {
                     email: '',
                   },
-                  onValidate: ({ formData }) =>
-                    parseSubmission(formData, { schema: schema(t) }),
+                  onValidate: ({ formData }) => parseSubmission(formData, { schema: schema(t) }),
                 }}
               >
                 <TextField
@@ -91,11 +84,7 @@ export default function Route() {
                   className="grid"
                 />
                 <div className="flex gap-4">
-                  <Button
-                    type="submit"
-                    className="relative w-fit bg-accent-500"
-                    isDisabled={state === 'submitting'}
-                  >
+                  <Button type="submit" className="relative w-fit bg-accent-500" isDisabled={state === 'submitting'}>
                     <span
                       className={clsx('block transition ease-in-out', {
                         'opacity-0': state === 'submitting',
@@ -112,18 +101,10 @@ export default function Route() {
                       leave="transition ease-in-out duration-300"
                       leaveTo="opacity-0 scale-0"
                     >
-                      <ProgressCircle
-                        className="w-full h-full text-primary-500"
-                        aria-label="signing in"
-                      />
+                      <ProgressCircle className="w-full h-full text-primary-500" aria-label="signing in" />
                     </Transition>
                   </Button>
-                  <Button
-                    as="link"
-                    variant="primary"
-                    className="w-fit"
-                    href="/login"
-                  >
+                  <Button as="link" variant="primary" className="w-fit" href="/login">
                     {t('back')}
                   </Button>
                 </div>
@@ -134,11 +115,7 @@ export default function Route() {
                   leave="transition ease-in-out duration-300"
                   leaveTo="opacity-0 translate-y-2"
                 >
-                  <BoxAlert
-                    variant="negative"
-                    title={t('unknownError')}
-                    body={error?.[0]!}
-                  />
+                  <BoxAlert variant="negative" title={t('unknownError')} body={error?.[0]!} />
                 </Transition>
               </Form>
             )}
@@ -187,9 +164,7 @@ export async function action({ request }: ActionFunctionArgs) {
       templateModel: {
         ReturnUrl: `http://localhost:3000/reset-password/${body.token}`,
       },
-      recipients: [
-        { email: submission.value.email, name: 'duydang2412@gmail.com' },
-      ],
+      recipients: [{ email: submission.value.email, name: 'duydang2412@gmail.com' }],
     },
     headers: {
       'Content-Type': 'application/json',

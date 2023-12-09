@@ -1,0 +1,23 @@
+{
+    "meta": {
+        "title": "Create leave type"
+    },
+    "name": {
+        "label": "Name",
+        "description": "Enter leave type's name",
+        "required": "Enter a name for this leave type"
+    },
+    "days": {
+        "label": "Number of leave days",
+        "description": "Enter a number of maximum leave days",
+        "required": "Enter a number of maximum leave days",
+        "invalidType": "Enter a number of maximum leave days",
+        "min": "Enter a number at least {{min}}"
+    },
+    "description": {
+        "label": "Description",
+        "description": "Enter leave type's description"
+    },
+    "create": "Create",
+    "reset": "Reset"
+}

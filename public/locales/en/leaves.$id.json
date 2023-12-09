@@ -1,0 +1,37 @@
+{
+    "meta": {
+        "title": "Details"
+    },
+    "id": {
+        "label": "ID"
+    },
+    "h1": "Leave application details",
+    "issuerName": {
+        "label": "Issuer",
+        "description": "The employee who has issued this leave application"
+    },
+    "leaveTypeId": {
+        "label": "Leave type"
+    },
+    "status": {
+        "label": "Status",
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+    },
+    "startTime": {
+        "label": "Start time"
+    },
+    "endTime": {
+        "label": "End time"
+    },
+    "description": {
+        "label": "Description"
+    },
+    "processorName": {
+        "label": "Processor",
+        "description": "The employee who has processed this leave application"
+    },
+    "update": "Update",
+    "reset": "Reset"
+}

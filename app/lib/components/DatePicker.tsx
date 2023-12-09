@@ -33,7 +33,15 @@ interface Props extends DatePickerProps<DateValue> {
   inputClassName?: string;
 }
 
-export default function DatePicker({ label, className, errorMessage, description, isInvalid, ...props }: Props) {
+export default function DatePicker({
+  label,
+  className,
+  errorMessage,
+  description,
+  isInvalid,
+  isRequired,
+  ...props
+}: Props) {
   const { [props.name]: field } = useFormFieldsContext() ?? {};
   const [errorDisplay, setErrorDisplay] = useState(errorMessage);
   errorMessage ??= field?.error;
@@ -56,13 +64,20 @@ export default function DatePicker({ label, className, errorMessage, description
     <AriaDatePicker
       {...props}
       isInvalid={isInvalid || invalid}
+      isRequired={isRequired}
       className={cn('group focus-within:outline-none', className)}
       onBlur={() => {
         inputRef.current?.dispatchEvent(new Event('blur', { bubbles: true, cancelable: true }));
       }}
       defaultValue={field.defaultValue}
     >
-      {label ? <Label className="cursor-default">{label}</Label> : null}
+      {label ? (
+        <Label className="cursor-default mb-0.5 flex items-center gap-1 flex-wrap">
+          {label}
+          {isRequired ? <span className="text-primary-300 text-xs font-medium">(required)</span> : null}
+          {props.isReadOnly ? <span className="text-info-500 text-xs font-medium">(read-only)</span> : null}
+        </Label>
+      ) : null}
       <Group className="c-input flex py-0 pr-0 group-data-[invalid]:border-negative-500" ref={groupRef}>
         <DateInput className="flex flex-1 py-2 focus-within:outline-none">
           {(segment) => (

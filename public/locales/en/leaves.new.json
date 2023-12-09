@@ -1,0 +1,31 @@
+{
+    "meta": {
+        "title": "Apply for leave"
+    },
+    "leaveTypeId": {
+        "label": "Leave type",
+        "description": "Select a leave type",
+        "required": "Select a leave type"
+    },
+    "startTime": {
+        "label": "Start time",
+        "description": "Enter or select a start time of leave",
+        "required": "Enter or select a start time of leave",
+        "invalidType": "Enter or select a start time of leave",
+        "invalidDate": "Enter or select a start time of leave"
+    },
+    "endTime": {
+        "label": "End time",
+        "description": "Enter or select an end time of leave",
+        "required": "Enter or select an end time of leave",
+        "invalidType": "Enter or select an end time of leave",
+        "invalidDate": "Enter or select an end time of leave"
+    },
+    "description": {
+        "label": "Description",
+        "description": "Enter leave's description"
+    },
+    "create": "Apply",
+    "reset": "Reset",
+    "success": "Your leave application has been created"
+}

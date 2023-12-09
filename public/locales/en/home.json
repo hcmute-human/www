@@ -5,7 +5,8 @@
     "navigation": {
         "home": "Home",
         "department": "Department",
-        "employee": "Employee"
+        "employee": "Employee",
+        "leave": "Leave"
     },
     "notification": "Notification",
     "logout": "Logout"

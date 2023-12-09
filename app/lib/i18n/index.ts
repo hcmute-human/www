@@ -18,6 +18,7 @@ export const config = {
     'employees.$id',
     'employees.$id.positions',
     'employees.$id.positions.new',
+    'leaves',
   ],
   react: { useSuspense: false },
   interpolation: { escapeValue: false },

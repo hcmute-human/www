@@ -1,0 +1,26 @@
+{
+    "meta": {
+        "title": "Types"
+    },
+    "h1": "Leave types",
+    "createLeaveType": "New leave type",
+    "table": {
+        "ariaLabel": "Table of leave types",
+        "header": {
+            "name": "Name",
+            "days": "Leave days",
+            "id": "ID",
+            "createdTime": "Created Time",
+            "actions": "Actions"
+        },
+        "body": {
+            "empty": "No leave types here yet",
+            "actions": {
+                "details": "Details",
+                "delete": "Delete"
+            }
+        }
+    },
+    "deletionFailed": "Unable to delete",
+    "confirmDeletion": "Are you sure to delete this leave type?"
+}

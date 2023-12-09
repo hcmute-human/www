@@ -1,7 +1,6 @@
 import type { Submission } from '@conform-to/react';
 import { parse } from '@conform-to/zod';
 import { Gender } from '@lib/models/employee';
-import type { UIMatch } from '@remix-run/react';
 import { compareItems, rankItem } from '@tanstack/match-sorter-utils';
 import { sortingFns, type FilterFn, type SortingFn } from '@tanstack/react-table';
 import { clsx, type ClassValue } from 'clsx';
@@ -40,7 +39,7 @@ export function displayP3ToHex(rgb: string) {
     .join('')}`;
 }
 
-type SubmissionWithOk<Schema extends ZodTypeAny> =
+export type SubmissionWithOk<Schema extends ZodTypeAny> =
   | ({ ok: true; value: Schema } & Omit<Submission<Schema>, 'value'>)
   | ({ ok: false } & Omit<Submission<Schema>, 'value'>);
 

@@ -75,7 +75,7 @@ export default function Route() {
             label={t('name.label')}
             description={t('name.description')}
             className="grid"
-            labelClassName="text-base"
+            isRequired
           />
           <div className="flex gap-4">
             <Button type="submit" className="w-fit" isDisabled={submitting}>

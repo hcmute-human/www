@@ -1,6 +1,6 @@
 import { cn } from '@lib/utils';
 import clsx from 'clsx';
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { NumberField, Text, type NumberFieldProps } from 'react-aria-components';
 import { SwitchTransition } from 'transition-hook';
 import Input from './Input';
@@ -16,14 +16,11 @@ interface Props extends NumberFieldProps {
 }
 
 const UncontrolledNumberField = forwardRef<HTMLInputElement, Props>(function UncontrolledNumberField(
-  { label, labelClassName, inputClassName, description, errorMessage, ...props }: Props,
+  { label, labelClassName, inputClassName, description, errorMessage, isRequired, ...props }: Props,
   ref
 ) {
   const [errorDisplay, setErrorDisplay] = useState(errorMessage);
   const invalid = !!errorMessage;
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useImperativeHandle(ref, () => inputRef.current!);
 
   useEffect(() => {
     if (!errorMessage) {
@@ -33,18 +30,17 @@ const UncontrolledNumberField = forwardRef<HTMLInputElement, Props>(function Unc
   }, [errorMessage]);
 
   return (
-    <NumberField {...props} isInvalid={!!props.isInvalid || invalid}>
-      <Label className={labelClassName}>{label}</Label>
+    <NumberField {...props} isRequired={isRequired} isInvalid={!!props.isInvalid || invalid}>
+      <Label className={cn('mb-0.5 flex items-center gap-1 flex-wrap', labelClassName)}>
+        {label}
+        {isRequired ? <span className="text-primary-300 text-xs font-medium">(required)</span> : null}
+      </Label>
       <Input
-        required={!!props.isRequired}
+        required={isRequired}
         className={cn(inputClassName, {
           'peer border-negative-500': invalid,
         })}
-        ref={inputRef}
-        onBlur={(e) => {
-          inputRef.current?.dispatchEvent(new Event('blur', { cancelable: true, bubbles: true }));
-          props.onBlur?.(e);
-        }}
+        ref={ref}
       />
       <SwitchTransition state={invalid} timeout={200} mode="out-in">
         {(invalid, stage) => (

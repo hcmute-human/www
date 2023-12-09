@@ -10,7 +10,11 @@ const fontFamilyBase =
 const config: Config = {
   content: ['./app/**/*.{ts,tsx}'],
   theme: {
-    colors: {},
+    colors: (utils) => ({
+      inherit: utils.colors.inherit,
+      current: utils.colors.current,
+      transparent: utils.colors.transparent,
+    }),
     extend: {
       colors: {
         primary: {

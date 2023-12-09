@@ -28,7 +28,7 @@ export async function loader({ params: { id }, context: { session } }: LoaderFun
   const api = SessionApiClient.from(session);
   if (
     !(await api.authorize({
-      permissions: ['read:employee', 'read:user'],
+      permissions: ['read:employee', 'read:user', 'read:leaveApplication'],
       allPermission: true,
     }))
   ) {

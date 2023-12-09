@@ -58,7 +58,7 @@ const schema = (t: TFunction) =>
       lastName: z.string({ required_error: t('lastName.required') }),
       gender: z.coerce
         .number({
-          required_error: t('employmenType.required'),
+          required_error: t('employmentType.required'),
           invalid_type_error: t('gender.invalidType'),
         })
         .refine((x) => x === Gender.Male || x === Gender.Female, t('gender.invalidType')),
@@ -89,7 +89,6 @@ export default function Route() {
   const lastSubmission = useActionData<typeof action>();
   const navigation = useNavigation();
   const submitting = navigation.state === 'submitting';
-  const ref = useRef(null);
 
   return (
     <>
@@ -114,6 +113,7 @@ export default function Route() {
               name="email"
               label={t('email.label')}
               description={t('email.description')}
+              isRequired
               className="grid w-full"
             />
             <TextField
@@ -121,6 +121,7 @@ export default function Route() {
               name="password"
               label={t('password.label')}
               description={t('password.description')}
+              isRequired
               className="grid w-full"
             />
             <TextField
@@ -128,6 +129,7 @@ export default function Route() {
               name="confirmPassword"
               label={t('confirmPassword.label')}
               description={t('confirmPassword.description')}
+              isRequired
               className="grid w-full"
             />
           </FieldGroup>
@@ -136,12 +138,14 @@ export default function Route() {
               name="firstName"
               label={t('firstName.label')}
               description={t('firstName.description')}
+              isRequired
               className="grid w-full"
             />
             <TextField
               name="lastName"
               label={t('lastName.label')}
               description={t('lastName.description')}
+              isRequired
               className="grid w-full"
             />
           </FieldGroup>
@@ -150,6 +154,7 @@ export default function Route() {
               name="gender"
               label="Gender"
               className="grid w-full content-start"
+              isRequired
               description={t('gender.description')}
             >
               {genders.map(({ key, value }) => (
@@ -167,6 +172,7 @@ export default function Route() {
               name="dateOfBirth"
               label={t('dateOfBirth.label')}
               description={t('dateOfBirth.description')}
+              isRequired
               className="w-full"
             />
           </FieldGroup>

@@ -1,5 +1,5 @@
-import { parseAbsolute, parseAbsoluteToLocal, parseDate, toCalendarDate } from '@internationalized/date';
-import { formatRelative } from 'date-fns';
+import { parseAbsoluteToLocal, toCalendarDate } from '@internationalized/date';
+import { format as dateFnsFormat, formatRelative } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 
 type Locale = 'en';
@@ -24,4 +24,12 @@ export function formatRelativeTimeFromNow(date: Date, locale?: Locale) {
 
 export function parseDateFromAbsolute(input: string) {
   return toCalendarDate(parseAbsoluteToLocal(input));
+}
+
+export function formatDate(date: Date, format: string = 'MM/dd/yyyy') {
+  return dateFnsFormat(date, format);
+}
+
+export function formatDateTime(date: Date, format: string = 'MM/dd/yyyy HH:mm') {
+  return formatDate(date, format);
 }

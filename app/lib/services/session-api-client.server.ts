@@ -1,10 +1,5 @@
 import { err, fromPromise, ok, type ResultAsync } from 'neverthrow';
-import {
-  ApiClient,
-  ApiError,
-  type ApiResponse,
-  type RequestOptions,
-} from './api-client.server';
+import { ApiClient, ApiError, type ApiResponse, type RequestOptions } from './api-client.server';
 import type { Session } from '@remix-run/node';
 
 export interface AuthorizeRequest {
@@ -13,9 +8,7 @@ export interface AuthorizeRequest {
 }
 
 export class SessionApiClient extends ApiClient {
-  private constructor(
-    private readonly _session: Session<SessionData, unknown>
-  ) {
+  private constructor(private readonly _session: Session<SessionData, unknown>) {
     if (!ApiClient._options) {
       throw new ReferenceError(
         'Failed to initialize SessionApiClient. An option must be provided using `ApiClient.use(options)` first'
@@ -24,10 +17,7 @@ export class SessionApiClient extends ApiClient {
     super(ApiClient._options);
   }
 
-  protected fetch(
-    input: string | URL,
-    options?: RequestOptions
-  ): ResultAsync<ApiResponse, Error> {
+  protected fetch(input: string | URL, options?: RequestOptions): ResultAsync<ApiResponse, Error> {
     return super
       .fetch(input, {
         ...options,
@@ -58,9 +48,7 @@ export class SessionApiClient extends ApiClient {
                   refreshToken: string;
                 }
                 return fromPromise(x.json() as Promise<RefreshResponse>, (e) =>
-                  e instanceof Error
-                    ? e
-                    : new Error('Unable to process request', { cause: e })
+                  e instanceof Error ? e : new Error('Unable to process request', { cause: e })
                 ).andThen(({ accessToken, refreshToken }) => {
                   this._session.set('accessToken', accessToken);
                   this._session.set('refreshToken', refreshToken);

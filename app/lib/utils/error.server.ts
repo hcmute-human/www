@@ -2,9 +2,7 @@ import { ZodError } from 'zod';
 import { problemDetailsSchema } from '@lib/schemas/problem-details.server';
 import { ApiError } from '@lib/services/api-client.server';
 
-export async function toActionErrorsAsync<T>(
-  body: ZodError<T>
-): Promise<ActionError>;
+export async function toActionErrorsAsync<T>(body: ZodError<T>): Promise<ActionError>;
 export async function toActionErrorsAsync(body: ApiError): Promise<ActionError>;
 export async function toActionErrorsAsync(body: Error): Promise<ActionError>;
 export async function toActionErrorsAsync(body: unknown): Promise<ActionError>;

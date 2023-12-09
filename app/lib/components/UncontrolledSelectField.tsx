@@ -24,6 +24,7 @@ export default function UncontrolledSelectField<T extends object>({
   description,
   className,
   items,
+  isRequired,
   onBlur,
   ...props
 }: UncontrolledSelectFieldProps<T>) {
@@ -40,6 +41,7 @@ export default function UncontrolledSelectField<T extends object>({
       {...props}
       className={clsx('group outline-none', className)}
       isInvalid={invalid}
+      isRequired={isRequired}
       name={name}
       ref={ref}
       onBlur={(e) => {
@@ -47,8 +49,13 @@ export default function UncontrolledSelectField<T extends object>({
         onBlur?.(e);
       }}
     >
-      {label ? <Label className="cursor-default">{label}</Label> : null}
-      <Button className="c-input group-invalid:border-negative-500 flex items-center transition-[outline] ease-in-out">
+      {label ? (
+        <Label className="cursor-default mb-0.5 flex items-center gap-1 flex-wrap">
+          {label}
+          {isRequired ? <span className="text-primary-300 text-xs font-medium">(required)</span> : null}
+        </Label>
+      ) : null}
+      <Button className="c-input group-invalid:border-negative-500 flex items-center transition-[outline] ease-in-out w-full">
         <SelectValue className="truncate placeholder-shown:italic flex-1 text-left" />
         <ChevronUpDownIcon className="w-5 h-5 text-primary-500 group-invalid:text-negative-500" />
       </Button>

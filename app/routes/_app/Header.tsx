@@ -1,6 +1,12 @@
 import Logo from '@components/Logo';
 import ThemeSwitch from '@components/ThemeSwitch';
-import { ArrowLeftOnRectangleIcon, HomeIcon, Square2StackIcon, UsersIcon } from '@heroicons/react/20/solid';
+import {
+  ArrowLeftOnRectangleIcon,
+  CalendarIcon,
+  HomeIcon,
+  Square2StackIcon,
+  UsersIcon,
+} from '@heroicons/react/20/solid';
 import { useTranslation } from 'react-i18next';
 import NavigationBar from './NavigationBar';
 import type { INavigationBarItem } from './types';
@@ -29,6 +35,11 @@ export default function Header() {
       text: t('navigation.employee'),
       href: '/employees',
       icon: <UsersIcon className="w-5" />,
+    },
+    {
+      text: t('navigation.leave'),
+      href: '/leaves',
+      icon: <CalendarIcon className="w-5" />,
     },
   ];
 
