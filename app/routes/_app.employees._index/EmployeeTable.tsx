@@ -14,7 +14,6 @@ import { useSearchParamsOr } from '@lib/hooks/searchParams';
 import type { Employee } from '@lib/models/employee';
 import { fuzzyFilter, fuzzySort } from '@lib/utils';
 import { Form, useAsyncValue, useNavigation, useSearchParams } from '@remix-run/react';
-import { type RankingInfo } from '@tanstack/match-sorter-utils';
 import {
   createColumnHelper,
   flexRender,
@@ -23,7 +22,6 @@ import {
   getSortedRowModel,
   useReactTable,
   type ColumnFiltersState,
-  type FilterFn,
   type SortingState,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
@@ -31,15 +29,6 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import EmployeeRow from './EmployeeRow';
 import type { GetEmployeesResult } from './types';
-
-declare module '@tanstack/table-core' {
-  interface FilterFns {
-    fuzzyFilter: FilterFn<unknown>;
-  }
-  interface FilterMeta {
-    itemRank: RankingInfo;
-  }
-}
 
 const columnHelper = createColumnHelper<Employee>();
 

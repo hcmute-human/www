@@ -8,13 +8,12 @@ import Table from '@components/Table';
 import TableBody from '@components/TableBody';
 import TableHeader from '@components/TableHeader';
 import UncontrolledTextField from '@components/UncontrolledTextField';
-import { ArrowDownIcon, ArrowUpIcon, ArrowsUpDownIcon } from '@heroicons/react/20/solid';
+import { ArrowUpIcon, ArrowsUpDownIcon } from '@heroicons/react/20/solid';
 import { useDebounceSubmit } from '@lib/hooks/debounceSubmit';
 import { useSearchParamsOr } from '@lib/hooks/searchParams';
 import type { Department } from '@lib/models/department';
 import { fuzzyFilter, fuzzySort } from '@lib/utils';
 import { Form, useAsyncValue, useNavigation, useSearchParams } from '@remix-run/react';
-import { type RankingInfo } from '@tanstack/match-sorter-utils';
 import {
   createColumnHelper,
   flexRender,
@@ -23,7 +22,6 @@ import {
   getSortedRowModel,
   useReactTable,
   type ColumnFiltersState,
-  type FilterFn,
   type SortingState,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
@@ -31,15 +29,6 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DepartmentRow from './DepartmentRow';
 import type { GetDepartmentsResult } from './types';
-
-declare module '@tanstack/table-core' {
-  interface FilterFns {
-    fuzzyFilter: FilterFn<unknown>;
-  }
-  interface FilterMeta {
-    itemRank: RankingInfo;
-  }
-}
 
 const columnHelper = createColumnHelper<Department>();
 

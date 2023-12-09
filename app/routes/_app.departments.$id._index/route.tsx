@@ -26,11 +26,15 @@ export async function loader({ context: { session }, params }: LoaderFunctionArg
     (x) => (x.ok ? x.json() : paginated()),
     () => paginated()
   ) as Promise<Paginated<Employee>>;
-  const leavesCountPromise = new Promise<number>((resolve) =>
-    setTimeout(() => {
-      resolve(Math.floor(Math.random() * 20 + 5));
-    }, 100)
+  const leavesCountPromise = api.count(`leave-applications?countOnly=true&departmentId=${params.id}`).match(
+    (x) => x,
+    () => 0
   );
+  // const leavesCountPromise = new Promise<number>((resolve) =>
+  //   setTimeout(() => {
+  //     resolve(Math.floor(Math.random() * 20 + 5));
+  //   }, 100)
+  // );
 
   return defer({
     departmentPositionsPromise,

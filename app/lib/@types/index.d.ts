@@ -1,7 +1,7 @@
-declare type ActionError = Record<string, string[]>;
-declare type Either<T1, T2> =
-  | (T1 & { [key in keyof T2]?: never })
-  | (T2 & { [key in keyof T1]?: never });
+declare global {
+  type ActionError = Record<string, string[]>;
+  type Either<T1, T2> = (T1 & { [key in keyof T2]?: never }) | (T2 & { [key in keyof T1]?: never });
+}
 
 declare namespace NodeJS {
   interface ProcessEnv {
@@ -14,4 +14,15 @@ declare namespace NodeJS {
 declare module 'tailwindcss-animated' {
   const plugin: { handler: () => void };
   export = plugin;
+}
+
+import { type FilterFn } from '@tanstack/table-core';
+import { type RankingInfo } from '@tanstack/match-sorter-utils';
+declare module '@tanstack/table-core' {
+  interface FilterFns {
+    fuzzyFilter: FilterFn<unknown>;
+  }
+  interface FilterMeta {
+    itemRank: RankingInfo;
+  }
 }

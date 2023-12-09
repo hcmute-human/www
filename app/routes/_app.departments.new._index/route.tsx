@@ -9,13 +9,7 @@ import i18next from '@lib/i18n/index.server';
 import { SessionApiClient } from '@lib/services/session-api-client.server';
 import { buildTitle, parseSubmission, parseSubmissionAsync } from '@lib/utils';
 import { toActionErrorsAsync } from '@lib/utils/error.server';
-import {
-  json,
-  redirect,
-  type ActionFunctionArgs,
-  type LoaderFunctionArgs,
-  type MetaFunction,
-} from '@remix-run/node';
+import { json, redirect, type ActionFunctionArgs, type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node';
 import { useActionData, useLoaderData, useNavigation } from '@remix-run/react';
 import type { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
@@ -23,26 +17,18 @@ import { z } from 'zod';
 
 export const handle = {
   i18n: 'departments',
-  breadcrumb: () => (
-    <TextLink href="/departments/new">Create department</TextLink>
-  ),
+  breadcrumb: () => <TextLink href="/departments/new">Create department</TextLink>,
 };
 
-export const meta: MetaFunction<typeof loader> = ({ matches }) =>
-  buildTitle(matches);
+export const meta: MetaFunction<typeof loader> = ({ matches }) => buildTitle(matches);
 
-export async function loader({
-  request,
-  context: { session },
-}: LoaderFunctionArgs) {
+export async function loader({ request, context: { session } }: LoaderFunctionArgs) {
   const api = SessionApiClient.from(session);
   if (!(await api.authorize({ permissions: ['read:department'] }))) {
     throw redirect('/');
   }
 
-  const title = await i18next
-    .getFixedT(request, 'departments.new')
-    .then((t) => t('meta.title'));
+  const title = await i18next.getFixedT(request, 'departments.new').then((t) => t('meta.title'));
   return json({ title });
 }
 
@@ -52,9 +38,7 @@ interface FieldValues {
 
 const schema = (t: TFunction) =>
   z.object({
-    name: z
-      .string({ required_error: t('name.required') })
-      .min(1, t('name.min', { count: 1 })),
+    name: z.string({ required_error: t('name.required') }).min(1, t('name.min', { count: 1 })),
   });
 
 export default function Route() {
@@ -69,11 +53,7 @@ export default function Route() {
       <h1>{title}</h1>
       <div className="grid gap-4 mt-4 sm:max-w-md">
         {lastSubmission?.error?.form ? (
-          <BoxAlert
-            variant="negative"
-            title="Unable to create department"
-            body={lastSubmission.error.form[0]}
-          />
+          <BoxAlert variant="negative" title="Unable to create department" body={lastSubmission.error.form[0]} />
         ) : null}
         <Form<FieldValues>
           className="grid gap-4 w-full"
@@ -87,8 +67,7 @@ export default function Route() {
               rememberMe: true,
             },
             shouldValidate: 'onBlur',
-            onValidate: ({ formData }) =>
-              parseSubmission(formData, { schema: schema(t) }),
+            onValidate: ({ formData }) => parseSubmission(formData, { schema: schema(t) }),
           }}
         >
           <TextField
@@ -96,6 +75,7 @@ export default function Route() {
             label={t('name.label')}
             description={t('name.description')}
             className="grid"
+            isRequired
             labelClassName="text-base"
           />
           <div className="flex gap-4">
@@ -119,10 +99,7 @@ export default function Route() {
   );
 }
 
-export async function action({
-  request,
-  context: { session },
-}: ActionFunctionArgs) {
+export async function action({ request, context: { session } }: ActionFunctionArgs) {
   const t = await i18next.getFixedT(request);
   const formData = await request.formData();
   const submission = await parseSubmissionAsync(formData, {

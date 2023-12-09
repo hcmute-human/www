@@ -165,6 +165,7 @@ export default function Route() {
                       setSearchParams({ departmentId: key + '' });
                     }}
                     items={items}
+                    isRequired
                   >
                     {({ id, name }) => (
                       <ListBoxItem className="flex justify-between" key={id} id={id} textValue={name}>
@@ -192,6 +193,7 @@ export default function Route() {
                     description={t('departmentPositionId.description')}
                     isDisabled={!searchParams.has('departmentId')}
                     disabledKeys={['none']}
+                    isRequired
                   >
                     {items.length ? (
                       items.map(({ id, name }) => (
@@ -223,6 +225,7 @@ export default function Route() {
             label={t('employmentType.label')}
             className="grid w-full content-start"
             description={t('employmentType.description')}
+            isRequired
           >
             {employments.map(({ text, value }) => (
               <ListBoxItem className="flex justify-between" key={value} id={value} textValue={text}>
@@ -240,14 +243,22 @@ export default function Route() {
             label={t('startTime.label')}
             description={t('startTime.description')}
             className="grid"
+            isRequired
           />
           <DatePicker
             name="endTime"
             label={t('endTime.label')}
             description={t('endTime.description')}
             className="grid"
+            isRequired
           />
-          <NumberField name="salary" label={t('salary.label')} description={t('salary.description')} className="grid" />
+          <NumberField
+            name="salary"
+            label={t('salary.label')}
+            description={t('salary.description')}
+            className="grid"
+            isRequired
+          />
           <div className="flex gap-4">
             <Button type="submit" className="w-fit" isDisabled={submitting}>
               <Loading loading={submitting}>Create</Loading>

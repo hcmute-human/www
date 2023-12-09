@@ -1,0 +1,32 @@
+{
+    "meta": {
+        "title": "Leaves"
+    },
+    "h1": "Leave applications",
+    "applyLeave": "Apply for leave",
+    "table": {
+        "ariaLabel": "Table of leave applications",
+        "header": {
+            "issuer": "Issuer",
+            "leaveType": "Leave type",
+            "startTime": "Start time",
+            "endTime": "End time",
+            "status": "Status",
+            "description": "Description",
+            "createdTime": "Created Time",
+            "actions": "Actions"
+        },
+        "body": {
+            "empty": "No leave applications here yet",
+            "actions": {
+                "details": "Details",
+                "approve": "Approve",
+                "reject": "Reject",
+                "delete": "Delete"
+            }
+        }
+    },
+    "deletionFailed": "Unable to delete",
+    "updateFailed": "Unable to update",
+    "confirmDeletion": "Are you sure to delete this leave application?"
+}
