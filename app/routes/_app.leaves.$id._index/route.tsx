@@ -42,10 +42,6 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => buildTitle(mat
 
 export async function loader({ request, params: { id }, context: { session } }: LoaderFunctionArgs) {
   const api = SessionApiClient.from(session);
-  if (!(await api.authorize({ permissions: ['read:leaveApplication'] }))) {
-    throw redirect('/');
-  }
-
   const leaveTypesPromise = api.get(`leave-types`).match(
     (x) => (x.ok ? x.json() : paginated()),
     () => paginated()
