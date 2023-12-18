@@ -15,7 +15,7 @@ type Props =
   | ({ as?: never } & DefaultProps)
   | ({ as: 'link' } & BaseProps & Omit<LinkProps, 'href'> & { href: string });
 
-const baseClass = 'leading-none rounded-lg transition-[background-color_outline] ease-in-out font-medium';
+const baseClass = 'leading-none rounded-md transition-[background-color_outline] ease-in-out font-medium';
 
 const variantClass: Record<NonNullable<Props['variant']>, string> = {
   accent: 'bg-accent-500 text-primary-100 hover:bg-accent-600',
