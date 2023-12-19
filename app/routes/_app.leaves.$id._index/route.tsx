@@ -133,7 +133,7 @@ export default function Route() {
     <>
       <h1>{t('h1')}</h1>
       <div className="grid gap-4 mt-4 max-w-screen-lg">
-        {error ? <BoxAlert variant="negative" title="Unable to create leave application" body={error[0]} /> : null}
+        {error ? <BoxAlert variant="negative" title={t('updateFailed')} body={error[0]} /> : null}
         <Form<FieldValues>
           className="grid gap-4 w-full"
           method="post"
