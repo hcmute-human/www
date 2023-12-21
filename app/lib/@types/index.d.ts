@@ -4,10 +4,11 @@ declare global {
 }
 
 declare namespace NodeJS {
-  interface ProcessEnv {
+  export interface ProcessEnv {
     API_BASE_URL?: string;
     API_ACCESS_TOKEN?: string;
     COOKIE_SECRET?: string;
+    CLOUDINARY_CLOUD_NAME?: string;
   }
 }
 

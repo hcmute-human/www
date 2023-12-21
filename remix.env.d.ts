@@ -28,8 +28,16 @@ declare global {
 }
 
 declare module '@remix-run/server-runtime' {
+  interface JwtPayload {
+    sub: string;
+    exp: number;
+    iat: number;
+    nbf: number;
+    iss: string;
+    aud: string;
+  }
   export interface AppLoadContext {
-    session: Session<SessionData, unknown>;
+    session: Session<SessionData, unknown> & { decode: () => JwtPayload };
   }
 }
 

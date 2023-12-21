@@ -2,21 +2,18 @@ import Breadcrumbs from '@components/Breadcrumbs';
 import Button from '@components/Button';
 import TextLink from '@components/TextLink';
 import { ArrowLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
-import i18next from '@lib/i18n/index.server';
 import { json, type LoaderFunctionArgs } from '@remix-run/node';
 import { useMatches, type UIMatch } from '@remix-run/react';
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const title = await i18next.getFixedT(request, 'home').then((t) => t('meta.title'));
-  return json({ title });
-}
-
 export const handle = {
   i18n: 'home',
-  breadcrumb: true,
 };
+
+export function loader({ context: { session } }: LoaderFunctionArgs) {
+  return json({ id: session.decode().sub });
+}
 
 function isMatchWithBreadcrumb(x: unknown): x is UIMatch<Required<RouteData>, Required<RouteHandle>> {
   return (

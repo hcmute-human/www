@@ -6,7 +6,8 @@
         "home": "Home",
         "department": "Department",
         "employee": "Employee",
-        "leave": "Leave"
+        "leave": "Leave",
+        "profile": "Profile"
     },
     "notification": "Notification",
     "logout": "Logout"

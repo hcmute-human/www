@@ -26,9 +26,7 @@ interface FieldValues {
 
 function schema(t: TFunction) {
   return z.object({
-    email: z
-      .string({ required_error: t('email.required') })
-      .email(t('email.invalid')),
+    email: z.string({ required_error: t('email.required') }).email(t('email.invalid')),
     password: z.string({ required_error: t('password.required') }),
     rememberMe: z.boolean().optional(),
   });
@@ -46,9 +44,7 @@ export default function Route() {
 
   return (
     <div className="w-[20rem]">
-      <p className="font-light m-0 text-primary-700 text-center">
-        {t('welcomeBack')},
-      </p>
+      <p className="font-light m-0 text-primary-700 text-center">{t('welcomeBack')},</p>
       <h1 className="m-0 font-bold text-center">{t('h1')}.</h1>
       <Form<FieldValues>
         action="?"
@@ -62,42 +58,20 @@ export default function Route() {
             rememberMe: true,
           },
           shouldValidate: 'onBlur',
-          onValidate: ({ formData }) =>
-            parseSubmission(formData, { schema: schema(t) }),
+          onValidate: ({ formData }) => parseSubmission(formData, { schema: schema(t) }),
         }}
       >
-        <TextField
-          isRequired
-          name="email"
-          type="email"
-          label={t('email.label')}
-          className="grid"
-        />
-        <TextField
-          isRequired
-          name="password"
-          type="password"
-          label={t('password.label')}
-          className="grid"
-        />
+        <TextField isRequired name="email" type="email" label={t('email.label')} className="grid" />
+        <TextField isRequired name="password" type="password" label={t('password.label')} className="grid" />
         <div className="flex justify-between">
-          <Checkbox
-            isRequired
-            id="rememberMe"
-            name="rememberMe"
-            className="flex gap-x-2 items-center w-fit"
-          >
+          <Checkbox isRequired id="rememberMe" name="rememberMe" className="flex gap-x-2 items-center w-fit">
             {t('rememberMe.label')}
           </Checkbox>
           <TextLink href="/reset-password" className="text-sm">
             {t('forgotPassword')}?
           </TextLink>
         </div>
-        <Button
-          type="submit"
-          className="relative w-fit bg-accent-500"
-          isDisabled={state === 'submitting'}
-        >
+        <Button type="submit" className="relative w-fit bg-accent-500" isDisabled={state === 'submitting'}>
           <span
             className={clsx('block transition ease-in-out', {
               'opacity-0': state === 'submitting',
@@ -114,10 +88,7 @@ export default function Route() {
             leave="transition ease-in-out duration-300"
             leaveTo="opacity-0 scale-0"
           >
-            <ProgressCircle
-              className="w-full h-full text-primary-500"
-              aria-label="signing in"
-            />
+            <ProgressCircle className="w-full h-full text-primary-500" aria-label="signing in" />
           </Transition>
         </Button>
         <Transition
@@ -127,11 +98,7 @@ export default function Route() {
           leave="transition ease-in-out duration-300"
           leaveTo="opacity-0 translate-y-2"
         >
-          <BoxAlert
-            variant="negative"
-            title={t('unknownError')}
-            body={error?.[0]!}
-          />
+          <BoxAlert variant="negative" title={t('unknownError')} body={error?.[0]!} />
         </Transition>
       </Form>
     </div>
@@ -173,7 +140,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const session = await getSession(request);
   session.set('accessToken', body.accessToken);
   session.set('refreshToken', body.refreshToken);
-  return redirect('/', {
+  return redirect('/home', {
     headers: {
       'Set-Cookie': await commitSession(session),
     },
