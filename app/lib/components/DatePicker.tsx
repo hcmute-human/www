@@ -43,8 +43,8 @@ export default function DatePicker({
   ...props
 }: Props) {
   const { [props.name]: field } = useFormFieldsContext() ?? {};
-  const [errorDisplay, setErrorDisplay] = useState(errorMessage);
   errorMessage ??= field?.error;
+  const [errorDisplay, setErrorDisplay] = useState(errorMessage);
   const invalid = !!errorMessage;
   const groupRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);

@@ -9,7 +9,6 @@ export interface Employee {
   id: string;
   createdTime: string;
   updatedTime: string;
-  email: string;
   firstName: string;
   lastName: string;
   dateOfBirth: string;

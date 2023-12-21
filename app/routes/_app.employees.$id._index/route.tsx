@@ -26,15 +26,6 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => buildTitle(mat
 
 export async function loader({ params: { id }, context: { session } }: LoaderFunctionArgs) {
   const api = SessionApiClient.from(session);
-  if (
-    !(await api.authorize({
-      permissions: ['read:employee', 'read:user', 'read:leaveApplication'],
-      allPermission: true,
-    }))
-  ) {
-    throw redirect('/');
-  }
-
   const employee = (await api.get(`employees/${id}`).match(
     (x) => (x.ok ? x.json() : null),
     () => null
@@ -42,6 +33,7 @@ export async function loader({ params: { id }, context: { session } }: LoaderFun
   if (!employee) {
     throw redirect('/employees');
   }
+
   const positionsPromise = api
     .get(`employees/${id}/positions?includeDepartment=true&includeDepartmentPosition=true`)
     .match(
@@ -89,7 +81,7 @@ export default function Route() {
                 x.items.length ? (
                   <ul className="grid grid-cols-[repeat(auto-fill,_minmax(28rem,1fr))] gap-4">
                     {x.items.map((x) => (
-                      <PositionCard position={x} />
+                      <PositionCard key={x.departmentPositionId} position={x} />
                     ))}
                   </ul>
                 ) : (

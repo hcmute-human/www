@@ -1,10 +1,9 @@
 if (!process.env.COOKIE_SECRET) {
-  throw new ReferenceError(
-    'COOKIE_SECRET environment variable must be provided'
-  );
+  throw new ReferenceError('COOKIE_SECRET environment variable must be provided');
 }
 
 import { createCookieSessionStorage } from '@remix-run/node';
+import { jwtDecode } from 'jwt-decode';
 
 export const sessionStorage = createCookieSessionStorage({
   cookie: {
@@ -33,6 +32,16 @@ export function WrappedSession(session) {
     unset(name) {
       session.unset(name);
       this.dirty = true;
+    },
+    decode() {
+      try {
+        const payload = jwtDecode(session.get('accessToken'));
+        payload.sub ??= payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+        delete payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+        return payload;
+      } catch {
+        return null;
+      }
     },
   };
 }
