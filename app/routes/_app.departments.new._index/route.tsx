@@ -24,7 +24,7 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => buildTitle(mat
 
 export async function loader({ request, context: { session } }: LoaderFunctionArgs) {
   const api = SessionApiClient.from(session);
-  if (!(await api.authorize({ permissions: ['read:department'] }))) {
+  if (!(await api.authorize({ permissions: ['create:department'] }))) {
     throw redirect('/');
   }
 

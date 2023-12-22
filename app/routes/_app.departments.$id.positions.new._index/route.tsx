@@ -7,6 +7,7 @@ import TextField from '@components/TextField';
 import i18next from '@lib/i18n/index.server';
 import { SessionApiClient } from '@lib/services/session-api-client.server';
 import { buildTitle, parseSubmission, parseSubmissionAsync } from '@lib/utils';
+import { fail } from '@lib/utils/action.server';
 import { authorize } from '@lib/utils/auth.server';
 import { toActionErrorsAsync } from '@lib/utils/error.server';
 import { json, redirect, type ActionFunctionArgs, type LoaderFunctionArgs, type MetaFunction } from '@remix-run/node';
@@ -101,7 +102,7 @@ export default function Route() {
 export async function action({ params: { id }, request, context: { session } }: ActionFunctionArgs) {
   const api = SessionApiClient.from(session);
   if (!(await api.authorize({ permissions: ['create:departmentPosition'] }))) {
-    throw redirect('/');
+    return json(fail({ form: ['You do not have privileges to perform this action'] }));
   }
 
   const t = await i18next.getFixedT(request);

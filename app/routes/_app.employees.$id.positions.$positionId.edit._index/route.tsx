@@ -13,6 +13,7 @@ import i18next from '@lib/i18n/index.server';
 import { EmploymentType, type EmployeePosition } from '@lib/models/employee';
 import { SessionApiClient } from '@lib/services/session-api-client.server';
 import { buildTitle, parseSubmission, parseSubmissionAsync } from '@lib/utils';
+import { fail } from '@lib/utils/action.server';
 import { parseDateFromAbsolute } from '@lib/utils/date';
 import { formatEmploymentType } from '@lib/utils/employee';
 import { toActionErrorsAsync } from '@lib/utils/error.server';
@@ -45,11 +46,7 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => buildTitle(mat
 
 export async function loader({ request, context: { session }, params: { id, positionId } }: LoaderFunctionArgs) {
   const api = SessionApiClient.from(session);
-  if (
-    !(await api.authorize({
-      permissions: ['read:employeePosition', 'read:departmentPosition', 'update:employeePosition'],
-    }))
-  ) {
+  if (!(await api.authorize({ permissions: ['update:employeePosition'] }))) {
     throw redirect('/');
   }
   const [position, title] = await Promise.all([
@@ -192,12 +189,8 @@ export default function Route() {
 
 export async function action({ params: { id, positionId }, request, context: { session } }: ActionFunctionArgs) {
   const api = SessionApiClient.from(session);
-  if (
-    !(await api.authorize({
-      permissions: ['update:employeePosition'],
-    }))
-  ) {
-    throw redirect('/');
+  if (!(await api.authorize({ permissions: ['update:employeePosition'] }))) {
+    return json(fail({ form: ['You do not have privileges to perform this action'] }));
   }
 
   const t = await i18next.getFixedT(request);

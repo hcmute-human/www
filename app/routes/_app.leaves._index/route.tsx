@@ -35,9 +35,6 @@ export async function loader({ request, context: { session } }: LoaderFunctionAr
   );
 
   const api = SessionApiClient.from(session);
-  if (!(await api.authorize({ permissions: ['read:leaveApplication'] }))) {
-    throw redirect('/');
-  }
 
   const leaveApplicationsPromise = api.get(`leave-applications?${params.toString()}`).match(
     (x) => (x.ok ? x.json() : paginated()),

@@ -14,6 +14,7 @@ import { EmploymentType } from '@lib/models/employee';
 import { paginated, type Paginated } from '@lib/models/paginated';
 import { SessionApiClient } from '@lib/services/session-api-client.server';
 import { buildTitle, parseSubmission, parseSubmissionAsync } from '@lib/utils';
+import { fail } from '@lib/utils/action.server';
 import { formatEmploymentType } from '@lib/utils/employee';
 import { toActionErrorsAsync } from '@lib/utils/error.server';
 import { searchParams } from '@lib/utils/searchParams.server';
@@ -49,12 +50,7 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => buildTitle(mat
 
 export async function loader({ request, context: { session } }: LoaderFunctionArgs) {
   const api = SessionApiClient.from(session);
-  if (
-    !(await api.authorize({
-      permissions: ['create:employeePosition', 'read:department', 'read:departmentPosition'],
-      allPermission: true,
-    }))
-  ) {
+  if (!(await api.authorize({ permissions: ['create:employeePosition'] }))) {
     throw redirect('/');
   }
   const queryParams = searchParams(request, {});
@@ -282,13 +278,8 @@ export default function Route() {
 
 export async function action({ params: { id }, request, context: { session } }: ActionFunctionArgs) {
   const api = SessionApiClient.from(session);
-  if (
-    !(await api.authorize({
-      permissions: ['create:employeePosition', 'read:department', 'read:departmentPosition'],
-      allPermission: true,
-    }))
-  ) {
-    throw redirect('/');
+  if (!(await api.authorize({ permissions: ['create:employeePosition'] }))) {
+    return json(fail({ form: ['You do not have privileges to perform this action'] }));
   }
 
   const t = await i18next.getFixedT(request);

@@ -6,5 +6,5 @@ export interface User {
   updatedTime: string;
   email: string;
   passwordHash: string;
-  avatar: AssetInfo;
+  avatar?: AssetInfo;
 }

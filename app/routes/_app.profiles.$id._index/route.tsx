@@ -61,13 +61,15 @@ export async function loader({ request, params: { id }, context: { session } }: 
     title,
     user: {
       ...user,
-      avatar: toImage(user.avatar)
-        .resize(fill().aspectRatio(ar1X1()))
-        .resize(scale(256, 256))
-        .delivery(dpr('auto'))
-        .format('auto')
-        .quality('auto')
-        .toURL(),
+      avatar: user.avatar
+        ? toImage(user.avatar)
+            .resize(fill().aspectRatio(ar1X1()))
+            .resize(scale(256, 256))
+            .delivery(dpr('auto'))
+            .format('auto')
+            .quality('auto')
+            .toURL()
+        : undefined,
     },
     employee,
     positionsPromise,

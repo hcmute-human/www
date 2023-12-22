@@ -24,10 +24,6 @@ export async function loader({ request, context: { session } }: LoaderFunctionAr
   );
 
   const api = SessionApiClient.from(session);
-  if (!(await api.authorize({ permissions: ['read:department'] }))) {
-    throw redirect('/');
-  }
-
   const departmentsPromise = api.get(`departments?${params.toString()}`).match(
     (x) => (x.ok ? (x.json() as Promise<GetDepartmentsResult>) : paginated()),
     () => paginated()

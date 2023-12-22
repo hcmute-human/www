@@ -13,6 +13,7 @@ import { LeaveApplicationStatus, type LeaveType } from '@lib/models/leave';
 import { paginated, type Paginated } from '@lib/models/paginated';
 import { SessionApiClient } from '@lib/services/session-api-client.server';
 import { buildTitle, parseSubmission, parseSubmissionAsync } from '@lib/utils';
+import { fail } from '@lib/utils/action.server';
 import { toActionErrorsAsync } from '@lib/utils/error.server';
 import { makeErrorMap } from '@lib/utils/zod';
 import {
@@ -193,7 +194,7 @@ export default function Route() {
 export async function action({ request, context: { session } }: ActionFunctionArgs) {
   const api = SessionApiClient.from(session);
   if (!(await api.authorize({ permissions: ['apply:leaveApplication'] }))) {
-    return json(null);
+    return json(fail({ form: ['You do not have privileges to perform this action'] }));
   }
   const t = await i18next.getFixedT(request);
   const formData = await request.formData();
