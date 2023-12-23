@@ -39,9 +39,9 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => buildTitle(mat
 
 export async function loader({ request, context: { session } }: LoaderFunctionArgs) {
   const api = SessionApiClient.from(session);
-  if (!(await api.authorize({ permissions: ['read:leaveType', 'apply:leaveApplication'], allPermission: true }))) {
-    throw redirect('/');
-  }
+  // if (!(await api.authorize({ permissions: ['read:leaveType', 'apply:leaveApplication'], allPermission: true }))) {
+  //   throw redirect('/');
+  // }
 
   const leaveTypesPromise = api.get('leave-types').match(
     (x) => (x.ok ? x.json() : paginated()),
@@ -193,9 +193,6 @@ export default function Route() {
 
 export async function action({ request, context: { session } }: ActionFunctionArgs) {
   const api = SessionApiClient.from(session);
-  if (!(await api.authorize({ permissions: ['apply:leaveApplication'] }))) {
-    return json(fail({ form: ['You do not have privileges to perform this action'] }));
-  }
   const t = await i18next.getFixedT(request);
   const formData = await request.formData();
   const submission = await parseSubmissionAsync(formData, {
@@ -204,6 +201,9 @@ export async function action({ request, context: { session } }: ActionFunctionAr
 
   if (!submission.ok) {
     return json(submission);
+  }
+  if (!(await api.authorize({ permissions: ['apply:leaveApplication'] }))) {
+    return json(fail({ form: [t('forbidden')] }, submission));
   }
 
   const result = await SessionApiClient.from(session).post('leave-applications', {

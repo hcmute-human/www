@@ -6,5 +6,6 @@
         "label": "Name",
         "description": "Enter position name",
         "required": "Enter a name for this position"
-    }
+    },
+    "forbidden": "You do not have privileges to perform this action"
 }

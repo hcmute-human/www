@@ -189,10 +189,6 @@ export default function Route() {
 
 export async function action({ params: { id, positionId }, request, context: { session } }: ActionFunctionArgs) {
   const api = SessionApiClient.from(session);
-  if (!(await api.authorize({ permissions: ['update:employeePosition'] }))) {
-    return json(fail({ form: ['You do not have privileges to perform this action'] }));
-  }
-
   const t = await i18next.getFixedT(request);
   const formData = await request.formData();
   const submission = await parseSubmissionAsync(formData, {
@@ -201,6 +197,9 @@ export async function action({ params: { id, positionId }, request, context: { s
 
   if (!submission.ok) {
     return json(submission);
+  }
+  if (!(await api.authorize({ permissions: ['update:employeePosition'] }))) {
+    return json(fail({ form: [t('forbidden')] }, submission));
   }
 
   const result = await api.put(`employees/${id}/positions/${positionId}`, {

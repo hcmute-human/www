@@ -101,10 +101,6 @@ export default function Route() {
 
 export async function action({ params: { id }, request, context: { session } }: ActionFunctionArgs) {
   const api = SessionApiClient.from(session);
-  if (!(await api.authorize({ permissions: ['create:departmentPosition'] }))) {
-    return json(fail({ form: ['You do not have privileges to perform this action'] }));
-  }
-
   const t = await i18next.getFixedT(request);
   const formData = await request.formData();
   const submission = await parseSubmissionAsync(formData, {
@@ -113,6 +109,9 @@ export async function action({ params: { id }, request, context: { session } }: 
 
   if (!submission.ok) {
     return json(submission);
+  }
+  if (!(await api.authorize({ permissions: ['create:departmentPosition'] }))) {
+    return json(fail({ form: [t('forbidden')] }, submission));
   }
 
   const result = await api.post(`departments/${id}/positions`, {

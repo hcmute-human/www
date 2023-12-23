@@ -27,5 +27,6 @@
     },
     "create": "Apply",
     "reset": "Reset",
-    "success": "Your leave application has been created"
+    "success": "Your leave application has been created",
+    "forbidden": "You do not have privileges to perform this action"
 }
