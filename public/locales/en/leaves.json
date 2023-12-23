@@ -13,7 +13,7 @@
             "endTime": "End time",
             "status": "Status",
             "description": "Description",
-            "createdTime": "Created Time",
+            "createdTime": "Created time",
             "actions": "Actions"
         },
         "body": {
@@ -28,5 +28,6 @@
     },
     "deletionFailed": "Unable to delete",
     "updateFailed": "Unable to update",
-    "confirmDeletion": "Are you sure to delete this leave application?"
+    "confirmDeletion": "Are you sure to delete this leave application?",
+    "displaySize": "Displaying <select></select> out of {{totalCount}} leave applications."
 }

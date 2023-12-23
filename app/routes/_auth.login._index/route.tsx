@@ -32,9 +32,9 @@ function schema(t: TFunction) {
   });
 }
 
-export function handle() {
-  return { i18n: 'login' };
-}
+export const handle = {
+  i18n: 'login',
+};
 
 export default function Route() {
   const { t } = useTranslation('login');
@@ -106,7 +106,7 @@ export default function Route() {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  const t = await i18next.getFixedT(request);
+  const t = await i18next.getFixedT(request, 'login');
   const formData = await request.formData();
   const submission = await parseSubmissionAsync(formData, {
     schema: schema(t),

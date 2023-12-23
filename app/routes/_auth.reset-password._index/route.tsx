@@ -26,9 +26,7 @@ function schema(t: TFunction) {
   });
 }
 
-export function handle() {
-  return { i18n: 'reset-password' };
-}
+export const handle = { i18n: 'reset-password' };
 
 export default function Route() {
   const { t } = useTranslation('reset-password');
@@ -127,7 +125,7 @@ export default function Route() {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  const t = await i18next.getFixedT(request);
+  const t = await i18next.getFixedT(request, 'reset-password');
   const formData = await request.formData();
   const submission = await parseSubmissionAsync(formData, {
     schema: schema(t),

@@ -4,9 +4,9 @@ import Cell from '@components/Cell';
 import Checkbox from '@components/Checkbox';
 import Popover from '@components/Popover';
 import Row from '@components/Row';
-import { InformationCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
-import { type LeaveType } from '@lib/models/leave';
-import { formatRelativeTimeFromNow } from '@lib/utils/date';
+import { PencilSquareIcon, XCircleIcon } from '@heroicons/react/20/solid';
+import { type Holiday } from '@lib/models/holiday';
+import { formatDate, formatRelativeTimeFromNow } from '@lib/utils/date';
 import { useFetcher } from '@remix-run/react';
 import type { Row as TRow } from '@tanstack/react-table';
 import clsx from 'clsx';
@@ -16,11 +16,11 @@ import { useTranslation } from 'react-i18next';
 import type { action } from './route';
 
 interface Props {
-  row: TRow<LeaveType>;
+  row: TRow<Holiday>;
 }
 
-export default function EmployeeRow({ row }: Props) {
-  const { t } = useTranslation('leaves.types');
+export default function HolidayRow({ row }: Props) {
+  const { t } = useTranslation('leaves.holidays');
   const id = row.getValue<string>('id');
   const fetcher = useFetcher<typeof action>();
   const isDeleting = fetcher.formData?.get('id') === id;
@@ -41,7 +41,8 @@ export default function EmployeeRow({ row }: Props) {
           </Badge>
         ) : null}
       </Cell>
-      <Cell key="days">{row.getValue<number>('days')}</Cell>
+      <Cell key="startTime">{formatDate(row.getValue<Date>('startTime'))}</Cell>
+      <Cell key="endTime">{formatDate(row.getValue<Date>('endTime'))}</Cell>
       <Cell key="id" className="hidden lg:table-cell">
         {id}
       </Cell>
@@ -50,8 +51,14 @@ export default function EmployeeRow({ row }: Props) {
       </Cell>
       <Cell key="actions">
         <div className="flex items-center gap-2 w-max">
-          <Button as="link" href={`/employees/${id}`} size="sm" aria-label={t('table.body.actions.details')}>
-            <InformationCircleIcon className="w-5 h-5" />
+          <Button
+            as="link"
+            variant="info"
+            href={`/leaves/holidays/${id}/edit`}
+            size="sm"
+            aria-label={t('table.body.actions.edit')}
+          >
+            <PencilSquareIcon className="w-5 h-5" />
           </Button>
           <DialogTrigger isOpen={isOpen} onOpenChange={setIsOpen}>
             <Button
@@ -83,7 +90,7 @@ export default function EmployeeRow({ row }: Props) {
                       {t('table.body.actions.delete')}
                     </Button>
                     <Button form="deleteForm" type="button" variant="primary" onPress={() => setIsOpen(false)}>
-                      Cancel
+                      {t('table.body.actions.cancel')}
                     </Button>
                   </div>
                 </fetcher.Form>

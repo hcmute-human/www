@@ -8,13 +8,14 @@ import Table from '@components/Table';
 import TableBody from '@components/TableBody';
 import TableHeader from '@components/TableHeader';
 import UncontrolledTextField from '@components/UncontrolledTextField';
-import { ArrowDownIcon, ArrowUpIcon, ArrowsUpDownIcon } from '@heroicons/react/20/solid';
+import { ArrowUpIcon, ArrowsUpDownIcon } from '@heroicons/react/20/solid';
 import { useDebounceSubmit } from '@lib/hooks/debounceSubmit';
 import { useSearchParamsOr } from '@lib/hooks/searchParams';
-import type { DepartmentPosition } from '@lib/models/department';
+import type { Holiday } from '@lib/models/holiday';
+import type { Paginated } from '@lib/models/paginated';
 import { fuzzyFilter, fuzzySort } from '@lib/utils';
+import { parseDateFromAbsolute } from '@lib/utils/date';
 import { Form, useAsyncValue, useNavigation, useSearchParams } from '@remix-run/react';
-import { type RankingInfo } from '@tanstack/match-sorter-utils';
 import {
   createColumnHelper,
   flexRender,
@@ -23,16 +24,14 @@ import {
   getSortedRowModel,
   useReactTable,
   type ColumnFiltersState,
-  type FilterFn,
   type SortingState,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import DepartmentRow from './PositionRow';
-import type { GetDepartmentPositionResult } from './types';
+import HolidayRow from './HolidayRow';
 
-const columnHelper = createColumnHelper<DepartmentPosition>();
+const columnHelper = createColumnHelper<Holiday>();
 
 const sizes = [
   { key: 1, value: 5 },
@@ -42,14 +41,13 @@ const sizes = [
   { key: 5, value: 100 },
 ];
 
-export default function PositionTable() {
-  const [t] = useTranslation('departments');
-  const { totalCount, items } = useAsyncValue() as GetDepartmentPositionResult;
+export default function HolidayTable() {
+  const [t] = useTranslation('leaves.holidays');
+  const { totalCount, items } = useAsyncValue() as Paginated<Holiday>;
   const [searchParams] = useSearchParams();
   const [{ name, size }] = useSearchParamsOr({ name: '', size: 10 });
   const { state } = useNavigation();
   const submitting = state === 'submitting';
-  const sortedDepartments = items;
   const submit = useDebounceSubmit(100);
   const [rowSelection, setRowSelection] = useState({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -74,6 +72,20 @@ export default function PositionTable() {
         filterFn: 'fuzzyFilter',
         sortingFn: fuzzySort,
       }),
+      columnHelper.accessor(({ startTime }) => parseDateFromAbsolute(startTime), {
+        id: 'startTime',
+        header: t('table.header.startTime'),
+        enableSorting: true,
+        enableColumnFilter: false,
+        sortingFn: fuzzySort,
+      }),
+      columnHelper.accessor(({ endTime }) => parseDateFromAbsolute(endTime), {
+        id: 'endTime',
+        header: t('table.header.endTime'),
+        enableSorting: true,
+        enableColumnFilter: false,
+        sortingFn: fuzzySort,
+      }),
       columnHelper.accessor('id', {
         header: t('table.header.id'),
         enableColumnFilter: false,
@@ -91,7 +103,7 @@ export default function PositionTable() {
     [t]
   );
   const table = useReactTable({
-    data: sortedDepartments,
+    data: items,
     columns,
     filterFns: {
       fuzzyFilter,
@@ -129,16 +141,17 @@ export default function PositionTable() {
         >
           <TableHeader className="text-left">
             {table.getHeaderGroups().map((headerGroup) => (
-              <Row key={headerGroup.id} className="align-top lg:align-middle">
+              <Row key={headerGroup.id} className="align-top xl:align-middle">
                 {headerGroup.headers.map((header) => (
                   <Column
                     key={header.id}
                     className={clsx({
                       'w-0': header.id === 'select',
                       'hidden lg:table-cell': header.id === 'id',
+                      'hidden md:table-cell': header.id === 'createdTime',
                     })}
                   >
-                    <div className="lg:flex items-center gap-8 w-full">
+                    <div className="xl:flex items-center gap-8 w-full">
                       <div
                         className={clsx('flex gap-2 items-center', {
                           'cursor-pointer select-none': header.column.getCanSort(),
@@ -186,10 +199,10 @@ export default function PositionTable() {
           <TableBody>
             {table.getRowModel().rows.length === 0 ? (
               <Row>
-                <Cell colSpan={100}>No departments found.</Cell>
+                <Cell colSpan={100}>{t('table.body.empty')}.</Cell>
               </Row>
             ) : (
-              table.getRowModel().rows.map((row) => <DepartmentRow row={row} key={row.getValue<string>('id')} />)
+              table.getRowModel().rows.map((row) => <HolidayRow row={row} key={row.getValue<string>('id')} />)
             )}
           </TableBody>
         </Table>
@@ -202,7 +215,7 @@ export default function PositionTable() {
         <div className="flex gap-2 items-center min-w-max">
           <Trans
             i18nKey="displaySize"
-            defaults="Displaying <select></select> out of {{totalCount}} positions."
+            defaults="Displaying <select></select> out of {{totalCount}} holidays."
             t={t}
             values={{ totalCount }}
             components={{

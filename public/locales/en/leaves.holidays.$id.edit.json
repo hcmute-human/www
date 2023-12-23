@@ -1,0 +1,37 @@
+{
+    "meta": {
+        "title": "Edit holiday"
+    },
+    "id": {
+        "label": "ID"
+    },
+    "name": {
+        "label": "Name",
+        "description": "Enter holiday's name",
+        "required": "Enter a name for this holiday"
+    },
+    "startTime": {
+        "label": "Start date",
+        "description": "Enter or select an start date of holiday",
+        "required": "Enter or select an start date of holiday",
+        "invalidType": "Enter or select an start date of holiday",
+        "invalidDate": "Enter or select an start date of holiday"
+    },
+    "endTime": {
+        "label": "End date",
+        "description": "Enter or select an end date of holiday",
+        "required": "Enter or select an end date of holiday",
+        "invalidType": "Enter or select an end date of holiday",
+        "invalidDate": "Enter or select an end date of holiday",
+        "mustBeAfterStartTime": "Enter a same day or after start date"
+    },
+    "description": {
+        "label": "Description",
+        "description": "Enter holiday's description"
+    },
+    "create": "Create",
+    "reset": "Reset",
+    "creationFailed": "Unable to edit holiday",
+    "success": "Holiday '{{name}}' has been updated",
+    "forbidden": "You do not have privileges to perform this action"
+}

@@ -42,7 +42,7 @@ interface FieldValues {
 }
 
 export const handle = {
-  i18n: 'departments.$id.positions.new',
+  i18n: 'employees.$id.positions.new',
   breadcrumb: true,
 };
 
@@ -278,7 +278,7 @@ export default function Route() {
 
 export async function action({ params: { id }, request, context: { session } }: ActionFunctionArgs) {
   const api = SessionApiClient.from(session);
-  const t = await i18next.getFixedT(request);
+  const t = await i18next.getFixedT(request, 'employees.$id.positions.new');
   const formData = await request.formData();
   const submission = await parseSubmissionAsync(formData, {
     schema: schema(t),

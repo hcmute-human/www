@@ -124,7 +124,7 @@ export default function Route() {
 }
 
 export async function action({ request, context: { session } }: ActionFunctionArgs) {
-  const t = await i18next.getFixedT(request);
+  const t = await i18next.getFixedT(request, 'leaves.types.new');
   const formData = await request.formData();
   const submission = await parseSubmissionAsync(formData, {
     schema: schema(t),

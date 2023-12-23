@@ -189,7 +189,7 @@ export default function Route() {
 
 export async function action({ params: { id, positionId }, request, context: { session } }: ActionFunctionArgs) {
   const api = SessionApiClient.from(session);
-  const t = await i18next.getFixedT(request);
+  const t = await i18next.getFixedT(request, 'employees.$id.positions.$positionId.edit');
   const formData = await request.formData();
   const submission = await parseSubmissionAsync(formData, {
     schema: schema(t),

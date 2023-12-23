@@ -29,7 +29,7 @@ import {
 } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import LeaveTypeRow from './LeaveTypeRow';
 
 const columnHelper = createColumnHelper<LeaveType>();
@@ -206,20 +206,28 @@ export default function EmployeeTable() {
         })}
       >
         <div className="flex gap-2 items-center min-w-max">
-          <span>Displaying</span>
-          <Listbox
-            items={sizes}
-            value={selectedSize}
-            onChange={(x) => {
-              setSelectedSize(x);
-              searchParams.set('size', x.value + '');
-              submit(searchParams, { replace: true });
+          <Trans
+            i18nKey="displaySize"
+            defaults="Displaying <select></select> out of {{totalCount}} leave types."
+            t={t}
+            values={{ totalCount }}
+            components={{
+              select: (
+                <Listbox
+                  items={sizes}
+                  value={selectedSize}
+                  onChange={(x) => {
+                    setSelectedSize(x);
+                    searchParams.set('size', x.value + '');
+                    submit(searchParams, { replace: true });
+                  }}
+                  placement="top"
+                  render={({ value }) => value}
+                  className="w-16"
+                />
+              ),
             }}
-            placement="top"
-            render={({ value }) => value}
-            className="w-16"
           />
-          <span className="min-w-max">out of {totalCount} leave types.</span>
         </div>
         <Form method="get" preventScrollReset>
           <PaginationBar totalCount={totalCount} />

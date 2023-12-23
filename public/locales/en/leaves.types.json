@@ -10,7 +10,7 @@
             "name": "Name",
             "days": "Leave days",
             "id": "ID",
-            "createdTime": "Created Time",
+            "createdTime": "Created time",
             "actions": "Actions"
         },
         "body": {
@@ -22,5 +22,6 @@
         }
     },
     "deletionFailed": "Unable to delete",
-    "confirmDeletion": "Are you sure to delete this leave type?"
+    "confirmDeletion": "Are you sure to delete this leave type?",
+    "displaySize": "Displaying <select></select> out of {{totalCount}} leave types."
 }

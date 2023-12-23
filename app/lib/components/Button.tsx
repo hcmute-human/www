@@ -5,7 +5,7 @@ import Link, { type LinkProps } from './Link';
 
 interface BaseProps {
   size?: 'sm' | 'md';
-  variant?: 'accent' | 'primary' | 'positive' | 'negative';
+  variant?: 'accent' | 'primary' | 'positive' | 'negative' | 'info';
   outlined?: boolean;
 }
 
@@ -22,6 +22,7 @@ const variantClass: Record<NonNullable<Props['variant']>, string> = {
   primary: 'bg-primary-900 text-primary-100',
   positive: 'bg-positive-500 text-primary-100',
   negative: 'bg-negative-500 text-primary-100',
+  info: 'bg-info-500 text-primary-100',
 };
 
 const outlineClass: Record<NonNullable<Props['variant']>, string> = {
@@ -29,6 +30,7 @@ const outlineClass: Record<NonNullable<Props['variant']>, string> = {
   primary: 'text-primary-950 border border-primary-300 hover:border-primary-700',
   positive: 'text-positive-500 border border-positive-200 hover:border-positive-500',
   negative: 'text-negative-500 border border-negative-200 hover:border-negative-500',
+  info: 'text-info-500 border border-info-200 hover:border-info-500',
 };
 
 const sizeClass: Record<NonNullable<Props['size']>, string> = {

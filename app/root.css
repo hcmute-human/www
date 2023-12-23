@@ -46,10 +46,6 @@
     @apply outline-focus;
   }
 
-  p {
-    font-size: theme('fontSize.base');
-  }
-
   h1,
   h2,
   h3,

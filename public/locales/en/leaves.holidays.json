@@ -1,0 +1,29 @@
+{
+    "meta": {
+        "title": "Holidays"
+    },
+    "h1": "Holidays",
+    "createHoliday": "Add holiday",
+    "table": {
+        "ariaLabel": "Table of holidays",
+        "header": {
+            "name": "Name",
+            "startTime": "Start time",
+            "endTime": "End time",
+            "id": "ID",
+            "createdTime": "Created time",
+            "actions": "Actions"
+        },
+        "body": {
+            "empty": "No holidays here yet",
+            "actions": {
+                "edit": "Edit",
+                "delete": "Delete",
+                "cancel": "Cancel"
+            }
+        }
+    },
+    "deletionFailed": "Unable to delete",
+    "confirmDeletion": "Are you sure to delete this holiday?",
+    "displaySize": "Displaying <select></select> out of {{totalCount}} holidays."
+}

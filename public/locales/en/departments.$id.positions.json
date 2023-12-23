@@ -1,5 +1,6 @@
 {
     "meta": {
         "title": "Positions"
-    }
+    },
+    "displaySize": "Displaying <select></select> out of {{totalCount}} positions."
 }

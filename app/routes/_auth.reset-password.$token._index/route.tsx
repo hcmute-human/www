@@ -8,12 +8,7 @@ import i18next from '@lib/i18n/index.server';
 import { ApiClient } from '@lib/services/api-client.server';
 import { parseSubmission, parseSubmissionAsync } from '@lib/utils';
 import { toActionErrorsAsync } from '@lib/utils/error.server';
-import {
-  json,
-  redirect,
-  type ActionFunctionArgs,
-  type LoaderFunctionArgs,
-} from '@remix-run/node';
+import { json, redirect, type ActionFunctionArgs, type LoaderFunctionArgs } from '@remix-run/node';
 import { useActionData, useNavigation } from '@remix-run/react';
 import clsx from 'clsx';
 import type { TFunction } from 'i18next';
@@ -29,9 +24,7 @@ interface FieldValues {
 function schema(t: TFunction) {
   return z
     .object({
-      password: z
-        .string({ required_error: t('password.required') })
-        .min(7, t('password.min', { length: 7 })),
+      password: z.string({ required_error: t('password.required') }).min(7, t('password.min', { length: 7 })),
       confirmPassword: z.string({
         required_error: t('confirmPassword.required'),
       }),
@@ -42,9 +35,7 @@ function schema(t: TFunction) {
     });
 }
 
-export function handle() {
-  return { i18n: 'reset-password-$token' };
-}
+export const handle = { i18n: 'reset-password-$token' };
 
 export function loader({ params }: LoaderFunctionArgs) {
   if (!params.token) {
@@ -77,11 +68,7 @@ export default function Route() {
           >
             {ok ? (
               <>
-                <BoxAlert
-                  variant="positive"
-                  title={t('successAlert.title')}
-                  body={t('successAlert.body')}
-                />
+                <BoxAlert variant="positive" title={t('successAlert.title')} body={t('successAlert.body')} />
                 <div className="mt-4">
                   <Button as="link" href="/login">
                     {t('successAlert.back')}
@@ -100,8 +87,7 @@ export default function Route() {
                     password: '',
                     confirmPassword: '',
                   },
-                  onValidate: ({ formData }) =>
-                    parseSubmission(formData, { schema: schema(t) }),
+                  onValidate: ({ formData }) => parseSubmission(formData, { schema: schema(t) }),
                 }}
               >
                 <TextField
@@ -120,11 +106,7 @@ export default function Route() {
                   description={t('confirmPassword.description')}
                   className="grid"
                 />
-                <Button
-                  type="submit"
-                  className="relative w-fit"
-                  isDisabled={state === 'submitting'}
-                >
+                <Button type="submit" className="relative w-fit" isDisabled={state === 'submitting'}>
                   <span
                     className={clsx('block transition ease-in-out', {
                       'opacity-0': state === 'submitting',
@@ -141,10 +123,7 @@ export default function Route() {
                     leave="transition ease-in-out duration-300"
                     leaveTo="opacity-0 scale-0"
                   >
-                    <ProgressCircle
-                      className="w-full h-full text-primary-500"
-                      aria-label="signing in"
-                    />
+                    <ProgressCircle className="w-full h-full text-primary-500" aria-label="signing in" />
                   </Transition>
                 </Button>
                 <Transition
@@ -154,11 +133,7 @@ export default function Route() {
                   leave="transition ease-in-out duration-300"
                   leaveTo="opacity-0 translate-y-2"
                 >
-                  <BoxAlert
-                    variant="negative"
-                    title={t('unknownError')}
-                    body={error?.[0]!}
-                  />
+                  <BoxAlert variant="negative" title={t('unknownError')} body={error?.[0]!} />
                 </Transition>
               </Form>
             )}
@@ -170,7 +145,7 @@ export default function Route() {
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
-  const t = await i18next.getFixedT(request);
+  const t = await i18next.getFixedT(request, 'reset-pasword.$token');
   const formData = await request.formData();
   const submission = await parseSubmissionAsync(formData, {
     schema: schema(t),
@@ -180,17 +155,14 @@ export async function action({ request, params }: ActionFunctionArgs) {
     return json(submission);
   }
 
-  const result = await ApiClient.instance.post(
-    `auth/reset-password/${params.token}`,
-    {
-      body: {
-        password: submission.value.password,
-      },
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  const result = await ApiClient.instance.post(`auth/reset-password/${params.token}`, {
+    body: {
+      password: submission.value.password,
+    },
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
   if (result.isErr()) {
     return json({

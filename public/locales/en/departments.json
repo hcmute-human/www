@@ -9,7 +9,7 @@
         "header": {
             "name": "Name",
             "id": "ID",
-            "createdTime": "Created Time",
+            "createdTime": "Created time",
             "actions": "Actions"
         },
         "body": {
@@ -19,5 +19,6 @@
                 "delete": "Delete"
             }
         }
-    }
+    },
+    "displaySize": "Displaying <select></select> out of {{totalCount}} departments."
 }
