@@ -6,7 +6,11 @@ export function formatEmploymentType(employmentType: EmploymentType) {
       return 'Full-time';
     case EmploymentType.PartTime:
       return 'Part-time';
-    case EmploymentType.Internship:
-      return 'Internship';
+    case EmploymentType.Temporary:
+      return 'Temporary';
+    case EmploymentType.Seasonal:
+      return 'Seasonal';
+    case EmploymentType.Leased:
+      return 'Leasedd';
   }
 }

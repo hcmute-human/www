@@ -15,7 +15,6 @@ import type { LeaveType } from '@lib/models/leave';
 import type { Paginated } from '@lib/models/paginated';
 import { fuzzyFilter, fuzzySort } from '@lib/utils';
 import { Form, useAsyncValue, useNavigation, useSearchParams } from '@remix-run/react';
-import { type RankingInfo } from '@tanstack/match-sorter-utils';
 import {
   createColumnHelper,
   flexRender,
@@ -24,7 +23,6 @@ import {
   getSortedRowModel,
   useReactTable,
   type ColumnFiltersState,
-  type FilterFn,
   type SortingState,
 } from '@tanstack/react-table';
 import clsx from 'clsx';

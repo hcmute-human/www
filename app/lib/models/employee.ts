@@ -18,7 +18,9 @@ export interface Employee {
 export const enum EmploymentType {
   FullTime = 1,
   PartTime,
-  Internship,
+  Temporary,
+  Seasonal,
+  Leased,
 }
 
 export interface EmployeePosition {

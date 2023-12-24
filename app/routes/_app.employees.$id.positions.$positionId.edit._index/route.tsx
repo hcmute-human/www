@@ -98,7 +98,9 @@ const schema = (t: TFunction) =>
 const employments = [
   { text: formatEmploymentType(EmploymentType.FullTime), value: EmploymentType.FullTime },
   { text: formatEmploymentType(EmploymentType.PartTime), value: EmploymentType.PartTime },
-  { text: formatEmploymentType(EmploymentType.Internship), value: EmploymentType.Internship },
+  { text: formatEmploymentType(EmploymentType.Temporary), value: EmploymentType.Temporary },
+  { text: formatEmploymentType(EmploymentType.Seasonal), value: EmploymentType.Seasonal },
+  { text: formatEmploymentType(EmploymentType.Leased), value: EmploymentType.Leased },
 ];
 
 export default function Route() {
