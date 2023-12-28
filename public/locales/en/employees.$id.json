@@ -1,5 +1,7 @@
 {
     "meta": {
         "title": "{{name}}"
-    }
+    },
+    "gender": "Gender: {{gender}}.",
+    "dateOfBirth": "Born in {{date, datetime}}."
 }

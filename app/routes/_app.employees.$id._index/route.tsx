@@ -17,6 +17,11 @@ import { Await, useLoaderData } from '@remix-run/react';
 import { Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import PositionCard from './PositionCard';
+import type { User } from '@lib/models/user';
+import { toImage } from '@lib/utils/asset.server';
+import { fill, scale } from '@cloudinary/url-gen/actions/resize';
+import { ar1X1 } from '@cloudinary/url-gen/qualifiers/aspectRatio';
+import { dpr } from '@cloudinary/url-gen/actions/delivery';
 
 export const handle = {
   i18n: 'employees.$id',
@@ -34,6 +39,24 @@ export async function loader({ params: { id }, context: { session } }: LoaderFun
     throw redirect('/employees');
   }
 
+  const userPromise = api.get(`users/${id}`).match(
+    (x) =>
+      x.ok
+        ? (x.json() as Promise<User>).then((x) => ({
+            ...x,
+            avatar: x.avatar
+              ? toImage(x.avatar)
+                  .resize(fill().aspectRatio(ar1X1()))
+                  .resize(scale(256, 256))
+                  .delivery(dpr('auto'))
+                  .format('auto')
+                  .quality('auto')
+                  .toURL()
+              : undefined,
+          }))
+        : null,
+    () => null
+  );
   const positionsPromise = api
     .get(`employees/${id}/positions?includeDepartment=true&includeDepartmentPosition=true`)
     .match(
@@ -44,27 +67,46 @@ export async function loader({ params: { id }, context: { session } }: LoaderFun
   return defer({
     employee,
     id,
+    userPromise,
     positionsPromise,
   });
 }
 
 export default function Route() {
-  const { employee, id, positionsPromise } = useLoaderData<typeof loader>();
+  const { employee, id, positionsPromise, userPromise } = useLoaderData<typeof loader>();
   const { t } = useTranslation('employees.$id');
 
   return (
     <>
       <div className="space-y-12">
         <div className="flex gap-4 items-center">
-          <div className="border border-primary-200 aspect-square w-24 rounded-full" />
+          <Suspense fallback={<div className="border border-primary-200 aspect-square w-24 rounded-full" />}>
+            <Await resolve={userPromise}>
+              {(x) =>
+                x?.avatar ? (
+                  <img
+                    src={x.avatar}
+                    className="w-24 h-auto object-cover object-center rounded-full border border-primary-200"
+                  />
+                ) : (
+                  <div className="border border-primary-200 aspect-square w-24 rounded-full" />
+                )
+              }
+            </Await>
+          </Suspense>
           <div>
             <h1>
               <span>
                 {employee.firstName} {employee.lastName}
               </span>
             </h1>
-            <p>Gender: {formatGender(employee.gender)}</p>
-            <p>Born in {Intl.DateTimeFormat('en', { dateStyle: 'medium' }).format(new Date(employee.dateOfBirth))}.</p>
+            <p>{t('gender', { gender: formatGender(employee.gender) })}</p>
+            <p>
+              {t('dateOfBirth', {
+                date: new Date(employee.dateOfBirth),
+                formatParams: { createdTime: { dateStyle: 'long' } },
+              })}
+            </p>
           </div>
         </div>
         <div>
