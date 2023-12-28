@@ -1,5 +1,5 @@
 import Button from '@components/Button';
-import { PlusIcon } from '@heroicons/react/20/solid';
+import { PlusIcon } from '@heroicons/react/24/outline';
 import type { Employee, EmployeePosition } from '@lib/models/employee';
 import { paginated, type Paginated } from '@lib/models/paginated';
 import { SessionApiClient } from '@lib/services/session-api-client.server';

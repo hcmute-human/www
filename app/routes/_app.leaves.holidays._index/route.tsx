@@ -1,5 +1,5 @@
 import Button from '@components/Button';
-import { PlusCircleIcon } from '@heroicons/react/20/solid';
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import i18next from '@lib/i18n/index.server';
 import type { LeaveApplication } from '@lib/models/leave';
 import { paginated, type Paginated } from '@lib/models/paginated';
@@ -79,7 +79,6 @@ export async function action({
   const formData = await request.formData();
   if (formData.get('_action') === 'delete') {
     const result = await api.delete(`holidays/${formData.get('id')}`);
-    console.dir(result, { depth: null });
     if (result.isErr()) {
       return json(
         fail(await toActionErrorsAsync(result.error), {

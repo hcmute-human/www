@@ -8,7 +8,7 @@ import Loading from '@components/Loading';
 import SelectField from '@components/SelectField';
 import TextField from '@components/TextField';
 import UncontrolledTextField from '@components/UncontrolledTextField';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { CheckIcon } from '@heroicons/react/24/outline';
 import i18next from '@lib/i18n/index.server';
 import { LeaveApplicationStatus, type LeaveApplication, type LeaveType } from '@lib/models/leave';
 import { paginated, type Paginated } from '@lib/models/paginated';

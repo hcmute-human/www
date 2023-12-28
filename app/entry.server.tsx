@@ -6,7 +6,7 @@ import { createReadableStreamFromReadable } from '@remix-run/node';
 import { RemixServer } from '@remix-run/react';
 import { createInstance, type i18n } from 'i18next';
 import Backend from 'i18next-fs-backend';
-import isbot from 'isbot';
+import { isbot } from 'isbot';
 import { resolve } from 'node:path';
 import { renderToPipeableStream } from 'react-dom/server';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
@@ -35,21 +35,10 @@ export default async function handleRequest(
       backend: { loadPath: resolve('./public/locales/{{lng}}/{{ns}}.json') },
     });
 
-  return isbot(request.headers.get('user-agent'))
-    ? handleBotRequest(
-        request,
-        responseStatusCode,
-        responseHeaders,
-        remixContext,
-        instance
-      )
-    : handleBrowserRequest(
-        request,
-        responseStatusCode,
-        responseHeaders,
-        remixContext,
-        instance
-      );
+  const userAgent = request.headers.get('user-agent');
+  return userAgent && isbot(userAgent)
+    ? handleBotRequest(request, responseStatusCode, responseHeaders, remixContext, instance)
+    : handleBrowserRequest(request, responseStatusCode, responseHeaders, remixContext, instance);
 }
 
 function handleBotRequest(
@@ -63,11 +52,7 @@ function handleBotRequest(
     let shellRendered = false;
     const { pipe, abort } = renderToPipeableStream(
       <I18nextProvider i18n={instance}>
-        <RemixServer
-          context={remixContext}
-          url={request.url}
-          abortDelay={ABORT_DELAY}
-        />
+        <RemixServer context={remixContext} url={request.url} abortDelay={ABORT_DELAY} />
       </I18nextProvider>,
       {
         onAllReady() {
@@ -116,11 +101,7 @@ function handleBrowserRequest(
     let shellRendered = false;
     const { pipe, abort } = renderToPipeableStream(
       <I18nextProvider i18n={instance}>
-        <RemixServer
-          context={remixContext}
-          url={request.url}
-          abortDelay={ABORT_DELAY}
-        />
+        <RemixServer context={remixContext} url={request.url} abortDelay={ABORT_DELAY} />
       </I18nextProvider>,
       {
         onShellReady() {

@@ -1,4 +1,4 @@
-import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/20/solid';
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { cn } from '@lib/utils';
 import type { HTMLAttributes, ReactNode } from 'react';
 

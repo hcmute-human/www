@@ -8,7 +8,7 @@ import Table from '@components/Table';
 import TableBody from '@components/TableBody';
 import TableHeader from '@components/TableHeader';
 import UncontrolledTextField from '@components/UncontrolledTextField';
-import { ArrowDownIcon, ArrowUpIcon, ArrowsUpDownIcon } from '@heroicons/react/20/solid';
+import { ArrowDownIcon, ArrowUpIcon, ArrowsUpDownIcon } from '@heroicons/react/24/outline';
 import { useDebounceSubmit } from '@lib/hooks/debounceSubmit';
 import { useSearchParamsOr } from '@lib/hooks/searchParams';
 import type { DepartmentPosition } from '@lib/models/department';

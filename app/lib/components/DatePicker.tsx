@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import { cn } from '@lib/utils';
 import type { DatePickerProps, DateValue } from 'react-aria-components';
 import {

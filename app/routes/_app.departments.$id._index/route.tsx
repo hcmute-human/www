@@ -1,4 +1,4 @@
-import { CalendarDaysIcon, StarIcon, UserGroupIcon } from '@heroicons/react/20/solid';
+import { CalendarDaysIcon, StarIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import type { DepartmentPosition } from '@lib/models/department';
 import type { Employee } from '@lib/models/employee';
 import { paginated, type Paginated } from '@lib/models/paginated';

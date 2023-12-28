@@ -1,6 +1,6 @@
-import { ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { useEffect, useRef, type ReactNode, useState } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import type { SelectProps } from 'react-aria-components';
 import { Button, Label, ListBox, Select, SelectValue, Text } from 'react-aria-components';
 import { SwitchTransition } from 'transition-hook';
@@ -31,7 +31,6 @@ export default function UncontrolledSelectField<T extends object>({
   const invalid = props.isInvalid || !!errorMessage;
   const ref = useRef<HTMLDivElement>(null);
   const selectRef = useRef<HTMLSelectElement | null>();
-
   useEffect(() => {
     selectRef.current = ref.current?.parentElement?.querySelector(`select[name="${name}"]`);
   }, []);
@@ -55,7 +54,7 @@ export default function UncontrolledSelectField<T extends object>({
           {isRequired ? <span className="text-primary-300 text-xs font-medium">(required)</span> : null}
         </Label>
       ) : null}
-      <Button className="c-input group-invalid:border-negative-500 flex items-center transition-[outline] ease-in-out w-full">
+      <Button className="c-input flex items-center transition-[outline] ease-in-out w-full group-invalid:border-negative-500">
         <SelectValue className="truncate placeholder-shown:italic flex-1 text-left" />
         <ChevronUpDownIcon className="w-5 h-5 text-primary-500 group-invalid:text-negative-500" />
       </Button>

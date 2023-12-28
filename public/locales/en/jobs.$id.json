@@ -1,0 +1,9 @@
+{
+    "meta": {
+        "title": "{{name}}"
+    },
+    "createdOn": "Created on {{createdTime, datetime}}.",
+    "tests": "Entry tests",
+    "jobApplications": "Job applications",
+    "description": "Description"
+}

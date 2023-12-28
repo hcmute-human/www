@@ -40,7 +40,7 @@ export function WrappedSession(session) {
         delete payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
         return payload;
       } catch {
-        return null;
+        return {};
       }
     },
   };

@@ -4,7 +4,7 @@ import Checkbox from '@components/Checkbox';
 import Popover from '@components/Popover';
 import Row from '@components/Row';
 import TextLink from '@components/TextLink';
-import { CheckIcon, InformationCircleIcon, TrashIcon, XCircleIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import { CheckIcon, InformationCircleIcon, TrashIcon, XCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { formatLeaveApplicationStatus, LeaveApplicationStatus, type LeaveApplication } from '@lib/models/leave';
 import { formatDate, formatRelativeTimeFromNow } from '@lib/utils/date';
 import { useFetcher } from '@remix-run/react';

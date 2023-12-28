@@ -8,7 +8,7 @@ import Table from '@components/Table';
 import TableBody from '@components/TableBody';
 import TableHeader from '@components/TableHeader';
 import UncontrolledTextField from '@components/UncontrolledTextField';
-import { ArrowUpIcon, ArrowsUpDownIcon } from '@heroicons/react/20/solid';
+import { ArrowUpIcon, ArrowsUpDownIcon } from '@heroicons/react/24/outline';
 import { useDebounceSubmit } from '@lib/hooks/debounceSubmit';
 import { useSearchParamsOr } from '@lib/hooks/searchParams';
 import type { Employee } from '@lib/models/employee';

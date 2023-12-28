@@ -1,0 +1,29 @@
+{
+    "meta": {
+        "title": "Jobs"
+    },
+    "h1": "Jobs",
+    "createJob": "Create job",
+    "table": {
+        "ariaLabel": "Table of jobs",
+        "header": {
+            "title": "Title",
+            "departmentName": "Department",
+            "positionName": "Position",
+            "id": "ID",
+            "createdTime": "Created time",
+            "actions": "Actions"
+        },
+        "body": {
+            "empty": "No jobs here yet",
+            "actions": {
+                "edit": "Edit",
+                "delete": "Delete",
+                "cancel": "Cancel"
+            }
+        }
+    },
+    "deletionFailed": "Unable to delete",
+    "confirmDeletion": "Are you sure to delete this job?",
+    "displaySize": "Displaying <select></select> out of {{totalCount}} jobs."
+}

@@ -7,7 +7,7 @@ import ListBoxItem from '@components/ListBoxItem';
 import Loading from '@components/Loading';
 import SelectField from '@components/SelectField';
 import TextField from '@components/TextField';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { CheckIcon } from '@heroicons/react/24/outline';
 import i18next from '@lib/i18n/index.server';
 import { LeaveApplicationStatus, type LeaveType } from '@lib/models/leave';
 import { paginated, type Paginated } from '@lib/models/paginated';
@@ -39,9 +39,9 @@ export const meta: MetaFunction<typeof loader> = ({ matches }) => buildTitle(mat
 
 export async function loader({ request, context: { session } }: LoaderFunctionArgs) {
   const api = SessionApiClient.from(session);
-  // if (!(await api.authorize({ permissions: ['read:leaveType', 'apply:leaveApplication'], allPermission: true }))) {
-  //   throw redirect('/');
-  // }
+  if (!(await api.authorize({ permissions: ['read:leaveType', 'apply:leaveApplication'], allPermission: true }))) {
+    throw redirect('/');
+  }
 
   const leaveTypesPromise = api.get('leave-types').match(
     (x) => (x.ok ? x.json() : paginated()),

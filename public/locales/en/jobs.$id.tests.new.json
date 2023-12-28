@@ -1,0 +1,21 @@
+{
+    "meta": {
+        "title": "Create test"
+    },
+    "name": {
+        "label": "Name",
+        "description": "Enter test name",
+        "required": "Enter test name"
+    },
+    "questions": {
+        "label": "Question {{index}}",
+        "description": "Enter a question",
+        "required": "Enter a question"
+    },
+    "create": "Create",
+    "reset": "Reset",
+    "success": "A new test '{{name}}' has been created.",
+    "forbidden": "You do not have privileges to perform this action.",
+    "addQuestion": "Add question",
+    "remove": "Remove"
+}

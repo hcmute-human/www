@@ -7,7 +7,7 @@ import ListBoxItem from '@components/ListBoxItem';
 import Loading from '@components/Loading';
 import SelectField from '@components/SelectField';
 import TextField from '@components/TextField';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { CheckIcon } from '@heroicons/react/24/outline';
 import i18next from '@lib/i18n/index.server';
 import { Gender } from '@lib/models/employee';
 import { SessionApiClient } from '@lib/services/session-api-client.server';

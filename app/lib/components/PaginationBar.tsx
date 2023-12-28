@@ -3,7 +3,7 @@ import {
   ArrowRightIcon,
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
-} from '@heroicons/react/20/solid';
+} from '@heroicons/react/24/outline';
 import { usePagination } from '@lib/hooks/searchParams';
 import { cn } from '@lib/utils';
 import { Group } from 'react-aria-components';
@@ -82,10 +82,7 @@ export function PaginationBar({ totalCount }: { totalCount: number }) {
               value={pageSkip + ''}
               aria-label={`Page ${pageNumber}`}
               isDisabled={isCurrentPage}
-              className={cn(
-                baseClass,
-                'disabled:text-primary-50 disabled:bg-primary-950'
-              )}
+              className={cn(baseClass, 'disabled:text-primary-50 disabled:bg-primary-950')}
             >
               {pageNumber}
             </Button>

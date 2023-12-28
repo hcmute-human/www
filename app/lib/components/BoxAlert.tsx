@@ -1,7 +1,4 @@
-import {
-  CheckCircleIcon,
-  ExclamationCircleIcon,
-} from '@heroicons/react/20/solid';
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { cn } from '@lib/utils';
 import type { HTMLAttributes, ReactNode } from 'react';
 
@@ -17,13 +14,7 @@ const variantClass: Record<NonNullable<Props['variant']>, string> = {
   negative: 'border-negative-500',
 };
 
-export default function BoxAlert({
-  title,
-  body,
-  variant = 'positive',
-  className,
-  ...props
-}: Props) {
+export default function BoxAlert({ title, body, variant = 'positive', className, ...props }: Props) {
   let icon: ReactNode | null = null;
   switch (variant) {
     case 'positive': {

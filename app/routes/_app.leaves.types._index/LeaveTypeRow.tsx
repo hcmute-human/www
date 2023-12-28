@@ -4,7 +4,7 @@ import Cell from '@components/Cell';
 import Checkbox from '@components/Checkbox';
 import Popover from '@components/Popover';
 import Row from '@components/Row';
-import { InformationCircleIcon, XCircleIcon } from '@heroicons/react/20/solid';
+import { InformationCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import { type LeaveType } from '@lib/models/leave';
 import { formatRelativeTimeFromNow } from '@lib/utils/date';
 import { useFetcher } from '@remix-run/react';

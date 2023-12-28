@@ -1,5 +1,5 @@
 import Button from '@components/Button';
-import { PlusCircleIcon } from '@heroicons/react/20/solid';
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import i18next from '@lib/i18n/index.server';
 import { paginated, type Paginated } from '@lib/models/paginated';
 import { SessionApiClient } from '@lib/services/session-api-client.server';

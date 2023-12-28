@@ -1,6 +1,6 @@
 import { cn } from '@lib/utils';
 import clsx from 'clsx';
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState, type ReactNode } from 'react';
 import { Text, TextField, type TextFieldProps } from 'react-aria-components';
 import { SwitchTransition } from 'transition-hook';
 import Input from './Input';
@@ -8,7 +8,7 @@ import Label from './Label';
 
 interface Props extends TextFieldProps {
   name: string;
-  label?: string;
+  label?: ReactNode;
   description?: string;
   errorMessage?: string;
   labelClassName?: string;
@@ -38,8 +38,6 @@ const UncontrolledTextField = forwardRef<HTMLInputElement, Props>(function Uncon
       </Label>
       <Input
         ref={ref}
-        required={props.isRequired}
-        name={props.name}
         className={cn('w-full', inputClassName, {
           'peer border-negative-500': invalid,
         })}

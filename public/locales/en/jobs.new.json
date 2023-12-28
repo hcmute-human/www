@@ -1,0 +1,27 @@
+{
+    "meta": {
+        "title": "Create job"
+    },
+    "departmentId": {
+        "label": "Department",
+        "description": "Select a department",
+        "required": "Select a department"
+    },
+    "positionId": {
+        "label": "Position",
+        "description": "Select a position",
+        "required": "Select a position"
+    },
+    "title": {
+        "label": "Title",
+        "title": "Enter job title"
+    },
+    "description": {
+        "label": "Description",
+        "description": "Enter job description"
+    },
+    "create": "Create",
+    "reset": "Reset",
+    "success": "A new job '{{name}}' has been created.",
+    "forbidden": "You do not have privileges to perform this action."
+}

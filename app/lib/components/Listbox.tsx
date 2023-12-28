@@ -3,7 +3,7 @@ import {
   Transition,
   type ListboxProps as HeadlessUiListboxProps,
 } from '@headlessui/react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { Fragment, type Key, type ReactNode } from 'react';
 
@@ -33,10 +33,7 @@ export function Listbox<TType extends { key: Key }, TActualType>({
             <HeadlessUiListbox.Button className="font-bold leading-none relative w-full cursor-default rounded-md bg-primary-0 py-2 pl-2 pr-6 text-left shadow-sm border border-primary-200 focus-visible:outline-focus">
               <span className="block truncate">{render(value)}</span>
               <span className="pointer-events-none absolute inset-y-0 right-2 flex items-center">
-                <ChevronUpDownIcon
-                  className="h-4 w-4 text-primary-300"
-                  aria-hidden="true"
-                />
+                <ChevronUpDownIcon className="h-4 w-4 text-primary-300" aria-hidden="true" />
               </span>
             </HeadlessUiListbox.Button>
             <Transition
@@ -60,38 +57,24 @@ export function Listbox<TType extends { key: Key }, TActualType>({
                   <HeadlessUiListbox.Option
                     key={x.key}
                     className={({ active }) =>
-                      clsx(
-                        'relative cursor-default select-none py-2 pl-2 pr-6',
-                        {
-                          'bg-accent-500 text-primary-50': active,
-                        }
-                      )
+                      clsx('relative cursor-default select-none py-2 pl-2 pr-6', {
+                        'bg-accent-500 text-primary-50': active,
+                      })
                     }
                     value={x}
                   >
                     {({ selected, active }) => {
                       return (
                         <>
-                          <span
-                            className={clsx(
-                              'block truncate',
-                              selected && 'font-bold'
-                            )}
-                          >
-                            {render(x)}
-                          </span>
+                          <span className={clsx('block truncate', selected && 'font-bold')}>{render(x)}</span>
 
                           {selected ? (
                             <span
-                              className={clsx(
-                                'absolute inset-y-0 right-2 flex items-center',
-                                { 'text-primary-50': active }
-                              )}
+                              className={clsx('absolute inset-y-0 right-2 flex items-center', {
+                                'text-primary-50': active,
+                              })}
                             >
-                              <CheckIcon
-                                className="h-4 w-4"
-                                aria-hidden="true"
-                              />
+                              <CheckIcon className="h-4 w-4" aria-hidden="true" />
                             </span>
                           ) : null}
                         </>

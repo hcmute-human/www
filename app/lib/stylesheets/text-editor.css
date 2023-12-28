@@ -1,0 +1,31 @@
+@tailwind components;
+
+@layer components {
+  .c-text-editor {
+    border-color: theme('colors.primary.200');
+    background-color: theme('colors.primary.0');
+    border-width: theme('borderWidth.DEFAULT');
+    padding-inline: theme('padding.2');
+    padding-block: theme('padding[0.5]');
+    border-radius: theme('borderRadius.DEFAULT');
+    transition-timing-function: ease-in-out;
+    transition-property: background-color outline;
+    transition-duration: theme('transitionDuration.DEFAULT');
+    outline: none;
+
+    &:disabled,
+    &[data-disabled='true'] {
+      color: theme('colors.primary.500');
+      border-color: theme('colors.primary.100');
+      background-color: theme('colors.primary.50');
+      cursor: not-allowed;
+    }
+    & p.is-editor-empty:first-child::before {
+      color: theme('colors.primary.500');
+      content: attr(data-placeholder);
+      float: left;
+      height: 0;
+      pointer-events: none;
+    }
+  }
+}

@@ -8,7 +8,7 @@ import Loading from '@components/Loading';
 import SelectField from '@components/SelectField';
 import TextField from '@components/TextField';
 import UncontrolledTextField from '@components/UncontrolledTextField';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { CheckIcon } from '@heroicons/react/24/outline';
 import { LeaveApplicationStatus, type LeaveApplication, type LeaveType } from '@lib/models/leave';
 import { parseSubmission } from '@lib/utils';
 import { parseDateFromAbsolute } from '@lib/utils/date';

@@ -1,6 +1,7 @@
 @import './theme.css';
 @import './lib/stylesheets/input.css';
 @import './lib/stylesheets/listbox-item.css';
+@import './lib/stylesheets/text-editor.css';
 @import '@fontsource-variable/inter-tight';
 
 @tailwind base;
@@ -52,7 +53,6 @@
   h4,
   h5,
   h6 {
-    color: theme('colors.primary.950');
     font-family: theme('fontFamily.display');
     line-height: theme('lineHeight.heading');
   }

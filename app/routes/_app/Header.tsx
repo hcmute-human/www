@@ -2,6 +2,7 @@ import Button from '@components/Button';
 import Logo from '@components/Logo';
 import ThemeSwitch from '@components/ThemeSwitch';
 import {
+  BriefcaseIcon,
   CalendarIcon,
   HomeIcon,
   MoonIcon,
@@ -9,7 +10,7 @@ import {
   SunIcon,
   UserCircleIcon,
   UsersIcon,
-} from '@heroicons/react/20/solid';
+} from '@heroicons/react/24/outline';
 import { Form, useLoaderData } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import NavigationBar from './NavigationBar';
@@ -42,6 +43,11 @@ export default function Header() {
       text: t('navigation.leave'),
       href: '/leaves',
       icon: <CalendarIcon className="w-5" />,
+    },
+    {
+      text: t('navigation.job'),
+      href: '/jobs',
+      icon: <BriefcaseIcon className="w-5" />,
     },
   ];
 

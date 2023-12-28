@@ -7,7 +7,8 @@
         "department": "Department",
         "employee": "Employee",
         "leave": "Leave",
-        "profile": "Profile"
+        "profile": "Profile",
+        "job": "Job"
     },
     "notification": "Notification",
     "logout": "Logout"

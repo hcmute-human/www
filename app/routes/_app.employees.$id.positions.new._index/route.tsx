@@ -7,7 +7,7 @@ import ListBoxItem from '@components/ListBoxItem';
 import Loading from '@components/Loading';
 import NumberField from '@components/NumberField';
 import SelectField from '@components/SelectField';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { CheckIcon } from '@heroicons/react/24/outline';
 import i18next from '@lib/i18n/index.server';
 import type { Department, DepartmentPosition } from '@lib/models/department';
 import { EmploymentType } from '@lib/models/employee';

@@ -1,7 +1,7 @@
 import Button from '@components/Button';
 import Popover from '@components/Popover';
 import TextLink from '@components/TextLink';
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/20/solid';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import type { EmployeePosition } from '@lib/models/employee';
 import { formatEmploymentType } from '@lib/utils/employee';
 import clsx from 'clsx';
