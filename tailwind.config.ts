@@ -84,6 +84,11 @@ const config: Config = {
           900: 'hsl(var(--theme-info-900) / <alpha-value>)',
           950: 'hsl(var(--theme-info-950) / <alpha-value>)',
         },
+        surface: {
+          1: 'hsl(var(--theme-surface-1) / <alpha-value>)',
+          2: 'hsl(var(--theme-surface-2) / <alpha-value>)',
+        },
+        black: '#000000',
       },
       fontSize: {
         xs: '0.79rem',

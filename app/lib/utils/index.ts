@@ -106,3 +106,14 @@ export function buildTitle(matches: Match[]) {
     },
   ];
 }
+
+type JsonPatchConfigureFunction = (operations: {
+  replace: typeof jsonPatchReplace;
+}) => { op: string; path: string; value: unknown }[];
+export function jsonPatch(configure: JsonPatchConfigureFunction) {
+  return { patch: configure({ replace: jsonPatchReplace }) };
+}
+
+function jsonPatchReplace(path: string, value: unknown) {
+  return { op: 'replace', path, value };
+}

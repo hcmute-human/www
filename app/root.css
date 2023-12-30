@@ -27,7 +27,7 @@
   body {
     font-family: theme('fontFamily.sans-serif');
     color: theme('colors.primary.900');
-    background-color: theme('colors.primary.0');
+    background-color: theme('colors.surface.1');
     font-weight: 400;
     line-height: theme('lineHeight.body');
     min-width: 100vw;

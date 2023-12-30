@@ -1,0 +1,49 @@
+{
+    "meta": {
+        "title": "Edit employee"
+    },
+    "email": {
+        "label": "Email address",
+        "description": "Enter employee's email address",
+        "required": "Enter an email address",
+        "email": "Enter a valid email address"
+    },
+    "password": {
+        "label": "Password",
+        "description": "Enter employee's password",
+        "required": "Enter a password",
+        "min": "Enter a password that has at least {{min}} characters"
+    },
+    "confirmPassword": {
+        "label": "Confirm password",
+        "description": "Confirm employee's password",
+        "required": "Enter the password again",
+        "wrong": "Enter the password again correctly"
+    },
+    "firstName": {
+        "label": "First name",
+        "description": "Enter employee's first name",
+        "required": "Enter first name for this employee"
+    },
+    "lastName": {
+        "label": "Last name",
+        "description": "Enter employee's last name",
+        "required": "Enter last name for this employee"
+    },
+    "gender": {
+        "label": "Gender",
+        "description": "Select employee's gender",
+        "required": "Select a gender for this employee",
+        "invalidType": "Select a gender for this employee",
+        "min": "Select a gender for this employee",
+        "max": "Select a gender for this employee"
+    },
+    "dateOfBirth": {
+        "label": "Date of birth",
+        "description": "Enter or select employee's date of birth",
+        "required": "Enter or select a date of birth for this employee"
+    },
+    "update": "Update",
+    "reset": "Reset",
+    "success": "Employee {{name}} has been updated."
+}

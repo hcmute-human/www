@@ -58,7 +58,7 @@ function App() {
         <div className="p-4 outline-none">
           <Outlet />
         </div>
-        <div className="mt-16 lg:mt-0 flex border-b-primary-100 bg-primary-0 h-14 items-center border-b px-4 lg:py-4 gap-4 fixed w-full top-0">
+        <div className="mt-16 lg:mt-0 flex border-b-primary-100 bg-surface-1 h-14 items-center border-b px-4 lg:py-4 gap-4 fixed w-full top-0">
           <Button variant="primary" className="p-1 rounded border border-primary-100 text-primary-950 bg-transparent">
             <ArrowLeftIcon className="w-3.5 h-3.5" />
           </Button>

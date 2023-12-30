@@ -1,4 +1,4 @@
-import Button from '@components/Button';
+import Button, { type ButtonProps } from '@components/Button';
 import { useFetcher } from '@remix-run/react';
 import { useEffect, useRef } from 'react';
 import { FileTrigger } from 'react-aria-components';
@@ -8,9 +8,11 @@ import ProgressCircle from '@components/ProgressCircle';
 import { Transition } from '@headlessui/react';
 import clsx from 'clsx';
 
-export default function AvatarUploadButton() {
+interface Props extends ButtonProps {}
+
+export default function AvatarUploadButton(props: ButtonProps) {
   const { t } = useTranslation('profiles.$id');
-  const { submit, data, json } = useFetcher<ActionResponse>();
+  const { submit, data } = useFetcher<ActionResponse>();
   const fileRef = useRef<File | null>(null);
   const pending = data != null && data._action !== 'patch';
 
@@ -49,7 +51,7 @@ export default function AvatarUploadButton() {
       }}
       acceptedFileTypes={['image/*']}
     >
-      <Button isDisabled={pending}>
+      <Button {...props} isDisabled={pending || props.isDisabled}>
         <span className={clsx('block transition-transform ease-in-out', pending && 'scale-0')}>{t('upload')}</span>
         <Transition
           show={pending}

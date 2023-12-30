@@ -25,7 +25,8 @@ import { useTranslation } from 'react-i18next';
 import { ClientOnly } from 'remix-utils/client-only';
 import AvatarUploadButton from './AvatarUploadButton';
 import WorkSection from './WorkSection';
-import Avatar from './Avatar.client';
+import type { Leave } from '@lib/models/leave';
+import Avatar from '@components/Avatar';
 
 export const handle = {
   i18n: 'profiles.$id',
@@ -50,6 +51,10 @@ export async function loader({ request, params: { id }, context: { session } }: 
     throw redirect('/');
   }
 
+  const leavePromise = api.get(`leaves?issuerId=${id}`).match(
+    (x) => (x.ok ? x.json() : null),
+    () => null
+  ) as Promise<Leave | null>;
   const positionsPromise = api
     .get(`employees/${id}/positions?includeDepartment=true&includeDepartmentPosition=true`)
     .match(
@@ -73,6 +78,7 @@ export async function loader({ request, params: { id }, context: { session } }: 
     },
     employee,
     positionsPromise,
+    leavePromise,
   });
 }
 
@@ -100,26 +106,14 @@ export default function Route() {
   return (
     <div className="space-y-8">
       <div className="relative grid justify-center flex-nowrap md:flex md:justify-start gap-x-4 gap-y-2 md:pb-10">
-        <div className="relative overflow-visible mb-10 md:mb-0 w-full max-w-[12rem]">
-          <div className="group relative rounded-full w-full aspect-square before:transition-transform before:ease-in-out hover:before:border-primary-100 hover:before:scale-95 before:duration-500 before:content-[''] before:absolute before:inset-0 before:rounded-full before:border before:border-primary-200 overflow-clip">
-            {user.avatar ? (
-              <img
-                src={user.avatar}
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform ease-in duration-300 hover:shadow-lg hover:shadow-negative-500 hover:drop-shadow-lg"
-              />
-            ) : (
-              <ClientOnly>
-                {() => (
-                  <Avatar
-                    config={{ sex: employee?.gender === Gender.Female ? 'woman' : 'man' }}
-                    className="w-full h-full group-hover:scale-105 transition-transform ease-in duration-300"
-                  />
-                )}
-              </ClientOnly>
-            )}
-          </div>
-          <div className="w-max absolute bottom-0 translate-y-[calc(100%+0.5rem)] left-1/2 -translate-x-1/2">
-            <AvatarUploadButton />
+        <div className="relative group">
+          <Avatar
+            src={user.avatar}
+            fallbackConfig={{ sex: employee?.gender === Gender.Female ? 'woman' : 'man' }}
+            className="w-48"
+          />
+          <div className="inset-0 rounded-full absolute flex items-center justify-center transition ease-in-out group-hover:bg-black/50">
+            <AvatarUploadButton className="transition ease-in-out opacity-0 group-hover:opacity-100" />
           </div>
         </div>
         <div className="md:flex grow items-center justify-between gap-4 text-center md:text-left">

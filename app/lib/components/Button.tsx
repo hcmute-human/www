@@ -15,6 +15,8 @@ type Props =
   | ({ as?: never } & DefaultProps)
   | ({ as: 'link' } & BaseProps & Omit<LinkProps, 'href'> & { href: string });
 
+export type ButtonProps = Props;
+
 const baseClass = 'leading-none rounded-md transition-[background-color_outline] ease-in-out font-medium';
 
 const variantClass: Record<NonNullable<Props['variant']>, string> = {

@@ -1,6 +1,6 @@
 import Button from '@components/Button';
-import { PlusIcon } from '@heroicons/react/24/outline';
-import type { Employee, EmployeePosition } from '@lib/models/employee';
+import { CalendarIcon, PencilIcon, PlusIcon, StarIcon } from '@heroicons/react/24/outline';
+import { Gender, type Employee, type EmployeePosition } from '@lib/models/employee';
 import { paginated, type Paginated } from '@lib/models/paginated';
 import { SessionApiClient } from '@lib/services/session-api-client.server';
 import { buildTitle, formatGender } from '@lib/utils';
@@ -22,6 +22,13 @@ import { toImage } from '@lib/utils/asset.server';
 import { fill, scale } from '@cloudinary/url-gen/actions/resize';
 import { ar1X1 } from '@cloudinary/url-gen/qualifiers/aspectRatio';
 import { dpr } from '@cloudinary/url-gen/actions/delivery';
+import type { Leave } from '@lib/models/leave';
+import AsyncStatisticCard from './AsyncStatisticCard';
+import Avatar from '@components/Avatar';
+import Statistic from '@components/Statistic';
+import { formatDate } from '@lib/utils/date';
+import Section from './Section';
+import Link from '@components/Link';
 
 export const handle = {
   i18n: 'employees.$id',
@@ -39,6 +46,10 @@ export async function loader({ params: { id }, context: { session } }: LoaderFun
     throw redirect('/employees');
   }
 
+  const leavePromise = api.get(`leaves?issuerId=${id}`).match(
+    (x) => (x.ok ? x.json() : null),
+    () => null
+  ) as Promise<Leave | null>;
   const userPromise = api.get(`users/${id}`).match(
     (x) =>
       x.ok
@@ -69,53 +80,84 @@ export async function loader({ params: { id }, context: { session } }: LoaderFun
     id,
     userPromise,
     positionsPromise,
+    leavePromise,
   });
 }
 
 export default function Route() {
-  const { employee, id, positionsPromise, userPromise } = useLoaderData<typeof loader>();
+  const { employee, id, positionsPromise, userPromise, leavePromise } = useLoaderData<typeof loader>();
   const { t } = useTranslation('employees.$id');
 
   return (
     <>
-      <div className="space-y-12">
-        <div className="flex gap-4 items-center">
-          <Suspense fallback={<div className="border border-primary-200 aspect-square w-24 rounded-full" />}>
+      <div className="space-y-8">
+        <div className="flex gap-2 items-center justify-center">
+          <Suspense
+            fallback={
+              <Avatar fallbackConfig={{ sex: employee.gender === Gender.Male ? 'man' : 'woman' }} className="w-24" />
+            }
+          >
             <Await resolve={userPromise}>
-              {(x) =>
-                x?.avatar ? (
-                  <img
-                    src={x.avatar}
-                    className="w-24 h-auto object-cover object-center rounded-full border border-primary-200"
-                  />
-                ) : (
-                  <div className="border border-primary-200 aspect-square w-24 rounded-full" />
-                )
-              }
+              {(x) => (
+                <Avatar
+                  src={x?.avatar}
+                  fallbackConfig={{ sex: employee.gender === Gender.Male ? 'man' : 'woman' }}
+                  className="w-24"
+                />
+              )}
             </Await>
           </Suspense>
-          <div>
-            <h1>
-              <span>
-                {employee.firstName} {employee.lastName}
-              </span>
-            </h1>
-            <p>{t('gender', { gender: formatGender(employee.gender) })}</p>
-            <p>
-              {t('dateOfBirth', {
-                date: new Date(employee.dateOfBirth),
-                formatParams: { createdTime: { dateStyle: 'long' } },
-              })}
-            </p>
-          </div>
+          <h1 className="font-bold">
+            {employee.firstName} {employee.lastName}
+          </h1>
         </div>
-        <div>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-4">
+          <AsyncStatisticCard
+            resolve={positionsPromise.then((x) => x.totalCount)}
+            label="Total positions"
+            icon={<StarIcon className="w-10 h-10" />}
+            className="text-info-500 bg-info-50"
+          />
+          <AsyncStatisticCard
+            resolve={leavePromise.then((x) => x?.usedHours ?? 0)}
+            label="Leave hours"
+            icon={<CalendarIcon className="w-10 h-10" />}
+            className="text-info-500 bg-info-50"
+          />
+        </div>
+        <Section>
           <div className="flex gap-4 items-center justify-between mb-4">
-            <h2>Positions</h2>
-            <Button as="link" href={`/employees/${id}/positions/new`} className="flex gap-1 items-center">
-              <PlusIcon className="w-5 h-5" />
+            <h2>Personal Information</h2>
+            <Link
+              href={`/employees/${id}/edit`}
+              className="flex px-1 gap-2 items-center rounded text-info-500 hover:bg-info-100 transition"
+            >
+              <PencilIcon className="w-4 h-4" />
+              <span>Edit</span>
+            </Link>
+          </div>
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(12rem,1fr))] gap-4 mt-4">
+            <Statistic label="First name">{employee.firstName}</Statistic>
+            <Statistic label="Last name">{employee.lastName}</Statistic>
+            <Statistic label="Gender">{formatGender(employee.gender)}</Statistic>
+            <Statistic label="Date of birth">{formatDate(new Date(employee.dateOfBirth))}</Statistic>
+            <Suspense>
+              <Await resolve={userPromise}>
+                {(x) => (x ? <Statistic label="Email address">{x?.email}</Statistic> : null)}
+              </Await>
+            </Suspense>
+          </div>
+        </Section>
+        <Section>
+          <div className="flex gap-4 items-center justify-between mb-4">
+            <h2>Position</h2>
+            <Link
+              href={`/employees/${id}/positions/new`}
+              className="flex px-1 gap-2 items-center rounded text-info-500 hover:bg-info-100 transition font-medium"
+            >
+              <PlusIcon className="w-4 h-4" />
               <span>New position</span>
-            </Button>
+            </Link>
           </div>
           <Suspense fallback={'Loading...'}>
             <Await resolve={positionsPromise}>
@@ -132,7 +174,7 @@ export default function Route() {
               }
             </Await>
           </Suspense>
-        </div>
+        </Section>
       </div>
     </>
   );

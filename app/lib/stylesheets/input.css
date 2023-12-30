@@ -3,7 +3,7 @@
 @layer components {
   .c-input {
     border-color: theme('colors.primary.200');
-    background-color: theme('colors.primary.0');
+    background-color: theme('colors.surface.1');
     border-width: theme('borderWidth.DEFAULT');
     padding-inline: theme('padding.2');
     padding-block: theme('padding[0.5]');

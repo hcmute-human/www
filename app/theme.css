@@ -62,6 +62,9 @@
     --theme-info-800: 217 91.8% 23.9%;
     --theme-info-900: 218 90.3% 12.2%;
     --theme-info-950: 216 93.3% 5.9%;
+
+    --theme-surface-1: var(--theme-primary-0);
+    --theme-surface-2: var(--theme-primary-0);
   }
 
   :root[data-theme='dark'] {
@@ -125,5 +128,8 @@
     --theme-info-200: 217 91.8% 23.9%;
     --theme-info-100: 218 90.3% 12.2%;
     --theme-info-50: 216 93.3% 5.9%;
+
+    --theme-surface-1: var(--theme-primary-0);
+    --theme-surface-2: var(--theme-primary-50);
   }
 }

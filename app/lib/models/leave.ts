@@ -1,5 +1,10 @@
 import type { Employee } from './employee';
 
+export interface Leave {
+  totalHours: number;
+  usedHours: number;
+}
+
 export interface LeaveType {
   id: string;
   createdTime: string;
